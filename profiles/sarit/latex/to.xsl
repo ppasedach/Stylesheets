@@ -13,8 +13,7 @@
                 xmlns:saxon="http://saxon.sf.net/"
                 exclude-result-prefixes="xlink dbk rng tei teix xhtml a html xs xsl"
                 version="2.0">
-   <xsl:import href="../../../latex2/tei.xsl"/>
-   <xsl:import href="../../../common2/msdescription.xsl"/>
+   <xsl:import href="../../../latex/latex.xsl"/>
 
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" scope="stylesheet" type="stylesheet">
       <desc>
@@ -57,12 +56,15 @@ of this software, even if advised of the possibility of such damage.
       </desc>
    </doc>
 
+   <xsl:param name="publisher">SARIT</xsl:param>
+   <xsl:param name="title">SARIT title</xsl:param>
    <xsl:param name="debuglatex">true</xsl:param>
    <xsl:param name="documentclass">memoir</xsl:param>
    <xsl:param name="homeURL">http://sarit.indology.info</xsl:param>
    <xsl:param name="ledmac">true</xsl:param>
    <xsl:param name="printtoc">true</xsl:param>
    <xsl:param name="reencode">false</xsl:param>
+   <xsl:param name="defaultfontfeatures">Scale=MatchLowercase,Mapping=tex-text</xsl:param>
    <xsl:param name="romanFont">TeX Gyre Schola</xsl:param>
    <xsl:param name="latinFont">TeX Gyre Pagella</xsl:param>
    <xsl:param name="devanagariFont">Chandas</xsl:param>
@@ -71,6 +73,8 @@ of this software, even if advised of the possibility of such damage.
    <xsl:param name="showteiheader">true</xsl:param>
    <xsl:param name="standalone">false</xsl:param>
    <xsl:param name="userpackage"></xsl:param>
+   <xsl:param name="biblatex">true</xsl:param>
+   <xsl:param name="bibliography">false</xsl:param>
    <xsl:param name="usetitling">true</xsl:param>
    <xsl:param name="leftside" as="xs:boolean">false</xsl:param>
    <xsl:param name="rightside" as="xs:boolean">false</xsl:param>
@@ -80,6 +84,11 @@ of this software, even if advised of the possibility of such damage.
      <desc>At which level to restart the numbering</desc>
    </doc>
    <xsl:param name="ledmacNumberDepth">2</xsl:param>
+   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
+     <desc>An output format for saxon's serialize</desc>
+   </doc>
+   <xsl:output name="xmlstring" indent="yes" omit-xml-declaration="yes" />
+
    
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
       <desc>
@@ -181,7 +190,7 @@ capable of dealing with UTF-8 directly.
   </xsl:choose>
   <xsl:text>}
   \newfontfamily\tibetanfont[Script=Tibetan,Scale=1.3]{</xsl:text>
-  <xsl:value-of select="$tibetanFont"/>
+  <xsl:value-of select="$boFont"/>
   <xsl:text>}
   \newcommand\bo\tibetanfont
   </xsl:text>
@@ -250,7 +259,8 @@ capable of dealing with UTF-8 directly.
 	  <xsl:text>}\\[0.167\textheight]</xsl:text>
 	  </xsl:if>
 	  <xsl:variable name="titlepretitle">
-	    <xsl:sequence select="tei:generatePreTitle(/*)"/>
+	    <!-- <xsl:sequence select="tei:generatePreTitle(/*)"/> -->
+	    <xsl:text>No pretitle</xsl:text>
 	  </xsl:variable>
 	  <xsl:if test="$titlepretitle != ''">
 	    <xsl:text>
@@ -260,7 +270,10 @@ capable of dealing with UTF-8 directly.
 	    <xsl:text>}\\[\baselineskip]</xsl:text>
 	  </xsl:if>
 	  <xsl:variable name="maintitle">
-	    <xsl:sequence select="tei:generateTitle(/*)"/>
+	    <xsl:sequence select="tei:generateMetadataTitle(/*)"/>
+	  </xsl:variable>
+	  <xsl:variable name="title">
+	    <xsl:sequence select="tei:generateMetadataTitle(/*)"/>
 	  </xsl:variable>
 	  <xsl:if test="$maintitle != ''">	  
 	    <xsl:text>
@@ -411,6 +424,7 @@ capable of dealing with UTF-8 directly.
   <xsl:template name="makeExternalLink">
       <xsl:param name="ptr" as="xs:boolean"  select="false()"/>
       <xsl:param name="dest"/>
+      <xsl:param name="title"/>
       <xsl:choose>
          <xsl:when test="$ptr">
             <xsl:text>\url{</xsl:text>
@@ -487,6 +501,8 @@ capable of dealing with UTF-8 directly.
        </xsl:text>
        <xsl:if test="$biblatex='true'">
 	 \usepackage[backend=biber]{biblatex}
+       </xsl:if>
+       <xsl:if test="$bibliography != ''">
 	 \bibliography{<xsl:value-of select="$bibliography"/>}
        </xsl:if>
        <xsl:if test="$debuglatex='true'">
@@ -891,6 +907,8 @@ the beginning of the document</desc>
        </xsl:text>
      </xsl:if>
    </xsl:template>
+
+
 
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>If verseNumbering is requested,
