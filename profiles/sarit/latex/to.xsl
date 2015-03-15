@@ -160,7 +160,7 @@ capable of dealing with UTF-8 directly.
   \newfontfamily\devanagarifont</xsl:text>
   <xsl:choose>
     <xsl:when test="//tei:text[@xml:lang='sa'] or //tei:text[@xml:lang='sa-Deva'] or //tei:body[@xml:lang='sa'] or //tei:body[@xml:lang='sa-Deva']">
-      <xsl:text>[Script=Devanagari,Scale=1.3]{</xsl:text>
+      <xsl:text>[Script=Devanagari]{</xsl:text>
       <xsl:value-of select="$devanagariFont"/>
     </xsl:when>
     <xsl:otherwise>
@@ -535,7 +535,7 @@ capable of dealing with UTF-8 directly.
 	   \pagestyle{fancy} 
 	 </xsl:otherwise>
        </xsl:choose>
-       <xsl:if test="count(key('APP',1))&gt;0 or $ledmac='true'">
+       <xsl:if test="$ledmac='true'">
 	 \usepackage{eledmac,eledpar}
 	 <xsl:call-template name="ledmacOptions"/>
        </xsl:if>
@@ -813,7 +813,7 @@ capable of dealing with UTF-8 directly.
 
     <xsl:template match="tei:lg">
       <xsl:choose>
-	<xsl:when test="($ledmac='true' or count(key('APP',1))&gt;0) and not(ancestor::tei:note)">
+	<xsl:when test="$ledmac='true' and not(ancestor::tei:note)">
 	  <xsl:text>
 	    
 	    \stanza&#10;</xsl:text>
@@ -989,7 +989,7 @@ the beginning of the document</desc>
       <xsl:when test="parent::tei:note and not(preceding-sibling::tei:p)">
 	<xsl:message>Processing a par: do nothing</xsl:message>
       </xsl:when>
-      <xsl:when test="(count(key('APP',1))&gt;0 or $ledmac='true') and not(ancestor::tei:note or ancestor::tei:front or ancestor::tei:back)">
+      <xsl:when test="$ledmac='true' and not(ancestor::tei:note or ancestor::tei:front or ancestor::tei:back)">
 	<xsl:message>Processing a par in ledmac mode</xsl:message>
 	<xsl:choose>
 	  <xsl:when test="$leftside">
@@ -1019,7 +1019,7 @@ the beginning of the document</desc>
       <xsl:call-template name="numberParagraph"/>
     </xsl:if>
     <xsl:apply-templates/>
-    <xsl:if test="(count(key('APP',1))&gt;0 or $ledmac='true') and not(ancestor::tei:note or ancestor::tei:front or ancestor::tei:back)">
+    <xsl:if test="$ledmac='true' and not(ancestor::tei:note or ancestor::tei:front or ancestor::tei:back)">
 	<xsl:if test="$leftside">
 	  <xsl:text>\end{Leftside}
 	  \Pages
@@ -1050,7 +1050,7 @@ the beginning of the document</desc>
 </doc>
 <xsl:template match="tei:anchor">
   <xsl:choose>
-    <xsl:when test="(count(key('APP',1))&gt;0 or $ledmac='true') and not(parent::tei:note)">
+    <xsl:when test="$ledmac='true' and not(parent::tei:note)">
       <xsl:text>\edlabel{</xsl:text>
       <xsl:value-of select="@xml:id"/>
       <xsl:text>}</xsl:text>
@@ -1189,7 +1189,7 @@ the beginning of the document</desc>
   <xsl:template name="footNote">
     <xsl:if test="@xml:id">
       <xsl:choose>
-	<xsl:when test="count(key('APP',1))&gt;0 or $ledmac='true'">
+	<xsl:when test="$ledmac='true'">
 	  <xsl:text>\edlabel{</xsl:text>
 	  <xsl:value-of select="@xml:id"/>
 	  <xsl:text>}</xsl:text>
@@ -1206,12 +1206,18 @@ the beginning of the document</desc>
 	  <!-- already processed i guess -->
 	</xsl:when>
 	<xsl:when test="(ancestor::tei:p or ancestor::tei:lg) and not(ancestor::tei:note)">
-	  <xsl:text>\footnote{</xsl:text>
-	  <xsl:if test="@xml:id">
-	    <xsl:text>\label{</xsl:text>
-	    <xsl:value-of select="@xml:id"/>
-	    <xsl:text>}  </xsl:text>
-	  </xsl:if>
+	  <xsl:choose>
+	    <xsl:when test="$ledmac = 'true'">
+	    </xsl:when>
+	    <xsl:otherwise>
+	      <xsl:text>\footnote{</xsl:text>
+	      <xsl:if test="@xml:id">
+		<xsl:text>\label{</xsl:text>
+		<xsl:value-of select="@xml:id"/>
+		<xsl:text>}  </xsl:text>
+	      </xsl:if>
+	    </xsl:otherwise>
+	  </xsl:choose>
 	  <xsl:call-template name="startLanguage"/>
 	  <xsl:apply-templates/>
 	  <xsl:call-template name="endLanguage"/>
@@ -1444,7 +1450,7 @@ the beginning of the document</desc>
    </doc>
   <xsl:template name="marginalNote">
     <xsl:choose>
-      <xsl:when test="count(key('APP',1))&gt;0 or $ledmac='true'">
+      <xsl:when test="$ledmac='true'">
 	<xsl:text>\ledsidenote{</xsl:text>
 	<xsl:if test="@xml:id">
 	  <xsl:text>\label{</xsl:text>
