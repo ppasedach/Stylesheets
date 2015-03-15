@@ -58,6 +58,7 @@ of this software, even if advised of the possibility of such damage.
 
    <xsl:param name="publisher">SARIT</xsl:param>
    <xsl:param name="title">SARIT title</xsl:param>
+   <xsl:param name="useHeaderFrontMatter">true</xsl:param>
    <xsl:param name="debuglatex">true</xsl:param>
    <xsl:param name="documentclass">memoir</xsl:param>
    <xsl:param name="homeURL">http://sarit.indology.info</xsl:param>
@@ -74,7 +75,7 @@ of this software, even if advised of the possibility of such damage.
    <xsl:param name="standalone">false</xsl:param>
    <xsl:param name="userpackage"></xsl:param>
    <xsl:param name="biblatex">true</xsl:param>
-   <xsl:param name="bibliography">false</xsl:param>
+   <xsl:param name="bibliography"></xsl:param>
    <xsl:param name="usetitling">true</xsl:param>
    <xsl:param name="leftside" as="xs:boolean">false</xsl:param>
    <xsl:param name="rightside" as="xs:boolean">false</xsl:param>
@@ -238,8 +239,8 @@ capable of dealing with UTF-8 directly.
 	    \newenvironment{docDate}{}{\ifvmode\par\fi }
 	    \newenvironment{docAuthor}{\ifvmode\vskip4pt\fontsize{16pt}{18pt}\selectfont\fi\itshape}{\ifvmode\par\fi }
 	    % \newenvironment{docTitle}{\vskip6pt\bfseries\fontsize{18pt}{22pt}\selectfont}{\par }
-	    \newcommand{\docTitle}[1]{\clearpage #1 \clearpage}
-	    \newenvironment{titlePart}{}{\par }
+	    \newcommand{\docTitle}[1]{#1}
+	    \newenvironment{titlePart}{ }{ }
 	    \newenvironment{byline}{\vskip6pt\itshape\fontsize{16pt}{18pt}\selectfont}{\par }
 	    % setup title page; see CTAN /info/latex-samples/TitlePages/, and memoir
 	  \newcommand*{\plogo}{\fbox{$\mathcal{SARIT}$}}
@@ -1206,18 +1207,12 @@ the beginning of the document</desc>
 	  <!-- already processed i guess -->
 	</xsl:when>
 	<xsl:when test="(ancestor::tei:p or ancestor::tei:lg) and not(ancestor::tei:note)">
-	  <xsl:choose>
-	    <xsl:when test="$ledmac = 'true'">
-	    </xsl:when>
-	    <xsl:otherwise>
-	      <xsl:text>\footnote{</xsl:text>
-	      <xsl:if test="@xml:id">
-		<xsl:text>\label{</xsl:text>
-		<xsl:value-of select="@xml:id"/>
-		<xsl:text>}  </xsl:text>
-	      </xsl:if>
-	    </xsl:otherwise>
-	  </xsl:choose>
+	  <xsl:text>\footnote{</xsl:text>
+	  <xsl:if test="@xml:id">
+	    <xsl:text>\label{</xsl:text>
+	    <xsl:value-of select="@xml:id"/>
+	    <xsl:text>}  </xsl:text>
+	  </xsl:if>
 	  <xsl:call-template name="startLanguage"/>
 	  <xsl:apply-templates/>
 	  <xsl:call-template name="endLanguage"/>
@@ -1994,6 +1989,7 @@ the beginning of the document</desc>
 		</xsl:choose>
 	      </xsl:when>
 	      <xsl:when test="$documentclass='memoir'">
+		<xsl:message>Processing head for memoir class.</xsl:message>
 		<xsl:choose>
 		  <xsl:when test="parent::tei:div[@type='part']">part</xsl:when>
 		  <xsl:when test="$depth=0">part</xsl:when>
@@ -2149,5 +2145,86 @@ the beginning of the document</desc>
       </xsl:choose>
     </xsl:for-each>
   </xsl:function>
-   
+
+   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+      <desc>[latex] Title banner </desc>
+   </doc>
+   <xsl:template name="printTitleAndLogo">
+     <xsl:text>
+     \makeCustomTitle
+     </xsl:text>
+   </xsl:template>
+
+<xsl:template match="tei:note">
+    <xsl:choose>
+      <xsl:when test="@place='none'"/>
+      <xsl:when test="not(@place) and (parent::tei:head or ancestor::tei:bibl or
+		      ancestor::tei:biblFull or ancestor::tei:biblStruct)">
+	<xsl:call-template name="makeText">
+	  <xsl:with-param name="letters"> (</xsl:with-param>
+	</xsl:call-template>
+	<xsl:apply-templates/>
+	<xsl:call-template name="makeText">
+	  <xsl:with-param name="letters">)</xsl:with-param>
+	</xsl:call-template>
+      </xsl:when>
+
+      <xsl:when test="@place='comment'">
+	<xsl:call-template name="commentNote"/>
+      </xsl:when>
+
+      <xsl:when test="@place='inline' and not(tei:is-inline(.))">
+	<xsl:call-template name="displayNote"/>
+      </xsl:when>
+      
+      <xsl:when test="@place='inline'">
+	<xsl:call-template name="plainNote"/>
+      </xsl:when>
+
+      <xsl:when test="tei:isEndNote(.) or $autoEndNotes='true'">
+	<xsl:call-template name="endNote"/>
+      </xsl:when>
+
+      <xsl:when test="tei:isFootNote(.)">
+	<xsl:call-template name="footNote"/>
+      </xsl:when>
+
+      <xsl:when test="@place='margin' or 
+		      @place='margin/inline' or
+		      @place='marg1' or
+		      @place='marg2' or
+		      @place='marg3' or
+		      @place='marge' or
+		      @place='h' or
+		      @place='inter' or
+		      @place='right' or
+		      @place='left' or
+		      @place='divend' or
+		      @place='marginOuter' or
+		      @place='marginLeft' or
+		      @place='marginRight' or
+		      @place='margin-left' or
+		      @place='margin-right' or
+		      @place='margin_left' or
+		      @place='margin_right' or
+		      @place='margin-top' or
+		      @place='margin-bottom'
+		      ">
+	<xsl:call-template name="marginalNote"/>
+      </xsl:when>
+
+      <xsl:when test="(@place='display' or not(tei:is-inline(.)) or tei:q)">
+	<xsl:call-template name="footNote"/>
+      </xsl:when>
+
+      <xsl:when test="@place">
+	<xsl:message>unknown @place for note, <xsl:value-of select="@place"/></xsl:message>
+	<xsl:call-template name="displayNote"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:call-template name="plainNote"/>
+      </xsl:otherwise>
+      </xsl:choose>
+  </xsl:template>
+
 </xsl:stylesheet>
