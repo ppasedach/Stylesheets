@@ -1186,7 +1186,7 @@ the beginning of the document</desc>
         <xsl:text>-</xsl:text>
         <xsl:text>{\hskip1pt}\newline </xsl:text>
       </xsl:when>
-      <xsl:when test="not(tei:is-inline(..)) and (tei:is-last(.) or tei:is-first(.))"/>
+      <xsl:when test="not(tei:isInline(..)) and (tei:isLast(.) or tei:isFirst(.))"/>
       <xsl:when test="not($showLineBreaks)"/>
       <xsl:otherwise>
         <xsl:text>{\tiny $_{</xsl:text>
@@ -2073,7 +2073,7 @@ the beginning of the document</desc>
       <xsl:when test="@place='comment'">
         <xsl:call-template name="commentNote"/>
       </xsl:when>
-      <xsl:when test="@place='inline' and not(tei:is-inline(.))">
+      <xsl:when test="@place='inline' and not(tei:isInline(.))">
         <xsl:call-template name="displayNote"/>
       </xsl:when>
       <xsl:when test="@place='inline'">
@@ -2088,7 +2088,7 @@ the beginning of the document</desc>
       <xsl:when test="@place='margin' or          @place='margin/inline' or         @place='marg1' or         @place='marg2' or         @place='marg3' or         @place='marge' or         @place='h' or         @place='inter' or         @place='right' or         @place='left' or         @place='divend' or         @place='marginOuter' or         @place='marginLeft' or         @place='marginRight' or         @place='margin-left' or         @place='margin-right' or         @place='margin_left' or         @place='margin_right' or         @place='margin-top' or         @place='margin-bottom'         ">
         <xsl:call-template name="marginalNote"/>
       </xsl:when>
-      <xsl:when test="(@place='display' or not(tei:is-inline(.)) or tei:q)">
+      <xsl:when test="(@place='display' or not(tei:isInline(.)) or tei:q)">
         <xsl:call-template name="footNote"/>
       </xsl:when>
       <xsl:when test="@place">
@@ -2182,6 +2182,15 @@ the beginning of the document</desc>
           </xsl:otherwise>
         </xsl:choose>
         <xsl:text>}</xsl:text>
+      </xsl:when>
+      <xsl:when test="$style='head'">
+	<xsl:text>
+
+	\textbf{[[</xsl:text>
+	<xsl:apply-templates/>
+	<xsl:text>]]}
+
+	</xsl:text>
       </xsl:when>
       <xsl:otherwise>
         <xsl:sequence select="concat('{\',$style[1], ' ')"/>
