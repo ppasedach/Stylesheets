@@ -31,7 +31,7 @@ Unported License http://creativecommons.org/licenses/by-sa/3.0/
 
 2. http://www.opensource.org/licenses/BSD-2-Clause
 		
-All rights reserved.
+
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -64,7 +64,7 @@ of this software, even if advised of the possibility of such damage.
     
         <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>Defines whether or not a word paragraph is a first level heading.</desc></doc>
-    <xsl:function name="tei:is-firstlevel-heading" as="xs:boolean">
+    <xsl:function name="tei:isFirstlevel-heading" as="xs:boolean">
         <xsl:param name="p"/>
         
         <xsl:choose>
@@ -86,6 +86,20 @@ of this software, even if advised of the possibility of such damage.
         </xsl:choose>
     </xsl:function>
 
+    <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+        <desc>Defines whether or not a word paragraph is a front page element.</desc></doc>
+    <xsl:function name="tei:is-front" as="xs:boolean">
+        <xsl:param name="p"/>
+        <xsl:variable name="s" select="$p/w:pPr/w:pStyle/@w:val"/>
+        <xsl:choose>
+            <xsl:when test="matches($s,'[Tt]itle.*')">true</xsl:when>
+            <xsl:when test="matches($s,'[Ss]ubtitle.*')">true</xsl:when>
+            <xsl:when test="matches($s,'[Dd]ate.*')">true</xsl:when>
+            <xsl:when test="matches($s,'[Aa]uthor.*')">true</xsl:when>
+            <xsl:otherwise>false</xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+    
         <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>Defines whether or not a word paragraph is a list element.</desc></doc>
     <xsl:function name="tei:is-list" as="xs:boolean">
@@ -108,6 +122,7 @@ of this software, even if advised of the possibility of such damage.
         <xsl:param name="p"/>        
         <xsl:choose>
             <xsl:when test="$p[contains(w:pPr/w:pStyle/@w:val,'toc')]">true</xsl:when>
+            <xsl:when test="$p[contains(w:pPr/w:pStyle/@w:val,'TOC')]">true</xsl:when>
             <xsl:otherwise>false</xsl:otherwise>
         </xsl:choose>
     </xsl:function>
@@ -231,19 +246,28 @@ of this software, even if advised of the possibility of such damage.
 </xsl:function>
   
 
-        <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+ <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>Whether a w:instrText can be discarded on not. ignore all
       the bibliographic addins</desc></doc>
   <xsl:function name="tei:discardInstruction"  as="xs:boolean">
     <xsl:param name="instr"/>
     <xsl:choose>
       <xsl:when test="contains($instr,'REF _')">true</xsl:when>
-      <xsl:when test="matches($instr,'^[ ]?EN.REFLIST')">true</xsl:when>
-      <xsl:when test="matches($instr,'^[ ]?ADDIN')">true</xsl:when>
       <xsl:when test="matches($instr,'^[ ]?QUOTE')">true</xsl:when>
-      <xsl:when test="matches($instr,'^[ ]?ref Mendeley Edited')">true</xsl:when>
       <xsl:when test="matches($instr,'^[ ]?XE')">true</xsl:when>
       <xsl:when test="contains($instr,'SEQ')">true</xsl:when>
+      <xsl:otherwise>false</xsl:otherwise>
+    </xsl:choose>
+</xsl:function>
+
+ <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+      <desc>Whether a w:instrText is a bibliographic addin</desc></doc>
+  <xsl:function name="tei:biblioInstruction"  as="xs:boolean">
+    <xsl:param name="instr"/>
+    <xsl:choose>
+      <xsl:when test="matches($instr,'^[ ]?EN.REFLIST')">true</xsl:when>
+      <xsl:when test="matches($instr,'^[ ]?ADDIN')">true</xsl:when>
+      <xsl:when test="matches($instr,'^[ ]?ref Mendeley Edited')">true</xsl:when>
       <xsl:otherwise>false</xsl:otherwise>
     </xsl:choose>
 </xsl:function>

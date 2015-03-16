@@ -10,7 +10,7 @@ Unported License http://creativecommons.org/licenses/by-sa/3.0/
 
 2. http://www.opensource.org/licenses/BSD-2-Clause
 		
-All rights reserved.
+
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -153,9 +153,9 @@ of this software, even if advised of the possibility of such damage.
       <xsl:for-each select="tei:fw">
         <xsl:copy-of select="."/>
       </xsl:for-each>
-      <xsl:apply-templates select="tei:front" mode="pass2"/>
+      <xsl:apply-templates select="//tei:front" mode="pass2"/>
       <body>
-        <xsl:for-each select="tei:body/tei:*">
+        <xsl:for-each select="tei:body/tei:*[not(local-name(.)='front')]">
           <xsl:apply-templates select="." mode="pass2"/>
         </xsl:for-each>
       </body>
@@ -197,7 +197,7 @@ of this software, even if advised of the possibility of such damage.
     <xsl:apply-templates select="." mode="pass2"/>
   </xsl:template>
   <xsl:template match="tei:lb" mode="inglossitem"/>
-  <xsl:template match="tei:hi[@rend='bold']" mode="inglossitem"/>
+  <xsl:template match="tei:hi[tei:match(@rend,'bold')]" mode="inglossitem"/>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>
       <p>Top of a weird gloss list </p>
@@ -250,7 +250,7 @@ of this software, even if advised of the possibility of such damage.
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>zap footnote reference which only contains a space</desc>
   </doc>
-  <xsl:template match="tei:hi[@rend='footnote_reference' and
+  <xsl:template match="tei:hi[tei:match(@rend,'footnote_reference') and
 		       count(*)=1 and tei:seg and
 		       normalize-space(.)='']" mode="pass2"
 		priority="99">
@@ -261,17 +261,17 @@ of this software, even if advised of the possibility of such damage.
     <desc>A footnote reference with a footnote inside it is in fact
     just a footnote</desc>
   </doc>
-  <xsl:template match="tei:hi[@rend='footnote_reference' and count(*)=1 and tei:note]" mode="pass2" priority="99">
+  <xsl:template match="tei:hi[tei:match(@rend,'footnote_reference') and count(*)=1 and tei:note]" mode="pass2" priority="99">
     <xsl:apply-templates select="tei:note" mode="pass2"/>
   </xsl:template>
 
-  <xsl:template match="tei:hi[@rend='Endnote_anchor']" mode="pass2" priority="99">
+  <xsl:template match="tei:hi[tei:match(@rend,'Endnote_anchor')]" mode="pass2" priority="99">
     <xsl:apply-templates mode="pass2"/>
   </xsl:template>
-  <xsl:template match="tei:hi[@rend='EndnoteReference']" mode="pass2" priority="99">
+  <xsl:template match="tei:hi[tei:match(@rend,'EndnoteReference')]" mode="pass2" priority="99">
     <xsl:apply-templates mode="pass2"/>
   </xsl:template>
-  <xsl:template match="tei:hi[@rend='EndnoteCharacters']" mode="pass2" priority="99">
+  <xsl:template match="tei:hi[tei:match(@rend,'EndnoteCharacters')]" mode="pass2" priority="99">
     <xsl:apply-templates mode="pass2"/>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
@@ -410,12 +410,28 @@ of this software, even if advised of the possibility of such damage.
     <xsl:copy>
       <xsl:apply-templates select="@*" mode="pass2"/>
       <xsl:apply-templates mode="pass2"/>
-      <xsl:if test="following-sibling::*[1][self::tei:CAPTION]">
-	<xsl:apply-templates
-	    select="following-sibling::*[1][self::tei:CAPTION]/*" mode="pass2"/>
+      <xsl:if test="preceding-sibling::*[1][self::tei:CAPTION] and 
+        following-sibling::*[1][self::tei:CAPTION]">
+        <xsl:message>
+          <xsl:text>WARN: Possible confusion on where these captions belong: [[</xsl:text>
+          <xsl:value-of select="concat(preceding-sibling::*[1],']] and [[',
+            following-sibling::*[1],']]')"/>
+        </xsl:message>
       </xsl:if>
+      <xsl:choose>
+        <xsl:when test="following-sibling::*[1][self::tei:CAPTION]">
+          <xsl:apply-templates
+            select="following-sibling::*[1][self::tei:CAPTION]/*" mode="pass2"/>
+        </xsl:when>
+        <xsl:when test="preceding-sibling::*[1][self::tei:CAPTION]">
+          <xsl:apply-templates
+            select="preceding-sibling::*[1][self::tei:CAPTION]/*" mode="pass2"/>
+        </xsl:when>
+      </xsl:choose>
     </xsl:copy>
   </xsl:template>
+  
+  
 
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>Rename &lt;p&gt; to a more specific name based on @rend</desc>
@@ -448,7 +464,7 @@ of this software, even if advised of the possibility of such damage.
   </doc>
   <xsl:template match="tei:head[not(node())]" mode="pass2"/>
 
-  <xsl:template match="tei:figure/tei:p[@rend='caption' or @rend='Figure title']/text()[starts-with(.,'Figure  ')]" mode="pass2">
+  <xsl:template match="tei:figure/tei:p[tei:match(@rend,'caption') or tei:match(@rend,'Figure title')]/text()[starts-with(.,'Figure  ')]" mode="pass2">
     <xsl:value-of select="substring(.,9)"/>
   </xsl:template>
 
@@ -457,13 +473,55 @@ of this software, even if advised of the possibility of such damage.
   <xsl:template match="@rend[.='Normal (Web)']" mode="pass2"/>
 
 
-  <xsl:template match="tei:p[@rend='caption' or @rend='Figure title']"
+  <xsl:template match="tei:p[tei:match(@rend,'caption') or tei:match(@rend,'Figure title')]"
 		mode="pass2">
     <head>
       <xsl:apply-templates mode="pass2"/>
     </head>
   </xsl:template>
 
+  
+  <xsl:template match="tei:p[matches(@rend, '.+[Tt]itle') and ancestor::tei:front]"
+    mode="pass2">
+ 
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>Title is supposed to be the document title, its siblings form other title parts</desc>
+  </doc>
+  <xsl:template match="tei:p[tei:match(@rend,'Title') and ancestor::tei:front]"
+    mode="pass2">
+    <docTitle>
+      <titlePart type="{@rend}">
+      <xsl:apply-templates mode="pass2"/>
+      </titlePart>
+      <xsl:for-each select="following-sibling::*[self::tei:p[matches(@rend,'.*[Tt]itle')]]">
+        <titlePart type="{@rend}"><xsl:apply-templates mode="pass2"/></titlePart>
+      </xsl:for-each>
+    </docTitle>
+  </xsl:template>
+  
+  <xsl:template match="tei:p[tei:match(@rend,'Author') and ancestor::tei:front]"
+    mode="pass2">
+    <docAuthor>
+      <xsl:apply-templates mode="pass2"/>
+    </docAuthor>
+  </xsl:template>
+  
+  <xsl:template match="tei:p[tei:match(@rend,'Date') and ancestor::tei:front]"
+    mode="pass2">
+    <docDate>
+      <xsl:apply-templates mode="pass2"/>
+    </docDate>
+  </xsl:template>
+  
+  <xsl:template match="tei:titlePage[not(ancestor::tei:front)]"
+    mode="pass2">
+    <!-- strip unnecessary title Pages -->
+    <xsl:message>STRIP TP</xsl:message>
+       <xsl:apply-templates mode="pass2"/>
+   </xsl:template>
+  
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>Name for output element. If @rend starts with "TEI " or "tei:", rename the
     &lt;hi&gt; to the element name instead</desc>
@@ -472,8 +530,8 @@ of this software, even if advised of the possibility of such damage.
     <xsl:param name="context"/>
     <xsl:for-each select="$context">
       <xsl:choose>
-	<xsl:when test="@rend='italic' and ancestor::tei:bibl">title</xsl:when>
-	<xsl:when test="starts-with(@rend,'tei:')">
+	<xsl:when test="tei:match(@rend,'italic') and ancestor::tei:bibl">title</xsl:when>
+  <xsl:when test="starts-with(@rend,'tei:')">
 	  <xsl:value-of select="substring(@rend,5)"/>
 	</xsl:when>
 	<xsl:when test="starts-with(@rend,'TEI ')">
@@ -482,7 +540,7 @@ of this software, even if advised of the possibility of such damage.
 	<xsl:when test="self::tei:p">
 	  <xsl:text>p</xsl:text>
 	</xsl:when>
-	<xsl:when test="@rend='foreign'">
+	<xsl:when test="tei:match(@rend,'foreign')">
 	  <xsl:text>foreign</xsl:text>
 	</xsl:when>
 	<xsl:otherwise>hi</xsl:otherwise>
@@ -496,19 +554,18 @@ of this software, even if advised of the possibility of such damage.
   <xsl:template match="tei:ref" mode="pass2">
     <xsl:variable name="target">
       <xsl:choose>
-	<xsl:when test="contains(@target,'REF _')"/>
-	<xsl:when test="matches(@target,'^[ ]?EN.REFLIST')"/>
-	<xsl:when test="matches(@target,'^[ ]?ADDIN')"/>
-	<xsl:when test="matches(@target,'^[ ]?QUOTE')"/>
-	<xsl:when test="matches(@target,'^[ ]?ref Mendeley Edited')"/>
-	<xsl:when test="matches(@target,'^[ ]?XE')"/>
-	<xsl:when test="contains(@target,'SEQ')"/>
+	<xsl:when test="tei:discardInstruction(@target)"/>
 	<xsl:otherwise>
 	  <xsl:sequence select="tei:processInstruction(@target)"/>
 	</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
     <xsl:choose>
+      <xsl:when test="tei:biblioInstruction($target)">
+	<xsl:processing-instruction name="biblio">
+	  <xsl:value-of select="$target"/>
+	</xsl:processing-instruction>
+      </xsl:when>
       <xsl:when test="matches(@target,'^LINK Excel.Sheet.')">
 	<xsl:sequence select="tei:docxError('cannot embed Excel  spreadsheet')"/>
       </xsl:when>
@@ -525,7 +582,6 @@ of this software, even if advised of the possibility of such damage.
       <xsl:when test="$target=''">
 	<xsl:apply-templates mode="pass2"/>
       </xsl:when>
-      <xsl:when test="tei:discardInstruction(.)"/>
       <xsl:otherwise>
 	<ref target="{$target}">
 	  <xsl:copy-of select="@rend"/>

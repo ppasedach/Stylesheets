@@ -34,7 +34,7 @@ Unported License http://creativecommons.org/licenses/by-sa/3.0/
 
 2. http://www.opensource.org/licenses/BSD-2-Clause
 		
-All rights reserved.
+
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -60,7 +60,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id$</p>
+      
       <p>Copyright: 2013, TEI Consortium</p>
     </desc>
   </doc>
@@ -113,7 +113,7 @@ of this software, even if advised of the possibility of such damage.
       </desc>
     </doc>
     
-    <xsl:function name="tei:is-firstlevel-heading" as="xs:boolean">
+    <xsl:function name="tei:isFirstlevel-heading" as="xs:boolean">
       <xsl:param name="p"/>
           <xsl:variable name="Heading">heading</xsl:variable>
 	  <xsl:variable name="Heading1">heading 1</xsl:variable>      
@@ -226,9 +226,9 @@ of this software, even if advised of the possibility of such damage.
 	<xsl:choose>
 	  <xsl:when test="starts-with(@rend,'specList-')">true</xsl:when>
 	  <xsl:when test="starts-with(parent::tei:hi/@rend,'specList-')">true</xsl:when>
-	  <xsl:when test="@rend='label'">true</xsl:when>
-	  <xsl:when test="contains(@rend,'bold')">true</xsl:when>
-	  <xsl:when test="parent::tei:hi[contains(@rend,'bold')]">true</xsl:when>
+	  <xsl:when test="tei:match(@rend,'label')">true</xsl:when>
+	  <xsl:when test="tei:match(@rend,'bold')">true</xsl:when>
+	  <xsl:when test="parent::tei:hi[tei:match(@rend,'bold')]">true</xsl:when>
 	  <xsl:when test="self::tei:term">true</xsl:when>
 	  <xsl:otherwise>false</xsl:otherwise>
 	</xsl:choose>
@@ -244,7 +244,7 @@ of this software, even if advised of the possibility of such damage.
       <xsl:param name="element"/>
       <xsl:for-each select="$element">
 	<xsl:choose>
-	  <xsl:when test="contains(@rend,'italic')">true</xsl:when>
+	  <xsl:when test="tei:match(@rend,'italic')">true</xsl:when>
 	  <xsl:when test="self::tei:emph">true</xsl:when>
 	  <xsl:when test="self::tbx:hi[@style='italics']">true</xsl:when>
 	  <xsl:when test="parent::tei:item and self::tei:gloss">false</xsl:when>
@@ -258,7 +258,7 @@ of this software, even if advised of the possibility of such damage.
     
     
     <!-- whether an element is block-level or inline -->
-    <xsl:function name="tei:is-inline" as="xs:boolean">
+    <xsl:function name="tei:isInline" as="xs:boolean">
       <xsl:param name="element"/>
       <xsl:for-each select="$element">
 	<xsl:choose>
@@ -344,7 +344,7 @@ of this software, even if advised of the possibility of such damage.
 	  <xsl:otherwise>
 	    <xsl:choose>
 	      <xsl:when test="empty($element/..)">false</xsl:when>
-	      <xsl:when test="tei:is-inline($element/..)">true</xsl:when>
+	      <xsl:when test="tei:isInline($element/..)">true</xsl:when>
 	      <xsl:otherwise>false</xsl:otherwise>
 	    </xsl:choose>
 	  </xsl:otherwise>

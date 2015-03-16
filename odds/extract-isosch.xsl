@@ -12,9 +12,10 @@
                 xpath-default-namespace="http://www.tei-c.org/ns/1.0"
                 exclude-result-prefixes="#all">
   <xsl:import href="../common/functions.xsl"/>
+
   <d:doc scope="stylesheet" type="stylesheet">
     <d:desc>
-      <d:p> TEI stylesheet for simplifying TEI ODD markup </d:p>
+      <d:p> TEI stylesheet for extracting Schematron rules from  TEI ODD </d:p>
       <d:p>This software is dual-licensed:
 
 1. Distributed under a Creative Commons Attribution-ShareAlike 3.0
@@ -22,7 +23,7 @@ Unported License http://creativecommons.org/licenses/by-sa/3.0/
 
 2. http://www.opensource.org/licenses/BSD-2-Clause
                 
-All rights reserved.
+
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -48,7 +49,6 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </d:p>
       <d:p>Author: See AUTHORS</d:p>
-      <d:p>Id: $Id$</d:p>
       <d:p>Copyright: 2014, TEI Consortium</d:p>
       <d:p/>
       <d:p>Modified 2014-01-01/09 by Syd Bauman:
@@ -168,7 +168,9 @@ of this software, even if advised of the possibility of such damage.
           <xsl:when test="$nsu eq 'http://www.tei-c.org/ns/1.0'">tei:</xsl:when>
           <xsl:when test="$nsu eq 'http://www.tei-c.org/ns/Examples'">teix:</xsl:when>
           <xsl:when test="ancestor-or-self::schemaSpec//sch:ns[@uri eq $nsu]">
-            <xsl:value-of select="concat( ancestor-or-self::schemaSpec//sch:ns[@uri eq $nsu]/@prefix, ':')"/>
+            <!-- oops ... what *should* we do if there's more than 1? Just taking the first seems lame, but -->
+            <!-- I can't think of what else we might do right now. -Syd, 2014-07-23 -->
+            <xsl:value-of select="concat( ancestor-or-self::schemaSpec//sch:ns[@uri eq $nsu][1]/@prefix, ':')"/>
           </xsl:when>
           <xsl:when test="namespace::* = $nsu">
             <xsl:value-of select="concat( local-name( namespace::*[ . eq $nsu ][1] ), ':')"/>
@@ -199,8 +201,8 @@ of this software, even if advised of the possibility of such damage.
     <xsl:param name="P5deco" as="element( tei:TEI )"/>
     <schema queryBinding="xslt2">
       <title>ISO Schematron rules</title>
-      <xsl:comment> This file generated <xsl:value-of
-        select="current-dateTime()"/> by 'extract-isosch.xsl'. </xsl:comment>
+      <xsl:comment> This file generated <xsl:call-template
+      name="whatsTheDate"/> by 'extract-isosch.xsl'. </xsl:comment>
 
       <xsl:call-template name="blockComment">
         <xsl:with-param name="content" select="'namespaces, declared:'"/>
@@ -284,6 +286,10 @@ of this software, even if advised of the possibility of such damage.
           <xsl:with-param name="content" select="'deprecated:'"/>
         </xsl:call-template>
       </xsl:if>
+      <!-- Things that can be deprecated: -->
+      <!--   attDef classSpec constraintSpec elementSpec macroSpec -->
+      <!--   moduleSpec schemaSpec valDesc valItem valList -->
+      <!-- right now we only handle the few that actually appear -->
       <xsl:for-each select="key('DEPRECATEDs',1)">
         <xsl:variable name="amsg1" select="'WARNING: use of deprecated attribute —'"/>
         <xsl:variable name="vmsg1" select="'WARNING: use of deprecated attribute value — The'"/>
@@ -434,5 +440,21 @@ of this software, even if advised of the possibility of such damage.
   <xsl:template match="tei:TEI">
     <xsl:apply-templates/>
   </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>work out unique ID for generated Schematron</desc>
+  </doc>
+  <xsl:function name="tei:makePatternID" as="xs:string">
+    <xsl:param name="context"/>
+    <xsl:for-each select="$context">
+      <xsl:variable name="num">
+	<xsl:number level="any"/>
+      </xsl:variable>
+      <xsl:value-of
+	  select="(../ancestor::*[@ident]/@ident,'constraint',../@ident,$num)"
+	  separator="-"/>
+    </xsl:for-each>
+  </xsl:function>
+
 
 </xsl:stylesheet>

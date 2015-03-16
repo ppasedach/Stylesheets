@@ -26,7 +26,7 @@ Unported License http://creativecommons.org/licenses/by-sa/3.0/
 
 2. http://www.opensource.org/licenses/BSD-2-Clause
 		
-All rights reserved.
+
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -52,7 +52,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id$</p>
+      
       <p>Copyright: 2013, TEI Consortium</p>
     </desc>
   </doc>
@@ -273,7 +273,7 @@ of this software, even if advised of the possibility of such damage.
          <param name="element">element</param>
       </desc>
   </doc>
-  <xsl:template name="bitOut">
+  <xsl:template name="schemaOut">
     <xsl:param name="grammar"/>
     <xsl:param name="content"/>
     <xsl:param name="element">pre</xsl:param>
@@ -362,7 +362,7 @@ of this software, even if advised of the possibility of such damage.
     <xsl:choose>
       <xsl:when test="$summaryDoc='true'">
         <h2>Schema <xsl:value-of select="@ident"/>: changed components</h2>
-        <xsl:for-each select="tei:classSpec[@mode='change' or @rend='change']        | tei:macroSpec[(@mode='change' or @rend='change')]        | tei:elementSpec[(@mode='change' or @rend='change')]">
+        <xsl:for-each select="tei:classSpec[@mode='change' or tei:match(@rend,'change')]        | tei:macroSpec[(@mode='change' or tei:match(@rend,'change'))]        | tei:elementSpec[(@mode='change' or tei:match(@rend,'change'))]">
           <xsl:sort select="lower-case(@ident)"/>
           <xsl:apply-templates mode="weave" select="."/>
         </xsl:for-each>

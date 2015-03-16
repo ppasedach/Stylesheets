@@ -19,7 +19,7 @@ Unported License http://creativecommons.org/licenses/by-sa/3.0/
 
 2. http://www.opensource.org/licenses/BSD-2-Clause
 		
-All rights reserved.
+
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -45,16 +45,13 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id$</p>
+         
          <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
 
-
-  <xsl:key name="FOOTNOTES" match="tei:note[not(@place)]" use="1"/>
-  <xsl:key name="FOOTNOTES" match="tei:note[@place='foot']" use="1"/>
-  <xsl:key name="FOOTNOTES" match="tei:note[@place='bottom']" use="1"/>
-  <xsl:key name="ENDNOTES" match="tei:note[@place='end']" use="1"/>
+  <xsl:key name="ENDNOTES" match="tei:note[tei:isEndNote(.)]" use="1"/>
+  <xsl:key name="FOOTNOTES" match="tei:note[tei:isFootNote(.) ]" use="1"/>
   <xsl:key name="TREES" match="tei:eTree[not(ancestor::tei:eTree)]" use="1"/>
 
    <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="hook">
@@ -475,6 +472,8 @@ characters. The normal characters remain active for LaTeX commands.
   \pagenumbering{roman}
   \def\thechapter{\@roman\c@chapter}
   \def\theHchapter{\roman{chapter}}
+  \def\thesection{\@roman\c@section}
+  \def\theHsection{\roman{section}}
   \def\@chapapp{}%
 }
 \def\mainmatter{%
@@ -486,6 +485,8 @@ characters. The normal characters remain active for LaTeX commands.
   \setcounter{secnumdepth}{6}
   \def\@chapapp{\chaptername}%
   \def\theHchapter{\arabic{chapter}}
+  \def\thesection{\@arabic\c@section}
+  \def\theHsection{\arabic{section}}
 }
 \def\backmatter{%
   \cleardoublepage

@@ -14,7 +14,9 @@
   <xsl:import href="../html5/html5.xsl"/>
   <xsl:import href="../epub/epub-common.xsl"/>
   <xsl:import href="../epub/epub-preflight.xsl"/>
-  <xsl:output method="xml" encoding="utf-8" doctype-system="" indent="no"/>
+  <xsl:output method="xml" encoding="utf-8" doctype-system=""
+	      indent="no" omit-xml-declaration="yes"/>
+
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" scope="stylesheet" type="stylesheet">
     <desc>
       <p>
@@ -29,7 +31,7 @@ Unported License http://creativecommons.org/licenses/by-sa/3.0/
 
 2. http://www.opensource.org/licenses/BSD-2-Clause
 		
-All rights reserved.
+
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -55,7 +57,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id$</p>
+      
       <p>Copyright: 2013, TEI Consortium</p>
     </desc>
   </doc>
@@ -439,11 +441,17 @@ height: </xsl:text>
               </xsl:for-each>
               <!-- page images -->
               <xsl:for-each select="key('PBGRAPHICS',1)">
-                <xsl:variable name="img" select="@facs"/>
-                <xsl:variable name="ID">
-                  <xsl:number level="any"/>
-                </xsl:variable>
-                <item href="{$img}" id="pbimage-{$ID}" media-type="{tei:generateMimeType($img,@mimeType)}"/>
+		<xsl:choose>
+		  <xsl:when test="tei:match(@rend,'none')"/>
+		  <xsl:otherwise>
+                    <xsl:variable name="img" select="@facs"/>
+                    <xsl:variable name="ID">
+                      <xsl:number level="any"/>
+                    </xsl:variable>
+                    <item href="{$img}" id="pbimage-{$ID}"
+			  media-type="{tei:generateMimeType($img,@mimeType)}"/>
+		  </xsl:otherwise>
+		</xsl:choose>
               </xsl:for-each>
 	      <xsl:for-each select="tokenize($extraGraphicsFiles,',')">
                 <item href="{.}" id="graphic-{.}" media-type="{tei:generateMimeType(.,'')}"/>
@@ -873,7 +881,7 @@ height: </xsl:text>
 	</dc:date>
       </xsl:for-each>
       <dc:date id="epub-publication">
-	<xsl:sequence select="tei:generateDate(.)"/>
+	<xsl:sequence select="replace(tei:generateDate(.)[1],'[^0-9\-]+','')"/>
       </dc:date>
       <dc:rights>
 	<xsl:call-template name="generateLicence"/>

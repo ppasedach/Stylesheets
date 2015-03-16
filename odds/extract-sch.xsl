@@ -10,7 +10,6 @@
                 version="2.0"
                 exclude-result-prefixes="tei rng teix sch xi xs
 					 #default">
-  <xsl:import href="../common/functions.xsl"/>
 
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" scope="stylesheet" type="stylesheet">
     <desc>
@@ -22,7 +21,7 @@ Unported License http://creativecommons.org/licenses/by-sa/3.0/
 
 2. http://www.opensource.org/licenses/BSD-2-Clause
 		
-All rights reserved.
+
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -48,7 +47,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id$</p>
+      
       <p>Copyright: 2013, TEI Consortium</p>
     </desc>
   </doc>
@@ -176,4 +175,21 @@ of this software, even if advised of the possibility of such damage.
   <xsl:template match="tei:TEI">
     <xsl:apply-templates/>
   </xsl:template>  
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>work out unique ID for generated Schematron</desc>
+  </doc>
+  <xsl:function name="tei:makePatternID" as="xs:string">
+    <xsl:param name="context"/>
+    <xsl:for-each select="$context">
+      <xsl:variable name="num">
+	<xsl:number level="any"/>
+      </xsl:variable>
+      <xsl:value-of
+	  select="(../ancestor::*[@ident]/@ident,'constraint',../@ident,$num)"
+	  separator="-"/>
+    </xsl:for-each>
+  </xsl:function>
+
+
 </xsl:stylesheet>

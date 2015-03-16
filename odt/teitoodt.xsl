@@ -16,7 +16,7 @@ Unported License http://creativecommons.org/licenses/by-sa/3.0/
 
 2. http://www.opensource.org/licenses/BSD-2-Clause
 		
-All rights reserved.
+
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -42,7 +42,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id$</p>
+      
       <p>Copyright: 2013, TEI Consortium</p>
     </desc>
   </doc>
@@ -331,7 +331,7 @@ of this software, even if advised of the possibility of such damage.
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:for-each-group select="node()" group-adjacent="if        (self::text())        then 1        else if        (tei:is-inline(.))        then 1        else 2        ">
+    <xsl:for-each-group select="node()" group-adjacent="if        (self::text())        then 1        else if        (tei:isInline(.))        then 1        else 2        ">
       <xsl:choose>
         <xsl:when test="current-grouping-key()=2">
           <xsl:apply-templates select="current-group()"/>
@@ -681,7 +681,7 @@ of this software, even if advised of the possibility of such damage.
       </text:note-citation>
       <text:note-body>
 
-	<xsl:for-each-group select="node()" group-adjacent="if        (self::text())        then 1        else if        (tei:is-inline(.))        then 1        else 2        ">
+	<xsl:for-each-group select="node()" group-adjacent="if        (self::text())        then 1        else if        (tei:isInline(.))        then 1        else 2        ">
 	  <xsl:choose>
 	    <xsl:when test="current-grouping-key()=2">
 	      <xsl:apply-templates select="current-group()"/>
@@ -727,47 +727,47 @@ of this software, even if advised of the possibility of such damage.
     <text:span>
       <xsl:attribute name="text:style-name">
         <xsl:choose>
-          <xsl:when test="@rend='normalweight'">
+          <xsl:when test="tei:match(@rend,'normalweight')">
             <xsl:text>Standard</xsl:text>
           </xsl:when>
-          <xsl:when test="@rend='code' or @rend='typewriter'">
+          <xsl:when test="tei:match(@rend,'code') or tei:match(@rend,'typewriter')">
             <xsl:text>Source_20_Text</xsl:text>
           </xsl:when>
-          <xsl:when test="@rend='sup' or @rend='superscript'">
+          <xsl:when test="tei:match(@rend,'sup') or tei:match(@rend,'superscript')">
             <xsl:text>Superscript</xsl:text>
           </xsl:when>
-          <xsl:when test="@rend='sub' or @rend='subscript'">
+          <xsl:when test="tei:match(@rend,'sub') or tei:match(@rend,'subscript')">
             <xsl:text>Subscript</xsl:text>
           </xsl:when>
-          <xsl:when test="@rend='bold'">
+          <xsl:when test="tei:match(@rend,'bold')">
             <xsl:text>Highlight</xsl:text>
           </xsl:when>
-          <xsl:when test="@rend='label'">
+          <xsl:when test="tei:match(@rend,'label')">
             <xsl:text>Highlight</xsl:text>
           </xsl:when>
-          <xsl:when test="@rend='it' or @rend='i' or @rend='italic'">
+          <xsl:when test="tei:match(@rend,'it') or tei:match(@rend,'i') or tei:match(@rend,'italic')">
             <xsl:text>Emphasis</xsl:text>
           </xsl:when>
-          <xsl:when test="@rend='underline'">
+          <xsl:when test="tei:match(@rend,'underline')">
             <xsl:text>Underline</xsl:text>
           </xsl:when>
-          <xsl:when test="@rend='sc' or @rend='smallcaps'">
+          <xsl:when test="tei:match(@rend,'sc') or tei:match(@rend,'smallcaps')">
             <xsl:text>SmallCaps</xsl:text>
           </xsl:when>
-          <xsl:when test="@rend='sc' or @rend='capsall'">
+          <xsl:when test="tei:match(@rend,'sc') or tei:match(@rend,'allcaps')">
             <xsl:text>AllCaps</xsl:text>
           </xsl:when>
-          <xsl:when test="@rend='strikethrough'">
+          <xsl:when test="tei:match(@rend,'strikethrough')">
             <xsl:text>StrikeThrough</xsl:text>
           </xsl:when>
-          <xsl:when test="@rend='strikedoublethrough'">
-            <xsl:text>StrikeDoubleThrough</xsl:text>
+          <xsl:when test="tei:match(@rend,'doublestrikethrough')">
+            <xsl:text>Doublestrikethrough</xsl:text>
           </xsl:when>
-          <xsl:when test="@rend='underline'">
+          <xsl:when test="tei:match(@rend,'underline')">
             <xsl:text>UnderLine</xsl:text>
           </xsl:when>
-          <xsl:when test="@rend='underdoubleline'">
-            <xsl:text>UnderDoubleLine</xsl:text>
+          <xsl:when test="tei:match(@rend,'doubleunderline')">
+            <xsl:text>Doubleunderline</xsl:text>
           </xsl:when>
           <xsl:otherwise>
             <xsl:text>Emphasis</xsl:text>
@@ -881,7 +881,7 @@ of this software, even if advised of the possibility of such damage.
       <xsl:when test="tei:p">
 	  <xsl:apply-templates/>
       </xsl:when>
-      <xsl:when test="not(tei:is-inline(.))">
+      <xsl:when test="not(tei:isInline(.))">
 	<text:p text:style-name="Quote">
 	  <xsl:apply-templates/>
 	</text:p>
@@ -943,7 +943,7 @@ of this software, even if advised of the possibility of such damage.
       <xsl:apply-templates/>
     </text:span>
   </xsl:template>
-  <xsl:template match="tei:seg[@rend='parent']">
+  <xsl:template match="tei:seg[tei:match(@rend,'parent')]">
     <xsl:apply-templates/>
   </xsl:template>
   <xsl:template match="tei:ident">
@@ -953,7 +953,7 @@ of this software, even if advised of the possibility of such damage.
   </xsl:template>
   <xsl:template match="tei:cit">
     <xsl:choose>
-      <xsl:when test="@rend='display'">
+      <xsl:when test="tei:match(@rend,'display')">
 	<text:p text:style-name="tei_cit">
 	  <xsl:apply-templates/>
 	</text:p>
@@ -1004,7 +1004,6 @@ of this software, even if advised of the possibility of such damage.
   <xsl:param name="spaceCharacter"> </xsl:param>
   <xsl:param name="showNamespaceDecls">true</xsl:param>
   <xsl:param name="wrapLength">65</xsl:param>
-  <xsl:param name="attsOnSameLine">3</xsl:param>
   <xsl:key name="Namespaces" match="*[ancestor::teix:egXML]" use="namespace-uri()"/>
   <xsl:key name="Namespaces" match="*[not(ancestor::*)]" use="namespace-uri()"/>
   <xsl:template name="newLine">

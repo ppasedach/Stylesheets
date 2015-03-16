@@ -21,7 +21,7 @@ Unported License http://creativecommons.org/licenses/by-sa/3.0/
 
 2. http://www.opensource.org/licenses/BSD-2-Clause
 		
-All rights reserved.
+
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -47,18 +47,17 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id$</p>
+         
          <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
 
-   <xsl:template name="appReading">
+   <xsl:template name="makeAppEntry">
      <xsl:param name="lemma"/>
-     <xsl:param name="lemmawitness"/>
-     <xsl:param name="readings"/>
      <footnote>
        <footnote-citation>
 	 <inline font-size="8pt" vertical-align="super">
+	     <xsl:call-template name="appN"/>
 	 </inline>
        </footnote-citation>
        <list-block>
@@ -72,12 +71,16 @@ of this software, even if advised of the possibility of such damage.
 	   <list-item-label end-indent="label-end()">
 	     <block>
 	       <inline font-size="{$footnoteSize}" vertical-align="super">
+		 <xsl:call-template name="appN"/>
 	       </inline>
 	     </block>
 	   </list-item-label>
 	   <list-item-body start-indent="body-start()">
 	     <block font-size="{$footnoteSize}">
-	       <xsl:copy-of select="$readings"/>
+	       <xsl:value-of select="$lemma"/>
+	       <xsl:text>] </xsl:text>
+	       <xsl:call-template name="appLemmaWitness"/>
+	       <xsl:call-template name="appReadings"/>
 	     </block>
 	   </list-item-body>
 	 </list-item>

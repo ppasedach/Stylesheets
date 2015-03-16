@@ -17,7 +17,7 @@ Unported License http://creativecommons.org/licenses/by-sa/3.0/
 
 2. http://www.opensource.org/licenses/BSD-2-Clause
 		
-All rights reserved.
+
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -52,7 +52,6 @@ of this software, even if advised of the possibility of such damage.
 
 
 
-<xsl:param name="attsOnSameLine">6</xsl:param>
 <xsl:param name="latexLogo"></xsl:param>
 <xsl:param name="logoFile"></xsl:param>
 <xsl:param name="spaceCharacter">\hspace*{6pt}</xsl:param>
@@ -108,13 +107,13 @@ of this software, even if advised of the possibility of such damage.
   <xsl:template match="tei:eg">
     <xsl:variable name="fontsize">
       <xsl:choose>
-	<xsl:when test="@rend='teeny'">
+	<xsl:when test="tei:match(@rend,'teeny')">
 	  <xsl:text>{5.5pt}{6pt}</xsl:text>
 	</xsl:when>
-	<xsl:when test="@rend='tiny'">
+	<xsl:when test="tei:match(@rend,'tiny')">
 	  <xsl:text>{6.5pt}{7pt}</xsl:text>
 	</xsl:when>
-	<xsl:when test="@rend='small'">
+	<xsl:when test="tei:match(@rend,'small')">
 	  <xsl:text>{7.5pt}{8pt}</xsl:text>
 	</xsl:when>
 	<xsl:otherwise>
@@ -136,13 +135,13 @@ of this software, even if advised of the possibility of such damage.
   <xsl:template match="tei:table">
     <xsl:variable name="fontsize">
       <xsl:choose>
-	<xsl:when test="@rend='teeny'">
+	<xsl:when test="tei:match(@rend,'teeny')">
 	  <xsl:text>{5.5pt}{6pt}</xsl:text>
 	</xsl:when>
-	<xsl:when test="@rend='tiny'">
+	<xsl:when test="tei:match(@rend,'tiny')">
 	  <xsl:text>{6.5pt}{7pt}</xsl:text>
 	</xsl:when>
-	<xsl:when test="@rend='small'">
+	<xsl:when test="tei:match(@rend,'small')">
 	  <xsl:text>{7.5pt}{8pt}</xsl:text>
 	</xsl:when>
 	<xsl:otherwise>

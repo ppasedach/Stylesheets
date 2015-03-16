@@ -16,7 +16,7 @@ Unported License http://creativecommons.org/licenses/by-sa/3.0/
 
 2. http://www.opensource.org/licenses/BSD-2-Clause
 		
-All rights reserved.
+
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -42,7 +42,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id$</p>
+      
       <p>Copyright: 2013, TEI Consortium</p>
     </desc>
   </doc>
@@ -63,17 +63,17 @@ of this software, even if advised of the possibility of such damage.
   <xsl:variable name="orig" select="/"/>
   <!-- Styles -->
   <xsl:template match="tei:list[@type='termlist' and ancestor-or-self::*/@type='termsAndDefinitions']/tei:item/tei:abbr" mode="get-style">ExtRef</xsl:template>
-  <xsl:template match="tei:seg[@rend='FormulaReference']">FormulaReference</xsl:template>
+  <xsl:template match="tei:seg[tei:match(@rend,'FormulaReference')]">FormulaReference</xsl:template>
   <xsl:template match="tei:seg[@iso:provision]" mode="get-style">
     <xsl:value-of select="@iso:provision"/>
   </xsl:template>
-  <xsl:template match="tei:hi[@rend='language']" mode="get-style">
+  <xsl:template match="tei:hi[tei:match(@rend,'language')]" mode="get-style">
     <xsl:text>language</xsl:text>
   </xsl:template>
-  <xsl:template match="tei:hi[@rend='FigureFootnoteXref']" mode="get-style">
+  <xsl:template match="tei:hi[tei:match(@rend,'FigureFootnoteXref')]" mode="get-style">
     <xsl:text>FigureFootnoteXref</xsl:text>
   </xsl:template>
-  <xsl:template match="tei:hi[@rend='source']" mode="get-style">
+  <xsl:template match="tei:hi[tei:match(@rend,'source')]" mode="get-style">
     <xsl:text>source</xsl:text>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
@@ -415,14 +415,14 @@ of this software, even if advised of the possibility of such damage.
           <w:pStyle>
             <xsl:attribute name="w:val">
               <xsl:choose>
-                <xsl:when test="@rend='Notenumbered'">Notenumbered</xsl:when>
-                <xsl:when test="@rend='Noteparagraph'">Noteparagraph</xsl:when>
-                <xsl:when test="@rend='Notelist'">Notelist</xsl:when>
-                <xsl:when test="@rend='Tablenote'">Tablenote</xsl:when>
-                <xsl:when test="@rend='Figurenote'">Figurenote</xsl:when>
-                <xsl:when test="@rend='Figurefootnote'">Figurefootnote</xsl:when>
-                <xsl:when test="@rend='Exampleparagraph'">Exampleparagraph</xsl:when>
-                <xsl:when test="@rend='Examplenumbered'">Examplenumbered</xsl:when>
+                <xsl:when test="tei:match(@rend,'Notenumbered')">Notenumbered</xsl:when>
+                <xsl:when test="tei:match(@rend,'Noteparagraph')">Noteparagraph</xsl:when>
+                <xsl:when test="tei:match(@rend,'Notelist')">Notelist</xsl:when>
+                <xsl:when test="tei:match(@rend,'Tablenote')">Tablenote</xsl:when>
+                <xsl:when test="tei:match(@rend,'Figurenote')">Figurenote</xsl:when>
+                <xsl:when test="tei:match(@rend,'Figurefootnote')">Figurefootnote</xsl:when>
+                <xsl:when test="tei:match(@rend,'Exampleparagraph')">Exampleparagraph</xsl:when>
+                <xsl:when test="tei:match(@rend,'Examplenumbered')">Examplenumbered</xsl:when>
                 <xsl:otherwise>Note</xsl:otherwise>
               </xsl:choose>
             </xsl:attribute>
@@ -1205,7 +1205,7 @@ of this software, even if advised of the possibility of such damage.
     <xsl:call-template name="table-header"/>
     <xsl:call-template name="table-body"/>
   </xsl:template>
-  <xsl:template match="tei:p[@rend='Table units']"/>
+  <xsl:template match="tei:p[tei:match(@rend,'Table units')]"/>
   <!-- 
         NEN: <note type="Remark">
         OPMERKING

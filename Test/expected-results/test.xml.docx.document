@@ -660,7 +660,7 @@
             </w:pPr>
             <w:r>
               <w:rPr/>
-              <w:t xml:space="preserve">capsall</w:t>
+              <w:t xml:space="preserve">allcaps</w:t>
             </w:r>
           </w:p>
         </w:tc>
@@ -679,7 +679,7 @@
               <w:rPr>
                 <w:caps/>
               </w:rPr>
-              <w:t xml:space="preserve">capsall</w:t>
+              <w:t xml:space="preserve">allcaps</w:t>
             </w:r>
             <w:r>
               <w:rPr/>
@@ -742,7 +742,7 @@
             </w:pPr>
             <w:r>
               <w:rPr/>
-              <w:t xml:space="preserve">strikedoublethrough</w:t>
+              <w:t xml:space="preserve">doublestrikethrough</w:t>
             </w:r>
           </w:p>
         </w:tc>
@@ -761,7 +761,7 @@
               <w:rPr>
                 <w:dstrike/>
               </w:rPr>
-              <w:t xml:space="preserve">strikedoublethrough</w:t>
+              <w:t xml:space="preserve">doublestrikethrough</w:t>
             </w:r>
             <w:r>
               <w:rPr/>
@@ -865,7 +865,7 @@
             </w:pPr>
             <w:r>
               <w:rPr/>
-              <w:t xml:space="preserve">underwavyline</w:t>
+              <w:t xml:space="preserve">wavyunderline</w:t>
             </w:r>
           </w:p>
         </w:tc>
@@ -884,7 +884,7 @@
               <w:rPr>
                 <w:u w:val="wave"/>
               </w:rPr>
-              <w:t xml:space="preserve">underwavyline</w:t>
+              <w:t xml:space="preserve">wavyunderline</w:t>
             </w:r>
             <w:r>
               <w:rPr/>
@@ -906,7 +906,7 @@
             </w:pPr>
             <w:r>
               <w:rPr/>
-              <w:t xml:space="preserve">underdoubleline</w:t>
+              <w:t xml:space="preserve">doubleunderline</w:t>
             </w:r>
           </w:p>
         </w:tc>
@@ -925,7 +925,7 @@
               <w:rPr>
                 <w:u w:val="double"/>
               </w:rPr>
-              <w:t xml:space="preserve">underdoubleline</w:t>
+              <w:t xml:space="preserve">doubleunderline</w:t>
             </w:r>
             <w:r>
               <w:rPr/>
@@ -1867,7 +1867,9 @@
     </w:p>
     <w:p>
       <w:r>
-        <w:rPr/>
+        <w:rPr>
+          <w:rStyle w:val="teilabel"/>
+        </w:rPr>
         <w:t xml:space="preserve">Fit the first</w:t>
       </w:r>
       <w:r>
@@ -6644,11 +6646,8 @@
         <w:t xml:space="preserve">ref</w:t>
       </w:r>
       <w:r>
-        <w:br/>
-      </w:r>
-      <w:r>
         <w:rPr/>
-        <w:t xml:space="preserve">    </w:t>
+        <w:t xml:space="preserve"> </w:t>
       </w:r>
       <w:r>
         <w:rPr>

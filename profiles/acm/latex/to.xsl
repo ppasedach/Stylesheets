@@ -24,7 +24,7 @@ Unported License http://creativecommons.org/licenses/by-sa/3.0/
 
 2. http://www.opensource.org/licenses/BSD-2-Clause
 		
-All rights reserved.
+
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -57,7 +57,6 @@ of this software, even if advised of the possibility of such damage.
 
   <xsl:param name="classParameters"></xsl:param>
   <xsl:param name="longtables">false</xsl:param>
-  <xsl:param name="attsOnSameLine">2</xsl:param>
   <xsl:param name="attLength">35</xsl:param>
   <xsl:param name="spaceCharacter">\hspace*{4pt}</xsl:param>
   <xsl:param name="documentclass">acm_proc_article-sp</xsl:param>  
@@ -146,12 +145,12 @@ of this software, even if advised of the possibility of such damage.
 	<xsl:when test="@place='inline' and head">
             <xsl:text>\begin{figure}[H]&#10;</xsl:text>
 	</xsl:when>
-	<xsl:when test="@rend='display' or not(@place='inline') or head or p">
+	<xsl:when test="tei:match(@rend,'display') or not(@place='inline') or head or p">
 	  <xsl:text>\begin{figure*}[htbp]&#10;</xsl:text>
 	</xsl:when>
       </xsl:choose>
       <xsl:choose>
-	<xsl:when test="@rend='center'">
+	<xsl:when test="tei:match(@rend,'center')">
 	  <xsl:text>\begin{center}</xsl:text>
 	</xsl:when>
 	<xsl:otherwise>\noindent</xsl:otherwise>
@@ -171,14 +170,14 @@ of this software, even if advised of the possibility of such damage.
             <xsl:text>}</xsl:text>
          </xsl:when>
       </xsl:choose>
-      <xsl:if test="@rend='center'">
+      <xsl:if test="tei:match(@rend,'center')">
             <xsl:text>\end{center}</xsl:text>
       </xsl:if>
       <xsl:choose>
 	<xsl:when test="@place='inline' and head">
             <xsl:text>\end{figure}&#10;</xsl:text>
 	</xsl:when>
-         <xsl:when test="@rend='display' or not(@place='inline')">
+         <xsl:when test="tei:match(@rend,'display') or not(@place='inline')">
 	   <xsl:text>\end{figure*}&#10;</xsl:text>
          </xsl:when>
       </xsl:choose>

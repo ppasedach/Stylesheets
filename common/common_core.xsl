@@ -14,7 +14,7 @@ Unported License http://creativecommons.org/licenses/by-sa/3.0/
 
 2. http://www.opensource.org/licenses/BSD-2-Clause
 		
-All rights reserved.
+
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -40,7 +40,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id$</p>
+         
          <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
@@ -565,7 +565,7 @@ of this software, even if advised of the possibility of such damage.
 
    <!-- title  -->
    <xsl:template match="tei:title" mode="simple">
-      <xsl:value-of select="."/>
+      <xsl:apply-templates select="text()"/>
    </xsl:template>
 
    <xsl:template match="tei:title">
@@ -613,6 +613,7 @@ of this software, even if advised of the possibility of such damage.
 			 (ancestor::tei:biblStruct  or ancestor::tei:biblFull)">
 	     <xsl:call-template name="makeText">
 	       <xsl:with-param name="letters">
+		 <xsl:text> </xsl:text>
 	       </xsl:with-param>
 	     </xsl:call-template>
 	   </xsl:if>
@@ -628,7 +629,9 @@ of this software, even if advised of the possibility of such damage.
 	   </xsl:call-template>
 	   <xsl:if test="ancestor::tei:biblStruct or ancestor::tei:biblFull">
 	     <xsl:call-template name="makeText">
-	     <xsl:with-param name="letters"><xsl:text> </xsl:text></xsl:with-param>
+	     <xsl:with-param name="letters">
+	     <xsl:text> </xsl:text>
+	     </xsl:with-param>
 	   </xsl:call-template>
 	   </xsl:if>
          </xsl:when>
@@ -964,6 +967,7 @@ of this software, even if advised of the possibility of such damage.
   <xsl:template match="tei:note">
     <xsl:choose>
       <xsl:when test="@place='none'"/>
+
       <xsl:when test="not(@place) and (parent::tei:head or ancestor::tei:bibl or
 		      ancestor::tei:biblFull or ancestor::tei:biblStruct)">
 	<xsl:call-template name="makeText">
@@ -975,11 +979,23 @@ of this software, even if advised of the possibility of such damage.
 	</xsl:call-template>
       </xsl:when>
 
+      <xsl:when test="tokenize(@place,' ')=('sup','above')">
+	<xsl:call-template name="makeInline">
+	  <xsl:with-param name="style">sup</xsl:with-param>
+	</xsl:call-template>
+      </xsl:when>
+
+      <xsl:when test="tokenize(@place,' ')=('sub','below')">
+	<xsl:call-template name="makeInline">
+	  <xsl:with-param name="style">sub</xsl:with-param>
+	</xsl:call-template>
+      </xsl:when>
+
       <xsl:when test="@place='comment'">
 	<xsl:call-template name="commentNote"/>
       </xsl:when>
 
-      <xsl:when test="@place='inline' and not(tei:is-inline(.))">
+      <xsl:when test="@place='inline' and not(tei:isInline(.))">
 	<xsl:call-template name="displayNote"/>
       </xsl:when>
       
@@ -995,31 +1011,12 @@ of this software, even if advised of the possibility of such damage.
 	<xsl:call-template name="footNote"/>
       </xsl:when>
 
-      <xsl:when test="@place='margin' or 
-		      @place='margin/inline' or
-		      @place='marg1' or
-		      @place='marg2' or
-		      @place='marg3' or
-		      @place='marge' or
-		      @place='h' or
-		      @place='inter' or
-		      @place='right' or
-		      @place='left' or
-		      @place='divend' or
-		      @place='marginOuter' or
-		      @place='marginLeft' or
-		      @place='marginRight' or
-		      @place='margin-left' or
-		      @place='margin-right' or
-		      @place='margin_left' or
-		      @place='margin_right' or
-		      @place='margin-top' or
-		      @place='margin-bottom'
-		      ">
+      <xsl:when test="tei:isMarginal(@place)">
 	<xsl:call-template name="marginalNote"/>
       </xsl:when>
 
-      <xsl:when test="(@place='display' or not(tei:is-inline(.)) or tei:q)">
+      <xsl:when test="tokenize(@place,' ')=('display') or
+		      not(tei:isInline(.)) or tei:q">
 	<xsl:call-template name="displayNote"/>
       </xsl:when>
 
@@ -1027,6 +1024,7 @@ of this software, even if advised of the possibility of such damage.
 	<xsl:message>unknown @place for note, <xsl:value-of select="@place"/></xsl:message>
 	<xsl:call-template name="displayNote"/>
       </xsl:when>
+
       <xsl:otherwise>
 	<xsl:call-template name="plainNote"/>
       </xsl:otherwise>
@@ -1070,18 +1068,18 @@ of this software, even if advised of the possibility of such damage.
 
   <xsl:template match="tei:bibl">
     <xsl:choose>
-      <xsl:when test="parent::tei:cit[@rend='display'] or
-		      (parent::tei:cit and tei:p) or  parent::tei:q[tei:is-inline(.)]">
+      <xsl:when test="parent::tei:cit[tei:match(@rend,'display')] or
+		      (parent::tei:cit and tei:p) or  parent::tei:q[tei:isInline(.)]">
         <xsl:call-template name="makeInline">
 	  <xsl:with-param name="style">citbibl</xsl:with-param>
 	</xsl:call-template>
       </xsl:when>
-      <xsl:when test="parent::tei:q/parent::tei:head or parent::tei:q[@rend='inline']">
+      <xsl:when test="parent::tei:q/parent::tei:head or parent::tei:q[tei:match(@rend,'inline')]">
         <xsl:call-template name="makeBlock">
 	  <xsl:with-param name="style">citbibl</xsl:with-param>
 	</xsl:call-template>
       </xsl:when>
-      <xsl:when test="not(tei:is-inline(.))">
+      <xsl:when test="not(tei:isInline(.))">
         <xsl:call-template name="makeBlock">
 	  <xsl:with-param name="style">biblfree</xsl:with-param>
 	</xsl:call-template>
@@ -1207,29 +1205,29 @@ of this software, even if advised of the possibility of such damage.
 
   <xsl:template match="tei:lb">
     <xsl:choose>
-      <xsl:when test="@type='hyphenInWord' and @rend='hidden'"/>
-      <xsl:when test="@rend='hidden'">
+      <xsl:when test="@type='hyphenInWord' and tei:match(@rend,'hidden')"/>
+      <xsl:when test="tei:match(@rend,'hidden')">
         <xsl:text> </xsl:text>
       </xsl:when>
-      <xsl:when test="@rend='-' or @type='hyphenInWord'">
+      <xsl:when test="tei:match(@rend,'-') or @type='hyphenInWord'">
         <xsl:text>-</xsl:text>
 	<xsl:call-template name="lineBreak"/>
       </xsl:when>
-      <xsl:when test="@rend='above'">
+      <xsl:when test="tei:match(@rend,'above')">
         <xsl:text>⌜</xsl:text>
       </xsl:when>
-      <xsl:when test="@rend='below'">
+      <xsl:when test="tei:match(@rend,'below')">
         <xsl:text>⌞</xsl:text>
       </xsl:when>
-      <xsl:when test="not(tei:is-inline(..)) and (tei:is-last(.) or
-		      tei:is-first(.))"/>
-      <xsl:when test="@rend='show'">
+      <xsl:when test="not(tei:isInline(..)) and (tei:isLast(.) or
+		      tei:isFirst(.))"/>
+      <xsl:when test="tei:match(@rend,'show')">
 	<xsl:call-template name="lineBreak"/>
       </xsl:when>
-      <xsl:when test="@rend='paragraph'">
+      <xsl:when test="tei:match(@rend,'paragraph')">
 	<xsl:call-template name="lineBreakAsPara"/>
       </xsl:when>
-      <xsl:when test="not(tei:is-inline(..)) and (tei:is-last(.) or tei:is-first(.))"/>
+      <xsl:when test="not(tei:isInline(..)) and (tei:isLast(.) or tei:isFirst(.))"/>
       <xsl:otherwise>
 	<xsl:call-template name="lineBreak"/>
       </xsl:otherwise>
@@ -1267,6 +1265,10 @@ of this software, even if advised of the possibility of such damage.
     <xsl:apply-templates/>
   </xsl:template>
 
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+      <desc>abbreviation marker and expansion inside expan</desc>
+   </doc>
+  <xsl:template match="tei:expan/tei:am"/>
   <xsl:template match="tei:expan/tei:ex">
     <xsl:call-template name="makeInline">
       <xsl:with-param name="before">(</xsl:with-param>
@@ -1349,7 +1351,7 @@ of this software, even if advised of the possibility of such damage.
 	  <xsl:with-param name="style">sub</xsl:with-param>
 	</xsl:call-template>
       </xsl:when>
-      <xsl:when test="not(tei:is-inline(*[last()]))">
+      <xsl:when test="not(tei:isInline(*[last()]))">
 	<xsl:call-template name="makeBlock">
 	  <xsl:with-param name="style">add</xsl:with-param>
 	</xsl:call-template>
@@ -1365,22 +1367,36 @@ of this software, even if advised of the possibility of such damage.
   </xsl:template>
 
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>Process element label</desc>
+  </doc>
+  <xsl:template match="tei:label">
+    <xsl:call-template name="makeInline">
+      <xsl:with-param name="style" select="@type"/>
+    </xsl:call-template>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>processing milestone elements</desc>
    </doc>
   <xsl:template match="tei:milestone">
     <xsl:choose>
-      <xsl:when test="@rend='hr'">
+      <xsl:when test="tei:match(@rend,'hr')">
 	<xsl:call-template name="horizontalRule"/>
       </xsl:when>
       <xsl:when test="@unit='line'">
 	<xsl:text> </xsl:text>
       </xsl:when>
       <xsl:otherwise>
-         <xsl:text>&#x261B;</xsl:text>
-         <xsl:value-of select="@unit"/>
-         <xsl:text> </xsl:text>
-         <xsl:value-of select="@n"/>
-         <xsl:text>&#x261A;</xsl:text>
+	<xsl:call-template name="makeInline">
+	  <xsl:with-param name="style" select="@type"/>
+	  <xsl:with-param name="before">
+	    <xsl:if test="not(@unit='unspecified')">
+              <xsl:value-of select="@unit"/>
+              <xsl:text> </xsl:text>
+	    </xsl:if>
+	  </xsl:with-param>
+	  <xsl:with-param name="after" select="@n"/>
+	</xsl:call-template>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -1423,6 +1439,4 @@ of this software, even if advised of the possibility of such damage.
       <xsl:when test="following-sibling::tei:author">, </xsl:when>
     </xsl:choose>
   </xsl:template>
-
-  
 </xsl:stylesheet>

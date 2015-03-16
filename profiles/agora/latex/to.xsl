@@ -22,7 +22,7 @@
       License along with this library; if not, write to the Free Software
       Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id$</p>
+         
          <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
@@ -31,19 +31,19 @@
 
 
 <!-- deal with weird @rend values -->
-<xsl:template match="tei:hi[@rend='bo']">
+<xsl:template match="tei:hi[tei:match(@rend,'bo')]">
 \textbf{<xsl:apply-templates/>}
 </xsl:template>
-<xsl:template match="tei:hi[@rend='smcap']">
+<xsl:template match="tei:hi[tei:match(@rend,'smcap')]">
 \textsc{<xsl:apply-templates/>}
 </xsl:template>
-<xsl:template match="tei:hi[@rend='del']">
+<xsl:template match="tei:hi[tei:match(@rend,'del')]">
 \sout{<xsl:apply-templates/>}
 </xsl:template>
-<xsl:template match="tei:hi[@rend='ul2']">
+<xsl:template match="tei:hi[tei:match(@rend,'ul2')]">
 \uuline{<xsl:apply-templates/>}
 </xsl:template>
-<xsl:template match="tei:hi[@rend='ulw']">
+<xsl:template match="tei:hi[tei:match(@rend,'ulw')]">
 \uwave{<xsl:apply-templates/>}
 </xsl:template>
 

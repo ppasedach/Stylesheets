@@ -19,7 +19,7 @@ Unported License http://creativecommons.org/licenses/by-sa/3.0/
 
 2. http://www.opensource.org/licenses/BSD-2-Clause
 		
-All rights reserved.
+
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -136,7 +136,7 @@ of this software, even if advised of the possibility of such damage.
 </xsl:template>
 
 <xsl:template match="q|quote|said">
-  <xsl:element name="{if (@rend='block') then 'blockquote' else 'quote'}">
+  <xsl:element name="{if (tei:match(@rend,'block')) then 'blockquote' else 'quote'}">
     <xsl:apply-templates select="@*|*|text()|comment()"/>
   </xsl:element>
 </xsl:template>

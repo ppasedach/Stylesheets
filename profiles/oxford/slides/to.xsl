@@ -17,7 +17,7 @@ Unported License http://creativecommons.org/licenses/by-sa/3.0/
 
 2. http://www.opensource.org/licenses/BSD-2-Clause
 		
-All rights reserved.
+
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -49,7 +49,6 @@ of this software, even if advised of the possibility of such damage.
    </doc>
 
    <xsl:output method="text"/>
-<xsl:param name="attsOnSameLine">6</xsl:param>
 <xsl:param name="latexLogo"></xsl:param>
 <xsl:param name="logoFile"></xsl:param>
 <xsl:param name="spaceCharacter">\hspace*{6pt}</xsl:param>
@@ -67,12 +66,14 @@ of this software, even if advised of the possibility of such damage.
   </xsl:template>
 
 <xsl:template name="latexPackages">
-\setmonofont[Scale=0.86]{Lucida Sans Typewriter}
-\setromanfont{Minion Pro}
-\setsansfont{Arial Unicode MS}
+\usepackage{framed}
+\definecolor{shadecolor}{gray}{0.95}
+\setmonofont{DejaVu Sans Mono}
+\setromanfont{DejaVuSerif}
+\setsansfont{DejaVuSans}
 \usetheme{<xsl:value-of select="$beamerClass"/>}
 \useinnertheme[shadow=true]{rounded}
-\usecolortheme{whale}
+\usecolortheme{orchid}  
 \setbeamercolor*{frametitle}{parent=palette primary}
 \usepackage{fancyvrb,fancyhdr,longtable}
 \def\Gin@extensions{.pdf,.png,.jpg,.mps,.tif}
@@ -89,7 +90,7 @@ of this software, even if advised of the possibility of such damage.
 \setbeamertemplate{footline}
 {\hspace{1em}%
 \IfFileExists{oxlogo.png}{\includegraphics[height=10ex]{oxlogo.png}}{}%
-\textcolor{gray}{\insertframenumber/\inserttotalframenumber}\hfill\includegraphics[height=10ex]{<xsl:value-of select="$logoFile"/>}\hspace{1em}}
+\textcolor{gray}{\insertframenumber/\inserttotalframenumber}\hfill\includegraphics[height=5ex]{<xsl:value-of select="$logoFile"/>}\hspace{1em}}
 </xsl:template>
 
 <xsl:template match="tei:gi">

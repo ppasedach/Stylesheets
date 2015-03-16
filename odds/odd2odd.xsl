@@ -23,7 +23,7 @@ Unported License http://creativecommons.org/licenses/by-sa/3.0/
 
 2. http://www.opensource.org/licenses/BSD-2-Clause
 		
-All rights reserved.
+
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -49,7 +49,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id$</p>
+      
       <p>Copyright: 2013, TEI Consortium</p>
     </desc>
   </doc>
@@ -87,15 +87,15 @@ of this software, even if advised of the possibility of such damage.
   <xsl:key name="odd2odd-REFED" use="@name" match="rng:ref[ancestor::tei:macroSpec and not(@name=ancestor::tei:macroSpec/@ident)]"/>
   <xsl:key name="odd2odd-REFED" use="@name" match="rng:ref[parent::tei:datatype]"/>
   <xsl:key name="odd2odd-REFED" use="@class" match="tei:attRef"/>
-  <xsl:key name="odd2odd-REFED" use="substring-before(@name,'.attribute.')" match="tei:attRef"/>
+  <xsl:key name="odd2odd-ATTREFED" use="substring-before(@name,'.attribute.')" match="tei:attRef"/>
   <xsl:key name="odd2odd-REFED" use="substring-before(@name,'_')" match="rng:ref[contains(@name,'_')]"/>
   <xsl:key name="odd2odd-REFED" use="@key" match="tei:macroRef"/>
   <xsl:key name="odd2odd-REFED" use="@key" match="tei:classRef"/>
   <xsl:key name="odd2odd-REFED" use="@key" match="tei:elementRef"/>
 
-  <xsl:key name="odd2odd-REFOBJECTS" use="@key" match="tei:schemaSpec/tei:macroRef"/>
-  <xsl:key name="odd2odd-REFOBJECTS" use="@key" match="tei:schemaSpec/tei:classRef"/>
-  <xsl:key name="odd2odd-REFOBJECTS" use="@key" match="tei:schemaSpec/tei:elementRef"/>
+  <xsl:key name="odd2odd-REFOBJECTS" use="@key" match="tei:schemaSpec/tei:macroRef[not(ancestor::tei:content)]"/>
+  <xsl:key name="odd2odd-REFOBJECTS" use="@key" match="tei:schemaSpec/tei:classRef[not(ancestor::tei:content)]"/>
+  <xsl:key name="odd2odd-REFOBJECTS" use="@key" match="tei:schemaSpec/tei:elementRef[not(ancestor::tei:content)]"/>
   <xsl:key name="odd2odd-REPLACECONSTRAINT" match="tei:constraintSpec[@mode='replace']" use="concat(../@ident,'_',@ident)"/>
   <xsl:key name="odd2odd-SCHEMASPECS" match="tei:schemaSpec" use="@ident"/>
   <xsl:key match="tei:moduleSpec" name="odd2odd-MODULES" use="@ident"/>
@@ -214,8 +214,7 @@ of this software, even if advised of the possibility of such damage.
 	  <xsl:text>/xml/tei/odd/p5subset.xml</xsl:text>
 	</xsl:when>
 	<xsl:otherwise>
-	  <xsl:value-of select="$currentDirectory"/>
-	  <xsl:value-of select="$loc"/>
+	  <xsl:value-of select="string-join(($currentDirectory, $loc), '/')"/>
 	</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
@@ -547,30 +546,38 @@ of this software, even if advised of the possibility of such damage.
     <xsl:call-template name="odd2odd-createCopy"/>
   </xsl:template>
 
-  <xsl:template match="tei:macroRef|tei:classRef|tei:elementRef"	mode="pass1">
-    <xsl:variable name="sourceDoc" select="tei:workOutSource(.)"/>
-    <xsl:variable name="name" select="@key"/>
-    <xsl:for-each select="document($sourceDoc,$top)">
-      <xsl:choose>
-	<xsl:when test="key('odd2odd-IDENTS',$name)">
-	  <xsl:for-each select="key('odd2odd-IDENTS',$name)">
-          <xsl:if test="$verbose='true'">
-            <xsl:message>Phase 1: import <xsl:value-of  select="$name"/> by direct reference</xsl:message>
-          </xsl:if>
+  <xsl:template match="tei:macroRef|tei:classRef|tei:elementRef"
+		mode="pass1">
+    <xsl:choose>
+      <xsl:when test="ancestor::tei:content">
+	<xsl:copy-of select="."/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:variable name="sourceDoc" select="tei:workOutSource(.)"/>
+	<xsl:variable name="name" select="@key"/>
+	<xsl:for-each select="document($sourceDoc,$top)">
+	  <xsl:choose>
+	    <xsl:when test="key('odd2odd-IDENTS',$name)">
+	      <xsl:for-each select="key('odd2odd-IDENTS',$name)">
+		<xsl:if test="$verbose='true'">
+		  <xsl:message>Phase 1: import <xsl:value-of  select="$name"/> by direct reference</xsl:message>
+		</xsl:if>
 	    <xsl:apply-templates mode="pass1" select="."/>
-	  </xsl:for-each>
-	</xsl:when>
-	<xsl:otherwise>
-	  <xsl:call-template name="die">
-	    <xsl:with-param name="message">
-	      <xsl:text>Reference to </xsl:text>
-	      <xsl:value-of select="$name"/>
-	      <xsl:text>: not found in source</xsl:text>
-	    </xsl:with-param>
-	  </xsl:call-template>
-	</xsl:otherwise>
-      </xsl:choose>
-    </xsl:for-each>
+	      </xsl:for-each>
+	    </xsl:when>
+	    <xsl:otherwise>
+	      <xsl:call-template name="die">
+		<xsl:with-param name="message">
+		  <xsl:text>Reference to </xsl:text>
+		  <xsl:value-of select="$name"/>
+		  <xsl:text>: not found in source</xsl:text>
+		</xsl:with-param>
+	      </xsl:call-template>
+	    </xsl:otherwise>
+	  </xsl:choose>
+	</xsl:for-each>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template name="odd2odd-expandModule">
@@ -890,6 +897,7 @@ of this software, even if advised of the possibility of such damage.
           <!-- element content -->
           <content xmlns="http://www.tei-c.org/ns/1.0">
             <xsl:choose>
+              <xsl:when test="tei:content and not(tei:content/*)"/>
               <xsl:when test="tei:content/rng:*">
                 <xsl:apply-templates mode="odd2odd-copy" select="tei:content/*"/>
               </xsl:when>
@@ -1302,14 +1310,14 @@ so that is only put back in if there is some content
             <xsl:for-each select="tei:attList">
               <xsl:copy>
                 <xsl:copy-of select="@*"/>
-                <xsl:apply-templates mode="justcopy" select="tei:attDef[@mode='add' or not(@mode)]"/>
+                <xsl:apply-templates mode="justcopy" select="tei:attDef"/>
                 <xsl:apply-templates mode="justcopy" select="tei:attRef"/>
                 <xsl:apply-templates mode="justcopy" select="tei:attList"/>
               </xsl:copy>
             </xsl:for-each>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:apply-templates mode="justcopy" select="tei:attList/tei:attDef[@mode='add' or not(@mode)]"/>
+            <xsl:apply-templates mode="justcopy" select="tei:attList/tei:attDef"/>
             <xsl:apply-templates mode="justcopy" select="tei:attList/tei:attRef"/>
             <xsl:apply-templates mode="justcopy" select="tei:attList/tei:attList"/>
           </xsl:otherwise>
@@ -1328,7 +1336,6 @@ so that is only put back in if there is some content
   <xsl:template name="odd2odd-processAttributes">
     <xsl:param name="ORIGINAL"/>
     <xsl:param name="objectName"/>
-
     <!-- we are sitting in the ODD -->
     <!-- first put in the ones we know take precedence as replacements -->
     <xsl:for-each select="tei:attList/tei:attDef[@mode='replace' and @ident=$ORIGINAL/tei:attList//tei:attDef/@ident]">
@@ -1353,7 +1360,7 @@ so that is only put back in if there is some content
     <!-- any direct attRef elements -->
     <xsl:apply-templates mode="justcopy"
 			   select="tei:attList/tei:attRef"/>
-    <!-- now look at each of the original element's attributes and see
+    <!-- now look at each of the original object's attributes and see
     if we have an update -->
     <xsl:for-each select="$ORIGINAL/tei:attList">
       <!-- original source  context -->
@@ -1886,6 +1893,7 @@ so that is only put back in if there is some content
     <xsl:choose>
       <xsl:when test="$autoGlobal='true' and starts-with(@ident,'att.global')">y</xsl:when>
       <xsl:when test="@type='model' and  key('odd2odd-REFED',$k)">y</xsl:when>
+      <xsl:when test="@type='atts' and  key('odd2odd-ATTREFED',$k)">y</xsl:when>
       <xsl:when test="@type='atts' and key('odd2odd-ELEMENT_MEMBERED',$k)">y</xsl:when>
       <xsl:when test="@type='atts' and key('odd2odd-CLASS_MEMBERED',$k)">
         <xsl:for-each select="key('odd2odd-CLASS_MEMBERED',$k)">

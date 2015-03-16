@@ -29,7 +29,7 @@ Unported License http://creativecommons.org/licenses/by-sa/3.0/
 
 2. http://www.opensource.org/licenses/BSD-2-Clause
 		
-All rights reserved.
+
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -55,7 +55,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id$</p>
+         
          <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
@@ -146,8 +146,11 @@ of this software, even if advised of the possibility of such damage.
                </xsl:attribute>
                <xsl:comment>
                   <xsl:text>&#10;Schema generated from ODD source </xsl:text>
-                  <xsl:call-template name="showDate"/>
+                  <xsl:call-template name="whatsTheDate"/>
                   <xsl:text>. </xsl:text>
+		  <xsl:value-of
+		      select="(/tei:TEI/tei:text/tei:front/tei:titlePage/tei:docDate,'.')"
+		      separator=""/>
                   <xsl:call-template name="makeTEIVersion"/>
                   <xsl:sequence select="tei:makeDescription(.,true())"/>
                   <xsl:text>&#10;</xsl:text>
@@ -235,7 +238,7 @@ of this software, even if advised of the possibility of such damage.
                               datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
                         <xsl:comment>
                            <xsl:text>Schema generated </xsl:text>
-                           <xsl:call-template name="showDate"/>
+                           <xsl:call-template name="whatsTheDate"/>
                            <xsl:call-template name="makeTEIVersion"/>
 			   <xsl:call-template name="copyright"/>
                            <xsl:sequence select="tei:makeDescription(.,true())"/>
@@ -367,7 +370,7 @@ of this software, even if advised of the possibility of such damage.
          </xsl:otherwise>
       </xsl:choose>
   </xsl:template>
-  <xsl:template name="bitOut">
+  <xsl:template name="schemaOut">
       <xsl:param name="grammar"/>
       <xsl:param name="element"/>
       <xsl:param name="content"/>
@@ -383,23 +386,6 @@ of this software, even if advised of the possibility of such damage.
   <xsl:template match="processing-instruction()" mode="tangle">
     <xsl:copy-of select="."/>
   </xsl:template>
-
-  <xsl:template match="tei:constraintSpec[@scheme='schematron']">
-      <xsl:apply-templates/>
-  </xsl:template>
-
-  <xsl:template match="tei:constraintSpec[@scheme='isoschematron']">
-      <xsl:apply-templates/>
-  </xsl:template>
-
-  <xsl:template match="s:*">
-      <xsl:call-template name="processSchematron"/>
-  </xsl:template>
-
-  <xsl:template match="sch:*">
-      <xsl:call-template name="processSchematron"/>
-  </xsl:template>
-
 
 <!-- pass 2, clean up unused elements -->
   <xsl:template  match="rng:anyName[parent::rng:define]"
@@ -511,15 +497,32 @@ of this software, even if advised of the possibility of such damage.
       </xsl:choose>			   
   </xsl:template>
 
-  <xsl:template match="rng:optional|rng:zeroOrMore|rng:oneOrMore" mode="pass3">
+  <xsl:template match="rng:optional|rng:zeroOrMore|rng:oneOrMore"
+		mode="pass3">
       <xsl:choose>
 	<xsl:when test="not(*)"/>
 	<xsl:when test="count(*)=1 and rng:empty"/>
-	<xsl:when test="rng:zeroOrMore and count(*)=1">
-	     <xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="pass3"/>
-	</xsl:when>
-	<xsl:when test="count(*)=1 and rng:group[count(*)=1 and	rng:zeroOrMore]">
-	     <xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="pass3"/>
+	<xsl:when test="count(*)=1">
+	  <xsl:variable name="what" select="rng:ref/@name"/>
+	  <xsl:choose>
+          <xsl:when test="$what=following-sibling::*[1][count(*)=1]/rng:*/rng:ref/@name">
+	      <xsl:message>Kill <xsl:value-of
+	      select="(ancestor::rng:element/@name,rng:ref/@name)"/> because its repeated in following rule</xsl:message>
+	    </xsl:when>
+	    <xsl:when test="rng:zeroOrMore">
+	      <xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="pass3"/>
+	    </xsl:when>
+	    <xsl:when test="rng:group[count(*)=1 and rng:zeroOrMore]">
+	      <xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="pass3"/>
+	    </xsl:when>
+	    <xsl:otherwise>
+	      <xsl:element name="{name()}" xmlns="http://relaxng.org/ns/structure/1.0">
+		<xsl:apply-templates
+		    select="*|@*|processing-instruction()|comment()|text()"
+		    mode="pass3"/>
+	      </xsl:element>
+	    </xsl:otherwise>
+	  </xsl:choose>
 	</xsl:when>
 	<xsl:otherwise>
 	  <xsl:element name="{name()}" xmlns="http://relaxng.org/ns/structure/1.0">
@@ -565,13 +568,33 @@ of this software, even if advised of the possibility of such damage.
 
   <xsl:template match="rng:define" mode="pass3">
       <xsl:choose>
-         <xsl:when test="key('REFED',@name) or key('XPATTERNS',@name)">
-	   <define xmlns="http://relaxng.org/ns/structure/1.0" >
-	     <xsl:apply-templates  select="@*"    mode="pass3"/>
-	     <xsl:apply-templates  select="*|processing-instruction()|comment()|text()"
+         <xsl:when test="key('REFED',@name) or
+			 key('XPATTERNS',@name)">
+	   <xsl:choose>
+	     <xsl:when test="count(key('DEFED',@name))=1 or @combine='choice'">
+	       <define xmlns="http://relaxng.org/ns/structure/1.0" >
+		 <xsl:apply-templates  select="@*"    mode="pass3"/>
+		 <xsl:apply-templates  select="*|processing-instruction()|comment()|text()"
 		   mode="pass3"/>
-	   </define>
+	       </define>
+	     </xsl:when>
+	     <xsl:otherwise>
+	       <xsl:variable name="others">
+		 <xsl:for-each select="key('DEFED',@name)">
+		   <n><xsl:value-of select="count(ancestor::rng:div)"/></n>
+		 </xsl:for-each>
+	       </xsl:variable>
+	       <xsl:if test="count(ancestor::rng:div)     &lt; max($others/*)">
+		 <define xmlns="http://relaxng.org/ns/structure/1.0" >
+		   <xsl:apply-templates  select="@*"    mode="pass3"/>
+		   <xsl:apply-templates  select="*|processing-instruction()|comment()|text()"
+		   mode="pass3"/>
+		 </define>
+	       </xsl:if>
+	     </xsl:otherwise>
+	   </xsl:choose>
 	 </xsl:when>
+
 	 <xsl:otherwise>
 	   <xsl:if test="$verbose='true'">
 	     <xsl:message>ZAP definition of unused pattern <xsl:value-of select="@name"/></xsl:message>

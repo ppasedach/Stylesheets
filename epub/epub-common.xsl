@@ -12,7 +12,7 @@ Unported License http://creativecommons.org/licenses/by-sa/3.0/
 
 2. http://www.opensource.org/licenses/BSD-2-Clause
 		
-All rights reserved.
+
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -38,19 +38,19 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id$</p>
+      
       <p>Copyright: 2013, TEI Consortium</p>
     </desc>
   </doc>
   <xsl:key match="tei:graphic[not(ancestor::teix:egXML or starts-with(@url,'film:'))]" use="1" name="G"/>
   <xsl:key match="tei:media[not(ancestor::teix:egXML)]" use="1" name="G"/>
   <xsl:key name="GRAPHICS" use="1" match="tei:graphic|tei:media"/>
-  <xsl:key name="PBGRAPHICS" use="1" match="tei:pb[@facs and not(@rend='none')]"/>
+  <xsl:key name="PBGRAPHICS" use="1" match="tei:pb[@facs]"/>
   <xsl:key name="Timeline" match="tei:timeline" use="1"/>
   <xsl:key name="Object" match="tei:when" use="substring(@corresp,2)"/>
   <xsl:key name="objectOnPage" match="tei:*[@xml:id]" use="generate-id(preceding::tei:pb[1])"/>
   <xsl:key name="PB"
-	   match="tei:pb[not(@facs='') and not(starts-with(@facs,'eebopage:')) and not(@rend='none')]" use="1"/>
+	   match="tei:pb[not(@facs='') and not(starts-with(@facs,'tcp:')) and not(starts-with(@facs,'unknown:')) and not(tei:match(@rend,'none'))]" use="1"/>
   <xsl:key name="Timeline" match="tei:timeline" use="1"/>
   <xsl:param name="mediaoverlay">false</xsl:param>
   <xsl:param name="coverimage"/>
@@ -145,10 +145,11 @@ of this software, even if advised of the possibility of such damage.
   </doc>
   <xsl:template name="purgeCSS">
     <xsl:choose>
-      <xsl:when test="contains(.,'line-height:')"/>
+      <xsl:when test="starts-with(.,'@import')"/>
+      <!--
       <xsl:when test="contains(.,'max-width:')"/>
       <xsl:when test="contains(.,'height:')"/>
-      <!--
+      <xsl:when test="contains(.,'line-height:')"/>
       <xsl:when test="contains(.,'clear:')"/>
       <xsl:when test="contains(.,'padding')"/>
       <xsl:when test="contains(.,'float:')"/>
@@ -156,7 +157,7 @@ of this software, even if advised of the possibility of such damage.
       <xsl:when test="contains(.,'width:')"/>
       <xsl:when test="contains(.,'margin')"/>
       <xsl:when test="contains(.,'border')"/>
--->
+      -->
       <xsl:otherwise>
         <xsl:value-of select="."/>
         <xsl:text>&#10;</xsl:text>
@@ -165,7 +166,7 @@ of this software, even if advised of the possibility of such damage.
   </xsl:template>
   <xsl:template name="addLangAtt"/>
 
-  <xsl:template match="tei:lb[@rend='space']">
+  <xsl:template match="tei:lb[tei:match(@rend,'space')]">
     <xsl:text> </xsl:text>
   </xsl:template>
 
@@ -508,15 +509,7 @@ of this software, even if advised of the possibility of such damage.
      <xsl:result-document href="{concat($directory,'/copy.xml')}">
      <project xmlns="" basedir="." default="dist" name="imagecopy">
        <target name="dist">
-	 <xsl:if test="key('PB',1) or key('G',1)">
-	   <mkdir>
-	     <xsl:attribute name="dir">
-	       <xsl:value-of select="replace($outputDir,'file:///','')"/>
-	       <xsl:text>/</xsl:text>
-	       <xsl:value-of select="$mediaDir"/>
-	     </xsl:attribute>
-	   </mkdir>
-	 </xsl:if>
+	 <xsl:variable name="contents">
 	 <xsl:if test="not($coverimage='')">
 	     <copy toFile="{$coverDir}/{tokenize($coverimage,'/')[last()]}" file="{$coverimage}"/>
 	 </xsl:if>
@@ -536,7 +529,12 @@ of this software, even if advised of the possibility of such damage.
 	 </xsl:if>
 
 	 <xsl:for-each select="key('PB',1)">
-	   <xsl:if test="@facs">
+	   <xsl:choose>
+	     <xsl:when test="tei:match(@rend,'none')"/>
+	     <xsl:when test="not(@facs)"/>
+	     <xsl:when test="starts-with(@facs,'tcp:')"/>
+	     <xsl:when test="starts-with(@facs,'unknown:')"/>
+	     <xsl:otherwise>
 	     <xsl:variable name="F">
 	     <xsl:choose>
 	       <xsl:when test="starts-with(@facs,'#')">
@@ -570,7 +568,8 @@ of this software, even if advised of the possibility of such damage.
 	       <copy toFile="{$target}" file="{$inputDir}/{$F}"/>
 	     </xsl:otherwise>
 	   </xsl:choose>
-	   </xsl:if>
+	     </xsl:otherwise>
+	   </xsl:choose>
 	 </xsl:for-each>
 
 	 <xsl:for-each select="tokenize($extraGraphicsFiles,',')">
@@ -617,7 +616,17 @@ of this software, even if advised of the possibility of such damage.
 	     </xsl:otherwise>
 	   </xsl:choose>
 	 </xsl:for-each>
-
+	 </xsl:variable>
+	 <xsl:if test="not($contents='')">
+	   <mkdir>
+	     <xsl:attribute name="dir">
+	       <xsl:value-of select="replace($outputDir,'file:///','')"/>
+	       <xsl:text>/</xsl:text>
+	       <xsl:value-of select="$mediaDir"/>
+	     </xsl:attribute>
+	   </mkdir>
+	 </xsl:if>
+	 <xsl:copy-of select="$contents"/>
        </target>
      </project>
      </xsl:result-document>

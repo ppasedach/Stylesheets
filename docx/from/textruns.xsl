@@ -41,7 +41,7 @@ Unported License http://creativecommons.org/licenses/by-sa/3.0/
 
 2. http://www.opensource.org/licenses/BSD-2-Clause
 		
-All rights reserved.
+
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -67,7 +67,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id$</p>
+         
          <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
@@ -175,9 +175,9 @@ of this software, even if advised of the possibility of such damage.
      <xsl:param name="extracolumn"   tunnel="yes"/>     
      <xsl:variable name="styles">
        <xsl:choose>
-	 <xsl:when test="not(w:rPr/w:rFonts/@w:ascii)"/>
-	 <xsl:when test="matches(parent::w:p/w:pPr/w:pStyle/@w:val,'Special')">
-	   <s n="font-family">
+	 <xsl:when test="w:rPr/w:rFonts  and not(w:rPr/w:rFonts/@w:ascii)"/>
+	 <xsl:when test="w:rPr/w:rFonts/@w:ascii  and matches(parent::w:p/w:pPr/w:pStyle/@w:val,'Special')">
+	   <s><xsl:text>font-family:</xsl:text>
 	     <xsl:value-of select="w:rPr/w:rFonts/@w:ascii"/>
 	   </s>
 	 </xsl:when>
@@ -186,9 +186,11 @@ of this software, even if advised of the possibility of such damage.
 	 <xsl:when test="w:rPr/w:rFonts/@w:ascii='Calibri'"/>
 	 <xsl:when test="w:rPr/w:rFonts/@w:ascii='Arial'"/>
 	 <xsl:when test="w:rPr/w:rFonts/@w:ascii='Verdana'"/>
-	 <xsl:when test="w:rPr/w:rFonts/@w:ascii =  parent::w:p/w:pPr/w:rPr/w:rFonts/@w:ascii"/>
+	 <xsl:when test="w:rPr/w:rFonts/@w:ascii =
+			 parent::w:p/w:pPr/w:rPr/w:rFonts/@w:ascii"/>
+	 <xsl:when test="not(w:rPr/w:rFonts)"/>
 	 <xsl:otherwise>
-	   <s n="font-family">
+	   <s><xsl:text>font-family:</xsl:text>
 	       <xsl:value-of select="w:rPr/w:rFonts/@w:ascii"/>
 	   </s>
 	   </xsl:otherwise>
@@ -198,26 +200,26 @@ of this software, even if advised of the possibility of such damage.
 	 
 	 <xsl:choose>
 	   <xsl:when test="w:rPr/w:sz and $preserveFontSizeChanges='true'">
-	     <s n="font-size">
+	     <s><xsl:text>font-size:</xsl:text>
 	       <xsl:value-of select="number(w:rPr/w:sz/@w:val) div 2"/>
 	       <xsl:text>pt</xsl:text>
 	     </s>
 	   </xsl:when>
 	   <xsl:when test="ancestor::w:tc and $extrarow/w:rPr/w:sz">
-	     <s n="font-size">
+	     <s><xsl:text>font-size:</xsl:text>
 	       <xsl:value-of select="number($extrarow/w:rPr/w:sz/@w:val) div 2"/>
 	       <xsl:text>pt</xsl:text>
 	     </s>
 	   </xsl:when>
 	 <xsl:when test="ancestor::w:tc and $extracolumn/w:rPr/w:sz">
-	   <s n="font-size">
+	   <s><xsl:text>font-size:</xsl:text>
 	     <xsl:value-of select="number($extracolumn/w:rPr/w:sz/@w:val) div 2"/>
 	     <xsl:text>pt</xsl:text>
 	   </s>
 	 </xsl:when>
 	 </xsl:choose>
 	 <xsl:if test="w:rPr/w:position/@w:val and not(w:rPr/w:position/@w:val='0')">
-	 <s n="position">
+	 <s><xsl:text>position:</xsl:text>
 	   <xsl:value-of select="w:rPr/w:position/@w:val"/>
 	 </s>
 	 </xsl:if>
@@ -299,7 +301,7 @@ of this software, even if advised of the possibility of such damage.
 		      and
 		      ($extracolumn/w:rPr/w:dstrike  or $extrarow/w:rPr/w:dstrike)
 		      )">
-	  <n>strikedoublethrough</n>
+	  <n>doublestrikethrough</n>
 	</xsl:if>
 
 	<xsl:if test="w:rPr/w:u[@w:val='single']">
@@ -307,11 +309,11 @@ of this software, even if advised of the possibility of such damage.
 	</xsl:if>
 
 	<xsl:if test="w:rPr/w:u[@w:val='wave']">
-	  <n>underwavyline</n>
+	  <n>wavyunderline</n>
 	</xsl:if>
 
 	<xsl:if test="w:rPr/w:u[@w:val='double']">
-	  <n>underdoubleline</n>
+	  <n>doubleunderline</n>
 	</xsl:if>
 
 	<xsl:if test="w:rPr/w:smallCaps or
@@ -327,7 +329,7 @@ of this software, even if advised of the possibility of such damage.
 		      and
 		      ($extracolumn/w:rPr/w:caps  or $extrarow/w:rPr/w:caps)
 		      )">
-	  <n>capsall</n>
+	  <n>allcaps</n>
 	</xsl:if>
 
 	<xsl:if test="w:rPr/w:color and
@@ -375,12 +377,7 @@ of this software, even if advised of the possibility of such damage.
 	    </xsl:choose>
 	    <xsl:if test="$styles/* and $preserveEffects='true'">
 	      <xsl:attribute name="style">
-		<xsl:for-each select="$styles/*">
-		  <xsl:value-of select="@n"/>
-		  <xsl:text>:</xsl:text>
-		  <xsl:value-of select="."/>
-		  <xsl:text>;</xsl:text>
-		</xsl:for-each>
+		<xsl:value-of select="($styles/*)" separator=";"/>
 	      </xsl:attribute>
 	    </xsl:if>
 	    <xsl:apply-templates/>

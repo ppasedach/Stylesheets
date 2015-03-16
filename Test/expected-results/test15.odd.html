@@ -7,1405 +7,8 @@
     <meta name="author" content="Sebastian Rahtz"/>
     <meta name="generator" content="Text Encoding Initiative Consortium XSLT stylesheets"/>
     <meta charset="utf-8"/>
+    <link href="http://www.tei-c.org/release/xml/tei/stylesheet/tei.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" media="print" type="text/css" href="http://www.tei-c.org/release/xml/tei/stylesheet/tei-print.css"/>
-    <style type="text/css" title="inline_css">/*
-** Copyright 2011 TEI Consortium
-
-This software is dual-licensed:
-
-1. Distributed under a Creative Commons Attribution-ShareAlike 3.0
-Unported License http://creativecommons.org/licenses/by-sa/3.0/
-
-2. http://www.opensource.org/licenses/BSD-2-Clause
-
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are
-met:
-
-* Redistributions of source code must retain the above copyright
-notice, this list of conditions and the following disclaimer.
-
-* Redistributions in binary form must reproduce the above copyright
-notice, this list of conditions and the following disclaimer in the
-documentation and/or other materials provided with the distribution.
-
-This software is provided by the copyright holders and contributors
-"as is" and any express or implied warranties, including, but not
-limited to, the implied warranties of merchantability and fitness for
-a particular purpose are disclaimed. In no event shall the copyright
-holder or contributors be liable for any direct, indirect, incidental,
-special, exemplary, or consequential damages (including, but not
-limited to, procurement of substitute goods or services; loss of use,
-data, or profits; or business interruption) however caused and on any
-theory of liability, whether in contract, strict liability, or tort
-(including negligence or otherwise) arising in any way out of the use
-of this software, even if advised of the possibility of such damage.
-
-*/
-
-/* main layout */
-
-body.simple {
-color: #000000;
-background-color: #FFFFFF;
-margin: 10pt;
-}
-
-body{
-color: #000000;
-background-color: #FFFFFF;
-margin: 10pt;
-padding:0;
-font-family: Verdana, Tahoma, Geneva, Arial, Helvetica, sans-serif;
-}
-
-body.pagetable {
-color: #000000;
-background-color: #FFFFFF;
-}
-
-/* 3 columns allowed for, or just a right and left */
-#col1{
-width: 20%;
-background: #FFFFFF;
-margin: 0;
-margin-top: 10px;
-color: #000066;
-padding: 5px;
-position : absolute;
-float: left;
-border-style: solid;
-border-width: 1px;
-border-color: red;
-}
-
-#col2{
-background: #FFFFFF;
-color: #333333;
-border-style: solid;
-border-width: 1px;
-border-color: #000000;
-margin: 0;
-margin-top: 10px;
-padding: 5px ;
-left: 22%;
-width: 51%;
-position : absolute;
-}
-
-#col3{
-width: 24%;
-left: 75%;
-color: #000066;
-background: #FFFFFF;
-border-style: solid;
-border-width: 1px;
-border-color: red;
-margin: 0;
-margin-top: 10px;
-padding: 5px;
-position : absolute;
-float: right;
-}
-
-#lh-col{
-width: 16%;
-color: #000000;
-margin-top: 2pt;
-margin-right: 10pt;
-padding: 5px;
-background-color: #FFFFFF;
-float: left;
-font-weight:normal;
-}
-
-#rh-col{
-background-color: #FFFFFF;
-color: #333333;
-margin: 2pt;
-padding: 5px ;
-float: right;
-width: 75%;
-font-weight:normal;
-}
-
-/* now the layers of the header */
-
-/* the main title */
-div.stdheader {
-border-bottom: 1pt solid black;
-}
-
-#hdr{
-width: auto;
-margin: 0;
-background-repeat : no-repeat;
-overflow : inherit;
-}
-
-/* a navigation bar */
-#hdr2{
-width: auto;
-color: #000000;
-font-family: Arial,Helvetica,sans-serif;
-font-weight: bold;
-background-color : #99CCFF;
-padding-left : 5px;
-padding-bottom : 2px;
-padding-top : 2px;
-padding-right : 5px;
-}
-
-/* a breadcrumb trail */
-#hdr3{
-width: auto;
-color: #000000;
-background-color : #AD06BC;
-padding-left : 5px;
-padding-bottom : 2px;
-padding-top : 2px;
-padding-right : 5px;
-font-family: Arial,Helvetica,sans-serif;
-font-weight : bold;
-font-size: smaller;
-}
-
-.bannerright {
-float: right ;
-color: #FFFFFF;
-font-family : Arial, Helvetica, sans-serif;
-font-size : 0.8em;
-font-weight : bold;
-text-decoration: none;
-}
-
-/* section headings */
-#hdr h1 { color: red; }
-h1 {
-font-weight: bold;
-font-size: 2em;
-line-height: 34pt;
-}
-
-h2 {
-font-size: larger;
-line-height: 20pt;
-margin-top: 18pt;
-font-weight: bold;
-}
-
-h3 {
-font-size: larger;
-line-height: 18pt;
-font-weight: bold;
-font-style: italic;
-}
-
-h1.maintitle {
-margin-left: 100px;
-font-family: Arial,Helvetica,sans-serif;
-font-weight: bold;
-bottom: 5px;
-}
-
-h1.title {
-margin-left: 100px;
-font-family: Arial,Helvetica,sans-serif;
-font-weight: bold;
-bottom: 5px;
-}
-
-h2.institution {
-margin-left: 100px;
-font-family: Arial,Helvetica,sans-serif;
-}
-
-h2.department {
-margin-left: 100px;
-font-family: Arial,Helvetica,sans-serif;
-}
-
-h2.subtitle {
-margin-left: 100px;
-font-family: Arial,Helvetica,sans-serif;
-font-weight: bold;
-}
-
-.footer {
-text-align : center;
-font-family: Arial,Helvetica,sans-serif;
-font-size : 0.8em;
-}
-
-
-/* components of the breadcrumb trail */
-a.breadcrumb{
-color: #FFFFFF;
-text-decoration: none;
-padding-right : 5px;
-font-family: Arial,Helvetica,sans-serif;
-font-weight : bold;
-font-size : 0.8em;
-}
-
-ul.breadcrumb
-{
-display: inline;
-font-size: 1.1em;
-}
-
-li.breadcrumb:before {
-content: "▶";
-}
-li.breadcrumb-first:before {
-content: "▶";
-}
-li.breadcrumb
-{
-padding-left: 12px;
-padding-right: 5px;
-display: inline;
-color: #000000;
-}
-li.breadcrumb-first
-{
-padding-left: 12px;
-padding-right: 5px;
-display: inline;
-color: #000000;
-}
-
-div.breadcrumb {
-display: inline;
-}
-
-.skiplinks{
-font-family: arial, sans-serif;
-color: #FFFFFF;
-font-weight : bold;
-font-size : 0.8em;
-text-decoration: none;
-padding-right : 15px;
-}
-
-.tocontent{
-color : #000066;
-display : none;
-}
-
-.hide{
-display : none;
-}
-
-a:hover
-{
-text-decoration: underline;
-}
-
-a.navbar:link
-{
-color: #FFFFFF;
-text-decoration: none;
-}
-
-a.navbar:visited
-{
-color: #FFFFFF;
-text-decoration: none;
-}
-
-a.navbar:hover {
-color: #FFFFFF;
-text-decoration: underline;
-}
-
-
-/* an inner &lt;text&gt;, eg inside a &lt;q&gt; */
-div.innertext {
-margin: 6pt;
-border: 1pt solid red;
-}
-/* literal code */
-
-div.cdata {
-white-space: pre;
-clear:both;
-}
-
-pre,div.pre,div.pre_eg,pre.eg,div.eg {
-clear:both;
-margin-top: 1em;
-margin-bottom:1em;
-border-top-width: 4px;
-border-bottom-width: 4px;
-border-left-width: 2px;
-border-right-width: 2px;
-border-style: solid;
-padding-top: 10px;
-padding-right: 10px;
-padding-bottom: 10px;
-padding-left: 10px;
-color: #000000;
-line-height: 1.1em;
-font-family: monospace;
-font-size: 10pt;
-white-space: pre;
-}
-
-div.egXML_valid {
-background-color: #f7f9f6;
-border-color: #c5d8bb;
-}
-div.egXML_feasible {
-background-color: #fff9f3;
-border-color: #ffe1ad;
-}
-div.egXML_invalid {
-border-color: #ffe7e8 ;
-background-color: #fdbbac;
-}
-
-/* table of contents */
-ul.toc {list-style: none;}
-li.toc {list-style: none;}
-
-/* table of contents links */
-
-a.inlinetoc:link,a.inlinetoc:visited
-{
-color: #7A7A7A;
-font-size: smaller;
-text-decoration: none;
-}
-
-a.inlinetoc-this:visited,a.inlinetoc-this:link
-{
-font-size: smaller;
-color: #000000;
-font-weight: bold;
-text-decoration: underline;
-}
-
-a.inlinetoc-sub:visited,a.inlinetoc-sub:link
-{
-text-decoration: none;
-color: #000000;
-font-weight: normal;
-font-size: smaller;
-}
-
-span.toclist{
-font-size: smaller;
-font-family: Arial,Helvetica,sans-serif;
-font-weight: bold;
-}
-
-p.toclist0 {
-margin-left: 0.5em;
-margin-top: 1pt;
-margin-bottom: 3pt;
-text-indent: -0.5em;
-font-size: small;
-}
-
-p.toclist1 {
-margin-left: 1em;
-margin-top: 1pt;
-margin-bottom: 2pt;
-text-indent: -0.7em;
-font-size: small;
-}
-
-p.toclist2 {
-margin-left: 1.5em;
-text-indent: -1em;
-font-size: small;
-}
-
-p.toclist3 {
-margin-left: 2em;
-text-indent: -1.5em;
-font-size: small;
-}
-
-span.toclist-this {
-color: red;
-}
-
-a.toclist:visited,a.toclist:link
-{
-font-weight: bold;
-color: #000000;
-text-decoration: none;
-}
-
-/* notes */
-div.noteHeading {
-margin-top: 9pt;
-border: 0;
-border-top: 1pt;
-border-style: solid;
-padding-top: 6pt;
-font-size: larger;
-font-weight: bold;
-}
-div.noteBody {
-display:inline;
-}
-
-div.note {
-margin-left: 2em;
-margin-right: 2em;
-margin-bottom: 3pt;
-margin-top: 3pt;
-text-indent: -1em;
-}
-
-span.noteLabel {
-vertical-align: super;
-font-size: smaller;
-font-style: italic;
-}
-span.note:before {
-content: " [";
-}
-span.note:after {
-content: "] ";
-}
-
-span.note {
-font-size: smaller;
-}
-/* images */
-img.display {
-margin-top: 10pt;
-margin-bottom: 10pt;
-display: block;
-}
-
-.floatimage {
-float : left;
-margin-right : 6px;
-vertical-align : top;
-}
-/* specialized divs */
-div.letter {
-margin-left: 2em;
-margin-right: 2em;
-margin-top: 6pt;
-margin-bottom: 6pt;
-border-top: 1pt solid green;
-border-bottom: 1pt solid green;
-}
-/* title page */
-div.titlePage,div.titlepage {
-border-top: 2pt solid #000000;
-border-bottom: 2pt solid #000000;
-padding-top: 6pt;
-padding-bottom: 6pt;
-font-size: larger;
-text-align: center;
-}
-div.docImprint {
-margin-top: 6pt;
-display: block;
-font-style: italic;
-}
-div.docDate {
-font-style: italic;
-}
-div.docTitle {
-display: block;
-margin-top: 6pt;
-font-weight: bold;
-margin-bottom: 18pt;
-}
-div.docAuthor {
-font-style: italic;
-}
-
-div.byline {
-display: block;
-}
-
-div.dateline{
-text-align: right;
-}
-
-/* paragraphs */
-p, div.p {
-margin-top: 0.3em;
-}
-div.p blockquote p {
-margin-top: 0.0em;
--webkit-margin-before: 0em;
--webkit-margin-after: 0em;
--webkit-margin-start: 0px;
--webkit-margin-end: p0px;
-}
-p.box {
-border: 1pt solid #000000;
-}
-
-/* verse */
-div.lg {
-margin-left: 10px;
-margin-bottom: 10px;
-}
-div.l {
-text-align:left;
-margin-left: 1em;
-}
-/* misc */
-div.epigraph {
-margin: 20pt;
-}
-div.numbering {
-float:left;
-font-size:smaller;
-width: 2em;
-}
-
-div.linenumber { }
-
-div.signed {
-text-align:left;
-}
-div.salute {
-text-align:left;
-}
-div.indent1 {
-margin-left: 1em;
-}
-div.indent2 {
-margin-left: 2em;
-}
-div.indent3 {
-margin-left: 3em;
-}
-div.indent4 {
-margin-left: 4em;
-}
-div.indent5 {
-margin-left: 5em;
-}
-div.indent6 {
-margin-left: 6em;
-}
-
-td.label {
-font-weight: bold;
-background-color: #AAAAAA;
-}
-tr.label td {
-font-weight: bold;
-background-color: #AAAAAA;
-}
-
-span.label {
-font-weight: bold;
-}
-
-h5 {
-font-size: 100%;
-}
-h6 {
-font-size: 100%;
-}
-
-div.tocFront {
-border-bottom: 1pt solid #000000;
-}
-div.tocBack {
-border-bottom: 1pt solid #000000;
-}
-div.tocBody {
-border-bottom: 1pt solid #000000;
-}
-/* a listBibl rend='labels' */
-div.listBibl {
-margin-top: 6pt;
-margin-bottom: 6pt;
-}
-span.bibl {
-font-style: italic;
-}
-div.bibl {
-margin-left: 0.5em;
-text-indent: -0.5em;
-}
-div.biblfree {
-font-size: smaller;
-margin-left: 0.5em;
-text-indent: -0.5em;
-margin-bottom: 6pt;
-}
-
-span.biblLabel {
-font-weight: bold;
-margin-right: 1em;
-}
-
-/* a &lt;bibl&gt; inside a &lt;cit&gt; */
-div.citbibl:before {
-content: "(";
-}
-div.citbibl:after {
-content: ")";
-}
-div.citbibl {
-font-style: italic;
-font-size: smaller;
-}
-/* a &lt;quote&gt; inside a &lt;cit&gt; */
-div.citquote {
-margin-left: 10pt;
-margin-right: 10pt;
-}
-
-/* gloss lists with bold labels */
-dt {
-font-weight: bold;
-}
-/* quotation */
-div.blockquote
-{
-margin-top: 10pt;
-margin-bottom: 10pt;
-margin-left: 40px;
-margin-right: 40px;
-}
-/* opener */
-div.opener
-{
-margin: 10pt;
-}
-div.q {
-margin: 10pt;
-}
-/* figures */
-.figure {
-display: block;
-border-top: solid 1pt blue;
-border-bottom: solid 1pt blue;
-}
-.caption {
-margin-top: 6pt;
-margin-bottom: 12pt;
-display: block;
-font-style: italic;
-}
-/* inline quote */
-span.q {
-}
-
-/* from drama */
-/* speeches in drama */
-div.p-in-sp {
-margin-left: 1em;
-}
-div.sp {
-margin-top: 4pt;
-}
-div.spProse {
-text-indent: -1em;
-margin-left: 1em;
-}
-div.speaker {
-font-weight: bold;
-}
-span.speaker {
-font-style: italic;
-}
-
-span.actor {
-font-style:italic;
-}
-span.camera {
-font-style: italic;
-}
-span.role {
-font-style: italic;
-}
-span.set {
-font-style: italic;
-}
-span.sound {
-font-style: italic;
-}
-span.stage {
-font-style: italic;
-}
-span.tech {
-font-style: italic;
-}
-span.view {
-font-style: italic;
-}
-span.nextLink {
-font-style: italic;
-}
-span.previousLink {
-font-style: italic;
-}
-span.upLink {
-font-style: italic;
-}
-/* bibl */
-span.titlem {
-font-style: italic;
-}
-span.titlej {
-font-style: italic;
-}
-span.titleu {
-}
-span.titles {
-}
-
-span.notemargin,
-span.notemarginOuter,
-span.notemarginLeft,
-span.notemarginRight,
-span.notemargin,div.notemargin {
-display: block;
-font-size: smaller;
-clear: right;
-padding: 4pt;
-font-style: italic;
-width: 10%;
-border: solid green 1pt;
-margin: 6pt;
-}
-span.notemargin,
-span.notemarginOuter,
-span.notemarginRight,
-span.notemargin,div.notemargin {
-float:right;
-}
-span.notemarginLeft {
-float:left;
-}
-
-div.floatingText_back {
-border-top: solid black 1pt;
-}
-div.floatingText_front {
-border-top: solid black 1pt;
-}
-div.floatingText {
-margin: 6pt;
-border: solid black 1pt;
-}
-div.pagebreak,span.pagebreak {
-display: block;
-color: grey;
-float: right;
-}
-span.element {
-font-weight: bold;
-color: black;
-}
-span.unclear {
-font-style: italic;
-}
-span.wordtypeNN, span.wordtypeNNS {
-color: green;
-}
-span.wordtypeVVD,span.wordtypeVVN,span.wordtypeVVN,span.wordtypeVVZ,span.wordtypeVVG, span.wordtypeVV {
-color: red;
-}
-
-li.headless {
-display: none;
-}
-
-div.footer {
-border-top: solid black 1pt;
-}
-
-div.stdfooter {
-clear:both;
-border-top: solid black 1pt;
-border-bottom: solid black 1pt;
-}
-
-div.altfigure {
-border-top: solid black 1pt;
-border-bottom: solid black 1pt;
-}
-
-table.table, table.table tr, table.table td {
-border: solid black 1pt;
-}
-table.table td {
-padding: 1ex 1ex 1ex 1ex;
-}
-p.mainAuthor {
-display: block;
-margin: 1ex 0ex 1ex 0ex;
-}
-p.mainEditor {
-display: block;
-margin: 1ex 0ex 1ex 0ex;
-}
-
-/* ODD-specific styles */
-/* tables for reference display */
-table.wovenodd {
-width: 100%;
-clear: both;
-}
-td.wovenodd-col1 {
-width:15%;
-vertical-align: top;
-}
-td.wovenodd-col2 {
-width:85%;
-}
-table.wovenodd tr td {
-border: 1px solid #555;
-padding:1%;
-}
-table.wovenodd {
-border-spacing:0px;
-border-collapse:collapse;
-}
-table.wovenodd tr td {
-border-spacing:0px;
-}
-table.wovenodd tr {
-border-spacing:0px;
-border-collapse:collapse;
-}
-table.wovenodd tr td table.attList {
-border-spacing:0px;
-border:none;
-}
-table.wovenodd tr td table.attList tr {
-border-spacing:0px;
-border:none;
-}
-table.wovenodd tr td table.attList tr td {
-border-spacing:0px;
-border:none;
-}
-table.attList {
-table-layout: fixed;
-width: 100%;
-margin: 0pt;
-padding: 0pt;
-}
-td.odd_label {
-vertical-align: top;
-width: 10%;
-font-weight: bold;
-}
-td.odd_value {
-vertical-align: top;
-width: 90%;
-}
-table.attDef {
-table-layout: fixed;
-width: 100%;
-}
-table.attDef td.odd_label {
-width: 10%;
-vertical-align: top;
-font-weight: normal;
-}
-table.attDef td.odd_value {
-vertical-align: top;
-width: 90%;
-}
-table.attList td.odd_label:before {
-content: "@";
-}
-table.attDef td.odd_label:before {
-content: "";
-}
-table.valList td.odd_label:before {
-content: "";
-}
-table.valList {
-table-layout: fixed;
-width: 100%;
-}
-table.valList td.odd_label {
-width: 10%;
-vertical-align: top;
-font-style: normal;
-font-weight: normal;
-}
-table.valList td.odd_value {
-vertical-align: top;
-width: 90%;
-}
-table.specDesc td.Attribute {
-font-weight: bold;
-vertical-align: top;
-}
-table.specDesc {
-margin-left: 1em;
-}
-td p {
-margin-top: 0pt;
-margin-bottom: 2pt;
-}
-
-div.cdata {
-white-space: pre;
-clear:both;
-}
-
-span.tag:before {
-
-}
-span.tag:after {
-
-}
-span.gi,span.tag {
-}
-span.att {
-
-}
-span.att:before {
-content: "@";
-}
-span.ident,
-span.ident-class, span.ident-datatype, span.ident-frag,
-span.ident-ge, span.ident-macro, span.ident-module,
-span.ident-pe, span.ident-rng, span.ident-schema {
-font-weight: bold;
-}
-
-span.ident-file, span.ident-ns {
-font-style: italic;
-}
-
-button.displayRelaxButton {
-margin-right: 2px;
-margin-top: 2px;
-font-size: 70%;
-float: right;
-cursor: pointer;
-}
-pre.RNG_XML {
-display: none;
-}
-
-span.RNG_XML {
-display: none;
-}
-
-/* pretty printing of XML */
-td.classSpec, td.macroSpec {
-font-weight: bold;
-}
-a.link_odd_element:link,a.link_odd_element:visited {
-/* color: #006400; */
-}
-a.link_odd_macro:link,a.link_odd_macro:visited {
-
-}
-a.link_odd_class:link,a.link_odd_class:visited {
-
-}
-span.element {
-font-weight: bold;
-color: black;
-}
-td.elementSpec,span.elementname {
-font-weight: bold;
-color: #222288;
-}
-span.highlightelementname {
-color: red;
-}
-
-span.attribute {
-color: #222288;
-}
-span.attributevalue {
-font-weight: normal;
-color: black;
-}
-span.comment {
-color: black;
-font-style:italic;
-}
-span.namespace {
-color: #222288;
-}
-/* pretty print rnc */
-span.rnc_nc {
-color: #006400;
-}
-span.rnc_decl {
-color: green;
-}
-span.rnc_prefix {
-color: blue;
-}
-span.rnc_param {
-color: gray;
-}
-span.rnc_atom {
-color: yellow;
-}
-span.rnc_annot {
-color: #FF8040;
-}
-span.rnc_comment {
-color: #FF00FF;
-}
-span.rnc_annot {
-color: #00FFFF;
-}
-span.rnc_type {
-color: purple;
-}
-span.rnc_keyword {
-color: teal;
-}
-span.defaultVal {
-font-weight: bold;
-}
-span.required {
-font-weight: bold;
-}
-div.moduleSpec {
-padding: 1px;
-margin: 1px;
-background-color: #C0C0C0;
-color:inherit;
-clear:right;
-}
-span.moduleSpecHead {
-font-style: italic;
-}
-ul.specList li {
-list-style: none;
-}
-span.specList-macroSpec {
-font-weight: bold;
-}
-span.specList-elementSpec {
-font-weight: bold;
-}
-span.specList-elementSpec:before {
-content: "&lt;";
-
-}
-span.specList-elementSpec:after {
-content: "&gt;";
-
-}
-span.specList-classSpec {
-font-weight: bold;
-}
-span.specName {
-color: #223377;
-font-weight: bold;
-}
-/* A -Z Styles From http://www.smileycat.com/miaow/archives/000211.php -styling the a to z */
-#azindex {
-background-color: #ddd;
-color:inherit;
-display: block;
-margin: 0px;
-float: left;
-padding: 5px;
-width: 75%;
-border: 1px solid #999;
-}
-#azindex p {
-color: #fff;
-background-color: #000060;
-padding: 4px;
-display: block;
-margin: 0;
-border-bottom: 1px solid #333;
-font-size: 0.95em;
-}
-.index {
-font: bold 100% Verdana, Helvetica, sans-serif;
-margin: 0;
-padding: 0;
-}
-.index li {
-float: left;
-height: 1.5em;
-list-style-type: none;
-margin: 0.35em 0.15em;
-padding: 0;
-width: 1.5em;
-}
-.index a:link, .index a:visited {
-background: #fff;
-color: navy;
-display: block;
-height: 1.5em;
-padding: 0.37em 0 0 0;
-text-align: center;
-text-decoration: none;
-width: 1.5em;
-border: 1px solid #999;
-}
-li.showall, li.showall a:visited,li.showall a:link {
-width: 10em;
-}
-* html .index li {
-margin: 0.2em 0.2em;
-}
-ul.index li a:hover {
-background-color: #93D1E4;
-color: #fff;
-text-decoration: underline;
-}
-div.atozwrapper {
-float: left;
-width: 70%;
-}
-div.atoz {
-clear: left;
-float: left;
-}
-#byMod {
-margin-top: 12px;
-clear: left;
-}
-ul.atoz {
-list-style: none;
-text-align:left;
-margin: 2px;
-padding: 2px;
-background-color: #eef;
-color:inherit;
-}
-.atoz li {
-padding: 0px;
-display: inline;
-}
-span.listhead {
-margin-top: 0em;
-margin-right: 1em;
-padding-left: 3px;
-padding-right: 3px;
-color: #000066;
-font-weight: bold;
-font-size: large;
-}
-/* End of A - Z styles */
-div.specChildren {
-margin: 0em;
-padding: 0em;
-}
-span.specChildModule {
-font-weight: bold;
-}
-div.specChild {
-margin-bottom: 4pt;
-margin-left: 25px;
-text-indent: -30px;
-}
-span.emptySlash:after {
-content: "/";
-}
-/* status notation */
-.status_deprecated:after {
-content: " (deprecated)";
-color: red;
-}
-.status_changed:after {
-content: " (changed)";
-color: blue;
-}
-.status_unstable:after {
-content: " (unstable)";
-color: orange;
-}
-.status_deprecated {
-border: solid red 1pt;
-}
-.status_changed {
-border: solid blue 1pt;
-}
-.status_unstable {
-border: solid orange 1pt;
-}
-/* for ePub */
-div.EpubCoverPage {
--webkit-hyphens:none;
-font-family: serif;
-height:860;
-font-size:30pt;
-font-weight: bold;
-padding-top: 15pt;
-margin: 12pt;
-border: solid red 1pt;
-text-align:center;
-}
-/* general purpose block aligns */
-.centerbold {
-text-align:center;
-font-weight: bold;
-}
-.center {
-text-align:center;
-}
-.right {
-text-align:right;
-}
-.left {
-text-align:left;
-}
-
-/* &lt;hi&gt; rend values */
-span.typewriter{
-font-family: monospace;
-}
-span.normalweight{
-font-weight: normal;
-}
-span.smallcaps{
-font-variant: small-caps;
-}
-span.bold{
-font-weight: bold;
-}
-span.italic{
-font-style:italic;
-}
-span.capsall{
-text-transform: uppercase;
-}
-span.strikethrough{
-text-decoration: line-through;
-}
-span.strikedoublethrough{
-text-decoration: line-through;
-}
-span.underline{
-text-decoration: underline;
-}
-span.underwavyline{
-text-decoration-line: underline;
-text-decoration-style: wavy;
-}
-span.underdoubleline{
-text-decoration: underline;
-}
-span.superscript {
-vertical-align: super;
-font-size: smaller;
-}
-span.subscript {
-vertical-align: bottom;
-font-size: smaller;
-}
-span.numberParagraph:before {
-content:"[";
-}
-span.numberParagraph:after {
-content:"] ";
-}
-span.numberParagraph {
-font-size: smaller;
-color: grey;
-}
-
-/* misc inline*/
-
-span.foreign {
-font-style: italic;
-}
-
-/* generic rendition */
-.plain {
-text-decoration: none;
-}
-
-.small {
-font-size: small;
-}
-.term {
-font-style: italic;
-}
-.hi {
-font-style: italic;
-}
-.emph {
-font-weight: bold;
-}
-.label {
-font-weight: bold;
-}
-.mentioned {
-font-style: italic;
-}
-
-/* transcription */
-
-div.sourceDoc {
-}
-
-div.surfaceGrp {
-border-bottom-width: 1pt;
-border-bottom-color: green;
-border-bottom-style: solid;
-clear:both;
-}
-
-div.surface {
-clear:both;
-border-width: 1pt;
-border-style: solid;
-border-color: grey;
-margin-bottom: 1ex;
-}
-
-div.zone {
-border-width: 1pt;
-border-style: solid;
-border-color: lightgrey;
-margin-bottom: 0.5ex;
-}
-
-div.line {
-}
-
-div.facsimage {
-float: right;
-}
-div.facsimage img {
-max-height: 100%;
-width: auto
-}
-
-span.damage {
-border-bottom: 1px dashed red;
-}
-/* app crit */
-div.appcrit {
-border-top: solid black 1pt;
-margin-top: 2pt;
-padding-top: 2pt;
-margin-bottom: 2pt;
-margin-left: 1em;
-}
-div.app {
-margin-top: 1pt;
-font-size: smaller;
-}
-span.lemma {
-}
-span.lemmawitness {
-font-weight: bold;
-}
-</style>
   </head>
   <body class="simple" id="TOP" itemscope="itemscope" itemtype="http://www.tei-c.org/ns/1.0/" itemprop="TEI">
     <div class="stdheader autogenerated">
@@ -1445,7 +48,7 @@ font-weight: bold;
       </li>
       <li class="toc">
         <span class="headingNumber">3. </span>
-        <a class="toc toc_0" href="#index.xml-body.1_div.3">Schema test15:  unchanged components</a>
+        <a class="toc toc_0" href="#index.xml-body.1_div.3">Schema test15: unchanged components</a>
       </li>
     </ul>
     <div class="tei_body">
@@ -1556,22 +159,19 @@ font-weight: bold;
                 <td class="wovenodd-col1">
                   <span lang="es" class="label" itemprop="hi">Atributos</span>
                 </td>
-                <td class="wovenodd-col2">Atributos<div class="table"><table class="attList" itemprop="table"><tr itemprop="row"><td class="odd_label">typo</td><td class="odd_value"><span lang="es" itemprop="seg">caracteriza el elemento utilizando una clasificación o tipología funcional.</span><div class="table"><table class="attDef" itemprop="table"><tr itemprop="row"><td class="odd_label"><span lang="es" class="label" itemprop="hi">Estado</span></td><td class="odd_value"><span lang="es" itemprop="seg">Opcional</span></td></tr><tr itemprop="row"><td class="odd_label"><span lang="es" class="label" itemprop="hi">Tipo de datos</span></td><td class="odd_value"><pre>
-data.enumerated</pre></td></tr><tr itemprop="row"><td colspan="2"><div id="index.xml-egXML-d32e343" class="pre egXML_valid"><span class="element">&lt;div
-  <span class="attribute">typ</span>="<span class="attributevalue">verse</span>"&gt;</span>
+                <td class="wovenodd-col2">Atributos<div class="table"><table class="attList" itemprop="table"><tr itemprop="row"><td class="odd_label">typo</td><td class="odd_value"><span lang="es" itemprop="seg">caracteriza el elemento utilizando una clasificación o tipología funcional.</span><div class="table"><table class="attDef" itemprop="table"><tr itemprop="row"><td class="odd_label"><span lang="es" class="label" itemprop="hi">Estado</span></td><td class="odd_value"><span lang="es" itemprop="seg">Opcional</span></td></tr><tr itemprop="row"><td class="odd_label"><span lang="es" class="label" itemprop="hi">Tipo de datos</span></td><td class="odd_value"><pre class="pre_eg">
+data.enumerated</pre></td></tr><tr itemprop="row"><td colspan="2"><div id="index.xml-egXML-d33e343" class="pre egXML_valid"><span class="element">&lt;div <span class="attribute">typ</span>="<span class="attributevalue">verse</span>"&gt;</span>
  <span class="element">&lt;head&gt;</span>Night in Tarras<span class="element">&lt;/head&gt;</span>
- <span class="element">&lt;lg
-   <span class="attribute">type</span>="<span class="attributevalue">stanza</span>"&gt;</span>
+ <span class="element">&lt;lg <span class="attribute">type</span>="<span class="attributevalue">stanza</span>"&gt;</span>
   <span class="element">&lt;l&gt;</span>At evening tramping on the hot white road<span class="element">&lt;/l&gt;</span>
   <span class="element">&lt;l&gt;</span>…<span class="element">&lt;/l&gt;</span>
  <span class="element">&lt;/lg&gt;</span>
- <span class="element">&lt;lg
-   <span class="attribute">type</span>="<span class="attributevalue">stanza</span>"&gt;</span>
+ <span class="element">&lt;lg <span class="attribute">type</span>="<span class="attributevalue">stanza</span>"&gt;</span>
   <span class="element">&lt;l&gt;</span>A wind sprang up from nowhere as the sky<span class="element">&lt;/l&gt;</span>
   <span class="element">&lt;l&gt;</span>…<span class="element">&lt;/l&gt;</span>
  <span class="element">&lt;/lg&gt;</span>
-<span class="element">&lt;/div&gt;</span></div></td></tr></table></div></td></tr><tr itemprop="row"><td class="odd_label">subtype</td><td class="odd_value"><span lang="es" itemprop="seg">proporciona, si es necesario, una subcategorización del elemento.</span><div class="table"><table class="attDef" itemprop="table"><tr itemprop="row"><td class="odd_label"><span lang="es" class="label" itemprop="hi">Estado</span></td><td class="odd_value"><span lang="es" itemprop="seg">Opcional</span></td></tr><tr itemprop="row"><td class="odd_label"><span lang="es" class="label" itemprop="hi">Tipo de datos</span></td><td class="odd_value"><pre>
-data.enumerated</pre></td></tr><tr itemprop="row"><td class="wovenodd-col1"><span lang="es" class="label" itemprop="hi">Nota</span></td><td class="wovenodd-col2">El atributo <span class="att" itemprop="hi">subtipo</span> se puede utilizar para proporcionar cualquier subclasificación para el elemento, adicional a ésa proporcionada por su <span class="att" itemprop="hi">tipo</span> de atributo.</td></tr></table></div></td></tr></table></div></td>
+<span class="element">&lt;/div&gt;</span></div></td></tr></table></div></td></tr><tr itemprop="row"><td class="odd_label">subtype</td><td class="odd_value"><span lang="es" itemprop="seg">proporciona, si es necesario, una subcategorización del elemento.</span><div class="table"><table class="attDef" itemprop="table"><tr itemprop="row"><td class="odd_label"><span lang="es" class="label" itemprop="hi">Estado</span></td><td class="odd_value"><span lang="es" itemprop="seg">Opcional</span></td></tr><tr itemprop="row"><td class="odd_label"><span lang="es" class="label" itemprop="hi">Tipo de datos</span></td><td class="odd_value"><pre class="pre_eg">
+data.enumerated</pre></td></tr><tr itemprop="row"><td class="wovenodd-col1"><span lang="es" class="label" itemprop="hi">Nota</span></td><td class="wovenodd-col2">El atributo <span class="att" itemprop="hi">subtype</span> (subtipo) se puede utilizar para proporcionar cualquier subclasificación para el elemento, adicional a ésa proporcionada por su <span class="att" itemprop="hi">type</span> (tipo) de atributo.</td></tr></table></div></td></tr></table></div></td>
               </tr>
               <tr itemprop="row">
                 <td class="wovenodd-col1">
@@ -1622,17 +222,18 @@ data.enumerated</pre></td></tr><tr itemprop="row"><td class="wovenodd-col1"><spa
                       <li class="item" itemprop="item"><a class="link_odd_elementSpec" itemprop="ref" href="#TEI.div" title="&lt;div&gt;">div</a>/@typ</li>
                       <li class="item" itemprop="item"><a class="link_odd_elementSpec" itemprop="ref" href="#TEI.divGen" title="divGen (división de texto generada automáticamente) indica la localización en la cual aparece una división textual generada aut...">divGen</a>/@type</li>
                       <li class="item" itemprop="item"><a class="link_odd_elementSpec" itemprop="ref" href="#TEI.formula" title="formula contiene una fórmula matemática o de otro tipo. [14.2. ]">formula</a>/@notation</li>
-                      <li class="item" itemprop="item"><a class="link_odd_elementSpec" itemprop="ref" href="#TEI.gap" title="gap (gap) indicada un punto donde algún material ha sido omitido en una transcripción bien por criterios de edición descritos e...">gap</a>/@agent</li>
+                      <li class="item" itemprop="item"><a class="link_odd_elementSpec" itemprop="ref" href="#TEI.gap" title="gap indicada un punto donde algún material ha sido omitido en una transcripción bien por criterios de edición descritos en el c...">gap</a>/@agent</li>
                       <li class="item" itemprop="item"><a class="link_odd_elementSpec" itemprop="ref" href="#TEI.geoDecl" title="geoDecl (declaración de las coordenadas geográficas) documenta la anotación y los datos usados para los coordenadas geográficas...">geoDecl</a>/@datum</li>
                       <li class="item" itemprop="item"><a class="link_odd_elementSpec" itemprop="ref" href="#TEI.hyphenation" title="hyphenation indica el modo en que han sido tratados el uso del guión presente en el texto fuente en la versión codificada de es...">hyphenation</a>/@eol</li>
                       <li class="item" itemprop="item"><a class="link_odd_elementSpec" itemprop="ref" href="#TEI.idno" title="idno (número identificativo) proporciona un número estándard o no usado para la identificación de un elemento bibliográfico. [2...">idno</a>/@type</li>
                       <li class="item" itemprop="item"><a class="link_odd_elementSpec" itemprop="ref" href="#TEI.join" title="join identifica un segmento o fragmento de texto señalando eventuales elementos no contiguos que lo componen. [16.7. ]">join</a>/@scope</li>
-                      <li class="item" itemprop="item"><a class="link_odd_elementSpec" itemprop="ref" href="#TEI.list" title="list (list) contiene cualquier secuencia de ítems o elementos organizados en una lista. [3.7. ]">list</a>/@type</li>
+                      <li class="item" itemprop="item"><a class="link_odd_elementSpec" itemprop="ref" href="#TEI.list" title="list contiene cualquier secuencia de ítems o elementos organizados en una lista. [3.7. ]">list</a>/@type</li>
                       <li class="item" itemprop="item"><a class="link_odd_elementSpec" itemprop="ref" href="#TEI.measure" title="measure contiene una palabra o sintagma referido a alguna cantidad de un objeto o producto normalmente incluye un número una un...">measure</a>/@type</li>
                       <li class="item" itemprop="item"><a class="link_odd_elementSpec" itemprop="ref" href="#TEI.normalization" title="normalization indica el grado de normalización o de regularización aplicado a la fuente original en el proceso de conversión a ...">normalization</a>/@method</li>
                       <li class="item" itemprop="item"><a class="link_odd_elementSpec" itemprop="ref" href="#TEI.num" title="num (número) contiene un número escrito en cualquier forma. [3.5.3. ]">num</a>/@type</li>
+                      <li class="item" itemprop="item"><a class="link_odd_elementSpec" itemprop="ref" href="#TEI.punctuation" title="punctuation specifies editorial practice adopted with respect to punctuation marks in the original. [2.3.3. 3.2. ]">punctuation</a>/@marks</li>
+                      <li class="item" itemprop="item"><a class="link_odd_elementSpec" itemprop="ref" href="#TEI.punctuation" title="punctuation specifies editorial practice adopted with respect to punctuation marks in the original. [2.3.3. 3.2. ]">punctuation</a>/@placement</li>
                       <li class="item" itemprop="item"><a class="link_odd_elementSpec" itemprop="ref" href="#TEI.quotation" title="quotation indica las prácticas editoriales adoptadas respecto al entrecomillado en el original. [2.3.3. 15.3.2. ]">quotation</a>/@marks</li>
-                      <li class="item" itemprop="item"><a class="link_odd_elementSpec" itemprop="ref" href="#TEI.quotation" title="quotation indica las prácticas editoriales adoptadas respecto al entrecomillado en el original. [2.3.3. 15.3.2. ]">quotation</a>/@form</li>
                       <li class="item" itemprop="item"><a class="link_odd_elementSpec" itemprop="ref" href="#TEI.rendition" title="rendition proporciona información sobre la interpretación ideada para uno o más elementos. [2.3.4. ]">rendition</a>/@scope</li>
                       <li class="item" itemprop="item"><a class="link_odd_elementSpec" itemprop="ref" href="#TEI.stage" title="stage (acotación) contiene cualquier tipo de acotación que aparece en un texto o fragmento dramático. [3.12.2. 3.12. 7.2.4. ]">stage</a>/@type</li>
                       <li class="item" itemprop="item"><a class="link_odd_elementSpec" itemprop="ref" href="#TEI.teiHeader" title="teiHeader (Encabezado TEI) proporciona información descriptiva y declarativa de una página de título electrónico prefijada como...">teiHeader</a>/@type</li>
@@ -1652,7 +253,7 @@ data.enumerated</pre></td></tr><tr itemprop="row"><td class="wovenodd-col1"><spa
                   <span lang="es" class="label" itemprop="hi">Declaración</span>
                 </td>
                 <td class="wovenodd-col2">
-                  <pre>
+                  <pre class="pre_eg">
 data.enumerated = <a class="link_ref" itemprop="ref" href="#TEI.data.name" title="data.name define la gama de valores de atributos expresados como identificador o un nombre en XML.">data.name</a></pre>
                 </td>
               </tr>
@@ -1679,7 +280,7 @@ data.enumerated = <a class="link_ref" itemprop="ref" href="#TEI.data.name" title
                 <td class="wovenodd-col1">
                   <span lang="es" class="label" itemprop="hi">Atributos</span>
                 </td>
-                <td class="wovenodd-col2"><span lang="es" itemprop="seg">Atributos </span><a class="link_ref" itemprop="ref" href="#TEI.att.global" title="att.global proporciona un conjunto de atributos común a todos los elementos del esquema de codificación TEI. [1.3.1.1. ]">att.global</a> (<span class="attribute" itemprop="hi">@xml:id</span>, <span class="attribute" itemprop="hi">@n</span>, <span class="attribute" itemprop="hi">@xml:lang</span>, <span class="attribute" itemprop="hi">@rend</span>, <span class="attribute" itemprop="hi">@style</span>, <span class="attribute" itemprop="hi">@rendition</span>, <span class="attribute" itemprop="hi">@xml:base</span>, <span class="attribute" itemprop="hi">@xml:space</span>)  (<a class="link_ref" itemprop="ref" href="#TEI.att.global.linking" title="att.global.linking define un conjunto de atributos para hipertexto u otro vínculo habilitado para todos los elementos cuando se...">att.global.linking</a> (<span class="attribute" itemprop="hi">@corresp</span>, <span class="attribute" itemprop="hi">@synch</span>, <span class="attribute" itemprop="hi">@sameAs</span>, <span class="attribute" itemprop="hi">@copyOf</span>, <span class="attribute" itemprop="hi">@next</span>, <span class="attribute" itemprop="hi">@prev</span>, <span class="attribute" itemprop="hi">@exclude</span>, <span class="attribute" itemprop="hi">@select</span>)) <a class="link_ref" itemprop="ref" href="#TEI.att.divLike" title="att.divLike proporciona un conjunto de atributos comunes a todos los elementos que se comportan como particiones textuales. [4....">att.divLike</a> (<span class="attribute" itemprop="hi">@org</span>, <span class="attribute" itemprop="hi">@sample</span>)  (<a class="link_ref" itemprop="ref" href="#TEI.att.fragmentable" title="att.fragmentable groups structural elements which may be fragmented usually as a consequence of some overlapping hierarchy.">att.fragmentable</a> (<span class="attribute" itemprop="hi">@part</span>)) <a class="link_ref" itemprop="ref" href="#TEI.att.declaring" title="att.declaring proporciona atributos a los elementos que pueden ser asociados autonomamente a un elemento determinado declarado ...">att.declaring</a> (<span class="attribute" itemprop="hi">@decls</span>) <a class="link_ref" itemprop="ref" href="#TEI.att.typed" title="att.typed">att.typed</a> (<span class="unusedattribute" itemprop="seg">type</span>, @subtype) <div class="table"><table class="attList" itemprop="table"><tr itemprop="row"><td class="odd_label">typ</td><td class="odd_value"><span lang="es" itemprop="seg">caracteriza el elemento utilizando una clasificación o tipología funcional.</span><div class="table"><table class="attDef" itemprop="table"><tr itemprop="row"><td class="odd_label"><span lang="es" class="label" itemprop="hi">Derivado de</span></td><td class="odd_value"><a class="link_ref" itemprop="ref" href="#TEI.att.typed" title="att.typed">att.typed</a></td></tr><tr itemprop="row"><td class="odd_label"><span lang="es" class="label" itemprop="hi">Estado</span></td><td class="odd_value"><span lang="es" itemprop="seg">Opcional</span></td></tr><tr itemprop="row"><td class="odd_label"><span lang="es" class="label" itemprop="hi">Tipo de datos</span></td><td class="odd_value"><pre>
+                <td class="wovenodd-col2"><span lang="es" itemprop="seg">Atributos </span><a class="link_ref" itemprop="ref" href="#TEI.att.global" title="att.global proporciona un conjunto de atributos común a todos los elementos del esquema de codificación TEI. [1.3.1.1. ]">att.global</a> (<span class="attribute" itemprop="hi">@xml:id</span>, <span class="attribute" itemprop="hi">@n</span>, <span class="attribute" itemprop="hi">@xml:lang</span>, <span class="attribute" itemprop="hi">@rend</span>, <span class="attribute" itemprop="hi">@style</span>, <span class="attribute" itemprop="hi">@rendition</span>, <span class="attribute" itemprop="hi">@xml:base</span>, <span class="attribute" itemprop="hi">@xml:space</span>)  (<a class="link_ref" itemprop="ref" href="#TEI.att.global.linking" title="att.global.linking define un conjunto de atributos para hipertexto u otro vínculo habilitado para todos los elementos cuando se...">att.global.linking</a> (<span class="attribute" itemprop="hi">@corresp</span>, <span class="attribute" itemprop="hi">@synch</span>, <span class="attribute" itemprop="hi">@sameAs</span>, <span class="attribute" itemprop="hi">@copyOf</span>, <span class="attribute" itemprop="hi">@next</span>, <span class="attribute" itemprop="hi">@prev</span>, <span class="attribute" itemprop="hi">@exclude</span>, <span class="attribute" itemprop="hi">@select</span>)) <a class="link_ref" itemprop="ref" href="#TEI.att.divLike" title="att.divLike proporciona un conjunto de atributos comunes a todos los elementos que se comportan como particiones textuales. [4....">att.divLike</a> (<span class="attribute" itemprop="hi">@org</span>, <span class="attribute" itemprop="hi">@sample</span>)  (<a class="link_ref" itemprop="ref" href="#TEI.att.fragmentable" title="att.fragmentable groups structural elements which may be fragmented usually as a consequence of some overlapping hierarchy.">att.fragmentable</a> (<span class="attribute" itemprop="hi">@part</span>)) <a class="link_ref" itemprop="ref" href="#TEI.att.declaring" title="att.declaring proporciona atributos a los elementos que pueden ser asociados autonomamente a un elemento determinado declarado ...">att.declaring</a> (<span class="attribute" itemprop="hi">@decls</span>) <a class="link_ref" itemprop="ref" href="#TEI.att.typed" title="att.typed">att.typed</a> (<span class="unusedattribute" itemprop="seg">type</span>, @subtype) <div class="table"><table class="attList" itemprop="table"><tr itemprop="row"><td class="odd_label">typ</td><td class="odd_value"><span lang="es" itemprop="seg">caracteriza el elemento utilizando una clasificación o tipología funcional.</span><div class="table"><table class="attDef" itemprop="table"><tr itemprop="row"><td class="odd_label"><span lang="es" class="label" itemprop="hi">Derivado de</span></td><td class="odd_value"><a class="link_ref" itemprop="ref" href="#TEI.att.typed" title="att.typed">att.typed</a></td></tr><tr itemprop="row"><td class="odd_label"><span lang="es" class="label" itemprop="hi">Estado</span></td><td class="odd_value"><span lang="es" itemprop="seg">Opcional</span></td></tr><tr itemprop="row"><td class="odd_label"><span lang="es" class="label" itemprop="hi">Tipo de datos</span></td><td class="odd_value"><pre class="pre_eg">
 data.enumerated</pre></td></tr></table></div></td></tr></table></div></td>
               </tr>
               <tr itemprop="row">
@@ -1727,7 +328,7 @@ data.enumerated</pre></td></tr></table></div></td></tr></table></div></td>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.cit" title="cit (cita) Una cita de algún otro documento junto a la referencia bibliográfica a la fuente. [3.3.3. 4.3.1. 9.3.5.1. ]">cit</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.desc" title="desc (descripción) contiene una breve descripción del objetivo y la aplicación de un elemento atributo o valor de un atributo. ...">desc</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.divGen" title="divGen (división de texto generada automáticamente) indica la localización en la cual aparece una división textual generada aut...">divGen</a>
-                        <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.gap" title="gap (gap) indicada un punto donde algún material ha sido omitido en una transcripción bien por criterios de edición descritos e...">gap</a>
+                        <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.gap" title="gap indicada un punto donde algún material ha sido omitido en una transcripción bien por criterios de edición descritos en el c...">gap</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.gb" title="gb (gathering begins) marks the point in a transcribed codex at which a new gathering or quire begins. [3.10.3. ]">gb</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.head" title="head (encabezamiento) contiene cualquier tipo de encabezamiento por ejemplo el título de una sección o el encabezado de una lis...">head</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.index" title="index (entrada de un índice.) marca un punto para ser indexado por cualquier criterio. [3.8.2. ]">index</a>
@@ -1735,7 +336,7 @@ data.enumerated</pre></td></tr></table></div></td></tr></table></div></td>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.label" title="label contiene un concepto o enunciado asociado con un ítem en una lista en un glosario marca el término que se define. [3.7. ]">label</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.lb" title="lb (salto de línea) marca el comienzo de una nueva línea (topográfica) en alguna edición o versión del texto. [3.10.3. 7.2.5. ]">lb</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.lg" title="lg (grupo de versos) contiene un grupo de versos que funcionan como una unidad formal p.ej. una estrofa un refrán un estribillo...">lg</a>
-                        <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.list" title="list (list) contiene cualquier secuencia de ítems o elementos organizados en una lista. [3.7. ]">list</a>
+                        <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.list" title="list contiene cualquier secuencia de ítems o elementos organizados en una lista. [3.7. ]">list</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.listBibl" title="listBibl (lista de cita) contiene una lista de citas bibliográficas de cualquier tipo. [3.11.1. 2.2.7. 15.3.2. ]">listBibl</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.meeting" title="meeting en referencias bibliográficas contiene una descripción del encuentro o conferencia del que deriva el elemento bibliográ...">meeting</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.milestone" title="milestone marca un punto de frontera que separa cada tipo de sección de un texto indicado por cambios en el sistema de referenc...">milestone</a>
@@ -1804,7 +405,7 @@ data.enumerated</pre></td></tr></table></div></td></tr></table></div></td>
                   <span lang="es" class="label" itemprop="hi">Declaración</span>
                 </td>
                 <td class="wovenodd-col2">
-                  <pre>
+                  <pre class="pre_eg">
 element div
 {
    <a class="link_ref" itemprop="ref" href="#TEI.att.global" title="att.global proporciona un conjunto de atributos común a todos los elementos del esquema de codificación TEI. [1.3.1.1. ]">att.global.attributes</a>,
@@ -1833,7 +434,7 @@ element div
                   <span lang="es" class="label" itemprop="hi">Ejemplo</span>
                 </td>
                 <td class="wovenodd-col2">
-                  <div id="index.xml-egXML-d32e1073" class="pre egXML_valid"><span class="element">&lt;body&gt;</span>
+                  <div id="index.xml-egXML-d33e1077" class="pre egXML_valid"><span class="element">&lt;body&gt;</span>
  <span class="element">&lt;div <span class="attribute">typ</span>="<span class="attributevalue">part</span>"&gt;</span>
   <span class="element">&lt;head&gt;</span>Fallacies of Authority<span class="element">&lt;/head&gt;</span>
   <span class="element">&lt;para&gt;</span>The subject of which is Authority in various shapes, and the object, to repress all
@@ -1938,6 +539,7 @@ element div
                           <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.prefixDef" title="prefixDef (prefixing scheme used in data.pointer values) defines a prefixing scheme used in data.pointer values showing how abb...">prefixDef</a>
                           <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.projectDesc" title="projectDesc (descripción del proyecto) describe con detalle el objetivo o propósito para el que un archivo electrónico ha sido ...">projectDesc</a>
                           <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.publicationStmt" title="publicationStmt (declaración de la publicación) agrupa la información concerniente a la publicación o distribución de un texto ...">publicationStmt</a>
+                          <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.punctuation" title="punctuation specifies editorial practice adopted with respect to punctuation marks in the original. [2.3.3. 3.2. ]">punctuation</a>
                           <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.quotation" title="quotation indica las prácticas editoriales adoptadas respecto al entrecomillado en el original. [2.3.3. 15.3.2. ]">quotation</a>
                           <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.refsDecl" title="refsDecl (declaración de referencias) indica cómo se han formado las referencias canónicas para este texto. [2.3.6.3. 2.3. 2.3....">refsDecl</a>
                           <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.samplingDecl" title="samplingDecl (declaración de muestra) contiene una descripción en prosa sobre los fundamentos y métodos usados en textos de mue...">samplingDecl</a>
@@ -2000,7 +602,7 @@ element div
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.emph" title="emph (enfatizado) marca palabras o frases que se destacan o enfatizan por causas lingüísticas o retóricas. [3.3.2.2. 3.3.2. ]">emph</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.expan" title="expan (expansión) contiene la expansión de una abreviatura. [3.5.5. ]">expan</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.foreign" title="foreign (extranjero) identidica una palabra o frase perteneciente a otra lengua distinta de la del resto del texto en que se in...">foreign</a>
-                        <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.gap" title="gap (gap) indicada un punto donde algún material ha sido omitido en una transcripción bien por criterios de edición descritos e...">gap</a>
+                        <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.gap" title="gap indicada un punto donde algún material ha sido omitido en una transcripción bien por criterios de edición descritos en el c...">gap</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.gb" title="gb (gathering begins) marks the point in a transcribed codex at which a new gathering or quire begins. [3.10.3. ]">gb</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.gloss" title="gloss identifica una locución o palabra usada para proporcionar una glosa o definición sobre otra palabra o frase. [3.3.4. 22.4...">gloss</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.graphic" title="graphic indica la localización de un gráfico ilustración o figura. [3.9. ]">graphic</a>
@@ -2009,7 +611,7 @@ element div
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.label" title="label contiene un concepto o enunciado asociado con un ítem en una lista en un glosario marca el término que se define. [3.7. ]">label</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.lb" title="lb (salto de línea) marca el comienzo de una nueva línea (topográfica) en alguna edición o versión del texto. [3.10.3. 7.2.5. ]">lb</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.lg" title="lg (grupo de versos) contiene un grupo de versos que funcionan como una unidad formal p.ej. una estrofa un refrán un estribillo...">lg</a>
-                        <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.list" title="list (list) contiene cualquier secuencia de ítems o elementos organizados en una lista. [3.7. ]">list</a>
+                        <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.list" title="list contiene cualquier secuencia de ítems o elementos organizados en una lista. [3.7. ]">list</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.listBibl" title="listBibl (lista de cita) contiene una lista de citas bibliográficas de cualquier tipo. [3.11.1. 2.2.7. 15.3.2. ]">listBibl</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.measure" title="measure contiene una palabra o sintagma referido a alguna cantidad de un objeto o producto normalmente incluye un número una un...">measure</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.measureGrp" title="measureGrp (grupo de medida) contiene un grupo de especificaciones dimensionales que se relacionan con un mismo objeto por ejem...">measureGrp</a>
@@ -2081,7 +683,7 @@ element div
                   <span lang="es" class="label" itemprop="hi">Declaración</span>
                 </td>
                 <td class="wovenodd-col2">
-                  <pre>
+                  <pre class="pre_eg">
 element para
 {
    <a class="link_ref" itemprop="ref" href="#TEI.att.global" title="att.global proporciona un conjunto de atributos común a todos los elementos del esquema de codificación TEI. [1.3.1.1. ]">att.global.attributes</a>,
@@ -2096,7 +698,7 @@ element para
                   <span lang="es" class="label" itemprop="hi">Ejemplo</span>
                 </td>
                 <td class="wovenodd-col2">
-                  <div id="index.xml-egXML-d32e1770" class="pre egXML_valid"><span class="element">&lt;para&gt;</span>Hallgerd was outside. <span class="element">&lt;q&gt;</span>There is blood on your axe,<span class="element">&lt;/q&gt;</span> she said. <span class="element">&lt;q&gt;</span>What have you
+                  <div id="index.xml-egXML-d33e1779" class="pre egXML_valid"><span class="element">&lt;para&gt;</span>Hallgerd was outside. <span class="element">&lt;q&gt;</span>There is blood on your axe,<span class="element">&lt;/q&gt;</span> she said. <span class="element">&lt;q&gt;</span>What have you
    done?<span class="element">&lt;/q&gt;</span>
 <span class="element">&lt;/para&gt;</span>
 <span class="element">&lt;para&gt;</span>
@@ -2133,7 +735,7 @@ element para
                 <td class="wovenodd-col1">
                   <span lang="es" class="label" itemprop="hi">Atributos</span>
                 </td>
-                <td class="wovenodd-col2"><span lang="es" itemprop="seg">Atributos </span><a class="link_ref" itemprop="ref" href="#TEI.att.global" title="att.global proporciona un conjunto de atributos común a todos los elementos del esquema de codificación TEI. [1.3.1.1. ]">att.global</a> (<span class="attribute" itemprop="hi">@xml:id</span>, <span class="attribute" itemprop="hi">@n</span>, <span class="attribute" itemprop="hi">@xml:lang</span>, <span class="attribute" itemprop="hi">@rend</span>, <span class="attribute" itemprop="hi">@style</span>, <span class="attribute" itemprop="hi">@rendition</span>, <span class="attribute" itemprop="hi">@xml:base</span>, <span class="attribute" itemprop="hi">@xml:space</span>)  (<a class="link_ref" itemprop="ref" href="#TEI.att.global.linking" title="att.global.linking define un conjunto de atributos para hipertexto u otro vínculo habilitado para todos los elementos cuando se...">att.global.linking</a> (<span class="attribute" itemprop="hi">@corresp</span>, <span class="attribute" itemprop="hi">@synch</span>, <span class="attribute" itemprop="hi">@sameAs</span>, <span class="attribute" itemprop="hi">@copyOf</span>, <span class="attribute" itemprop="hi">@next</span>, <span class="attribute" itemprop="hi">@prev</span>, <span class="attribute" itemprop="hi">@exclude</span>, <span class="attribute" itemprop="hi">@select</span>)) <a class="link_ref" itemprop="ref" href="#TEI.att.ascribed" title="att.ascribed proporciona atributos para los elementos que representan palabras o acciones atribuibles a individuos determinados...">att.ascribed</a> (<span class="attribute" itemprop="hi">@who</span>) <a class="link_ref" itemprop="ref" href="#TEI.att.source" title="att.source provides attributes for pointing to the source of a bibliographic reference. [3.3.3. 8.3.4. ]">att.source</a> (<span class="attribute" itemprop="hi">@source</span>) <div class="table"><table class="attList" itemprop="table"><tr itemprop="row"><td class="odd_label">typ</td><td class="odd_value"><span lang="es" itemprop="seg">Puede usarse para indicar si el material citado es hablado o pensado, o para caracterizarlo con más precisión.</span><div class="table"><table class="attDef" itemprop="table"><tr itemprop="row"><td class="odd_label"><span lang="es" class="label" itemprop="hi">Estado</span></td><td class="odd_value"><span lang="es" itemprop="seg">Opcional</span></td></tr><tr itemprop="row"><td class="odd_label"><span lang="es" class="label" itemprop="hi">Tipo de datos</span></td><td class="odd_value"><pre>
+                <td class="wovenodd-col2"><span lang="es" itemprop="seg">Atributos </span><a class="link_ref" itemprop="ref" href="#TEI.att.global" title="att.global proporciona un conjunto de atributos común a todos los elementos del esquema de codificación TEI. [1.3.1.1. ]">att.global</a> (<span class="attribute" itemprop="hi">@xml:id</span>, <span class="attribute" itemprop="hi">@n</span>, <span class="attribute" itemprop="hi">@xml:lang</span>, <span class="attribute" itemprop="hi">@rend</span>, <span class="attribute" itemprop="hi">@style</span>, <span class="attribute" itemprop="hi">@rendition</span>, <span class="attribute" itemprop="hi">@xml:base</span>, <span class="attribute" itemprop="hi">@xml:space</span>)  (<a class="link_ref" itemprop="ref" href="#TEI.att.global.linking" title="att.global.linking define un conjunto de atributos para hipertexto u otro vínculo habilitado para todos los elementos cuando se...">att.global.linking</a> (<span class="attribute" itemprop="hi">@corresp</span>, <span class="attribute" itemprop="hi">@synch</span>, <span class="attribute" itemprop="hi">@sameAs</span>, <span class="attribute" itemprop="hi">@copyOf</span>, <span class="attribute" itemprop="hi">@next</span>, <span class="attribute" itemprop="hi">@prev</span>, <span class="attribute" itemprop="hi">@exclude</span>, <span class="attribute" itemprop="hi">@select</span>)) <a class="link_ref" itemprop="ref" href="#TEI.att.ascribed" title="att.ascribed proporciona atributos para los elementos que representan palabras o acciones atribuibles a individuos determinados...">att.ascribed</a> (<span class="attribute" itemprop="hi">@who</span>) <a class="link_ref" itemprop="ref" href="#TEI.att.source" title="att.source provides attributes for pointing to the source of a bibliographic reference. [3.3.3. 8.3.4. ]">att.source</a> (<span class="attribute" itemprop="hi">@source</span>) <div class="table"><table class="attList" itemprop="table"><tr itemprop="row"><td class="odd_label">typ</td><td class="odd_value"><span lang="es" itemprop="seg">Puede usarse para indicar si el material citado es hablado o pensado, o para caracterizarlo con más precisión.</span><div class="table"><table class="attDef" itemprop="table"><tr itemprop="row"><td class="odd_label"><span lang="es" class="label" itemprop="hi">Estado</span></td><td class="odd_value"><span lang="es" itemprop="seg">Opcional</span></td></tr><tr itemprop="row"><td class="odd_label"><span lang="es" class="label" itemprop="hi">Tipo de datos</span></td><td class="odd_value"><pre class="pre_eg">
 data.eumerated</pre></td></tr><tr itemprop="row"><td class="odd_label"><span lang="es" class="label" itemprop="hi">Los valores sugeridos incluyen:</span></td><td class="odd_value"><dl class="valList" itemprop="list"><dt><span class="odd_label" itemprop="label">spoken</span></dt><dd><span lang="es" itemprop="seg">representación del estilo directo, normalmente marcado mediante comillas.</span></dd><dt><span class="odd_label" itemprop="label">thought</span></dt><dd><span lang="es" itemprop="seg">representación de un pensamiento o reflexión, p.ej. un monólogo interno.</span></dd><dt><span class="odd_label" itemprop="label">written</span></dt><dd><span lang="es" itemprop="seg">cita de una fuente escrita.</span></dd><dt><span class="odd_label" itemprop="label">soCalled</span></dt><dd><span lang="es" itemprop="seg">distancia autorial</span></dd><dt><span class="odd_label" itemprop="label">foreign</span></dt><dd><span lang="es" itemprop="seg">palabras extranjeras</span></dd><dt><span class="odd_label" itemprop="label">distinct</span></dt><dd><span lang="es" itemprop="seg">lingüisticamente distinto</span></dd><dt><span class="odd_label" itemprop="label">term</span></dt><dd><span lang="es" itemprop="seg">término técnico</span></dd><dt><span class="odd_label" itemprop="label">emph</span></dt><dd><span lang="es" itemprop="seg">énfasis retórico</span></dd><dt><span class="odd_label" itemprop="label">mentioned</span></dt><dd><span lang="es" itemprop="seg">se refiere a sí mismo, no a su referente habitual</span></dd></dl></td></tr></table></div></td></tr></table></div></td>
               </tr>
               <tr itemprop="row">
@@ -2263,7 +865,7 @@ data.eumerated</pre></td></tr><tr itemprop="row"><td class="odd_label"><span lan
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.emph" title="emph (enfatizado) marca palabras o frases que se destacan o enfatizan por causas lingüísticas o retóricas. [3.3.2.2. 3.3.2. ]">emph</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.expan" title="expan (expansión) contiene la expansión de una abreviatura. [3.5.5. ]">expan</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.foreign" title="foreign (extranjero) identidica una palabra o frase perteneciente a otra lengua distinta de la del resto del texto en que se in...">foreign</a>
-                        <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.gap" title="gap (gap) indicada un punto donde algún material ha sido omitido en una transcripción bien por criterios de edición descritos e...">gap</a>
+                        <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.gap" title="gap indicada un punto donde algún material ha sido omitido en una transcripción bien por criterios de edición descritos en el c...">gap</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.gb" title="gb (gathering begins) marks the point in a transcribed codex at which a new gathering or quire begins. [3.10.3. ]">gb</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.gloss" title="gloss identifica una locución o palabra usada para proporcionar una glosa o definición sobre otra palabra o frase. [3.3.4. 22.4...">gloss</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.graphic" title="graphic indica la localización de un gráfico ilustración o figura. [3.9. ]">graphic</a>
@@ -2273,7 +875,7 @@ data.eumerated</pre></td></tr><tr itemprop="row"><td class="odd_label"><span lan
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.label" title="label contiene un concepto o enunciado asociado con un ítem en una lista en un glosario marca el término que se define. [3.7. ]">label</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.lb" title="lb (salto de línea) marca el comienzo de una nueva línea (topográfica) en alguna edición o versión del texto. [3.10.3. 7.2.5. ]">lb</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.lg" title="lg (grupo de versos) contiene un grupo de versos que funcionan como una unidad formal p.ej. una estrofa un refrán un estribillo...">lg</a>
-                        <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.list" title="list (list) contiene cualquier secuencia de ítems o elementos organizados en una lista. [3.7. ]">list</a>
+                        <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.list" title="list contiene cualquier secuencia de ítems o elementos organizados en una lista. [3.7. ]">list</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.listBibl" title="listBibl (lista de cita) contiene una lista de citas bibliográficas de cualquier tipo. [3.11.1. 2.2.7. 15.3.2. ]">listBibl</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.measure" title="measure contiene una palabra o sintagma referido a alguna cantidad de un objeto o producto normalmente incluye un número una un...">measure</a>
                         <a class="link_odd_elementSpec" itemprop="ref" href="#TEI.measureGrp" title="measureGrp (grupo de medida) contiene un grupo de especificaciones dimensionales que se relacionan con un mismo objeto por ejem...">measureGrp</a>
@@ -2348,7 +950,7 @@ data.eumerated</pre></td></tr><tr itemprop="row"><td class="odd_label"><span lan
                   <span lang="es" class="label" itemprop="hi">Declaración</span>
                 </td>
                 <td class="wovenodd-col2">
-                  <pre>
+                  <pre class="pre_eg">
 element q
 {
    <a class="link_ref" itemprop="ref" href="#TEI.att.global" title="att.global proporciona un conjunto de atributos común a todos los elementos del esquema de codificación TEI. [1.3.1.1. ]">att.global.attributes</a>,
@@ -2376,7 +978,7 @@ element q
                   <span lang="es" class="label" itemprop="hi">Ejemplo</span>
                 </td>
                 <td class="wovenodd-col2">
-                  <div id="index.xml-egXML-d32e2583" class="pre egXML_valid">It is spelled <span class="element">&lt;q&gt;</span>Tübingen<span class="element">&lt;/q&gt;</span> — to enter the
+                  <div id="index.xml-egXML-d33e2592" class="pre egXML_valid">It is spelled <span class="element">&lt;q&gt;</span>Tübingen<span class="element">&lt;/q&gt;</span> — to enter the
  letter <span class="element">&lt;q&gt;</span>u<span class="element">&lt;/q&gt;</span> with an umlaut hold down the <span class="element">&lt;q&gt;</span>option<span class="element">&lt;/q&gt;</span> key and press 
 <span class="element">&lt;q&gt;</span>0 0 f c<span class="element">&lt;/q&gt;</span></div>
                 </td>
@@ -2443,7 +1045,7 @@ element q
               <td id="TEI.argument"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-argument.html">argument</a></span>: <span lang="es" itemprop="seg">lista formal o descripción de los argumentos contenidos en una sección de texto.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/DS.html#DSDTB">4.2. </a> <a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/DS.html#DSTITL">4.6. </a>]</td>
             </tr>
             <tr itemprop="row">
-              <td id="TEI.att.ascribed"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-att.ascribed.html">att.ascribed</a></span>: <span lang="es" itemprop="seg">proporciona atributos para los elementos que representan palabras o acciones atribuibles a individuos determinados.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/ST.html#ST">1. </a>]</td>
+              <td id="TEI.att.ascribed"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-att.ascribed.html">att.ascribed</a></span>: <span lang="es" itemprop="seg">proporciona atributos para los elementos que representan palabras o acciones atribuibles a individuos determinados.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CO.html#COHQQ">3.3.3. </a> <a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/TS.html#TSBA">8.3. </a>]</td>
             </tr>
             <tr itemprop="row">
               <td id="TEI.att.breaking"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-att.breaking.html">att.breaking</a></span>: <span lang="en" itemprop="seg">provides an attribute to indicate whether or not the element concerned is considered to mark the end of an orthographic token in the same way as whitespace.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CO.html#CORS5">3.10.3. </a>]</td>
@@ -2458,7 +1060,7 @@ element q
               <td id="TEI.att.citing"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-att.citing.html">att.citing</a></span>: <span lang="en" itemprop="seg">provides attributes for specifying the specific part of a bibliographic item being cited.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/ST.html#STECAT">1.3.1. </a>]</td>
             </tr>
             <tr itemprop="row">
-              <td id="TEI.att.datable"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-att.datable.html">att.datable</a></span>: <span lang="es" itemprop="seg">atributos para registrar expresiones temporales normalizadas.</span></td>
+              <td id="TEI.att.datable"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-att.datable.html">att.datable</a></span>: <span lang="es" itemprop="seg">atributos para registrar expresiones temporales normalizadas.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CO.html#CONADA">3.5.4. </a> <a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/ND.html#NDDATE">13.3.6. </a>]</td>
             </tr>
             <tr itemprop="row">
               <td id="TEI.att.datable.w3c"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-att.datable.w3c.html">att.datable.w3c</a></span>: <span lang="es" itemprop="seg">proporciona atributos para la normalización de elementos que contienen eventos datables.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CO.html#CONADA">3.5.4. </a> <a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/ND.html#NDDATE">13.3.6. </a>]</td>
@@ -2482,7 +1084,7 @@ element q
               <td id="TEI.att.docStatus"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-att.docStatus.html">att.docStatus</a></span>: <span lang="en" itemprop="seg">provides attributes for use on metadata elements describing the status of a document.</span></td>
             </tr>
             <tr itemprop="row">
-              <td id="TEI.att.editLike"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-att.editLike.html">att.editLike</a></span>: <span lang="es" itemprop="seg">proporciona atributos que describen la naturaleza de una intervención crítica codificada o una interpretación de cualquier tipo.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/ST.html#ST">1. </a>]</td>
+              <td id="TEI.att.editLike"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-att.editLike.html">att.editLike</a></span>: <span lang="es" itemprop="seg">proporciona atributos que describen la naturaleza de una intervención crítica codificada o una interpretación de cualquier tipo.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CO.html#COED">3.4. </a> <a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/ms.html#msdates">10.3.1. </a> <a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/ND.html#NDPERSE">13.3.2. </a> <a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/PH.html#PHCO">11.3.1.1. </a>]</td>
             </tr>
             <tr itemprop="row">
               <td id="TEI.att.edition"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-att.edition.html">att.edition</a></span>: <span lang="en" itemprop="seg">provides attributes identifying the source edition from which some encoded feature derives.</span></td>
@@ -2542,7 +1144,7 @@ element q
               <td id="TEI.att.segLike"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-att.segLike.html">att.segLike</a></span>: <span lang="es" itemprop="seg">proporciona atributos a los elementos usados para una segmentación arbitraria.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/SA.html#SASE">16.3. </a> <a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/AI.html#AILC">17.1. </a>]</td>
             </tr>
             <tr itemprop="row">
-              <td id="TEI.att.sortable"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-att.sortable.html">att.sortable</a></span>: <span lang="en" itemprop="seg">provides attributes for elements in lists or groups that are sortable, but whose sorting key cannot be derived mechanically from the element content.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/ST.html#ST">1. </a>]</td>
+              <td id="TEI.att.sortable"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-att.sortable.html">att.sortable</a></span>: <span lang="en" itemprop="seg">provides attributes for elements in lists or groups that are sortable, but whose sorting key cannot be derived mechanically from the element content.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/DI.html#DIBO">9.1. </a>]</td>
             </tr>
             <tr itemprop="row">
               <td id="TEI.att.source"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-att.source.html">att.source</a></span>: <span lang="en" itemprop="seg">provides attributes for pointing to the source of a bibliographic reference.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CO.html#COHQQ">3.3.3. </a> <a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/TS.html#TSBAWR">8.3.4. </a>]</td>
@@ -2560,7 +1162,7 @@ element q
               <td id="TEI.att.timed"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-att.timed.html">att.timed</a></span>: <span lang="es" itemprop="seg">proporciona un conjunto de atributos comunes a los elementos que tienen una duración en el tiempo expresada en términs absolutos o por referencia a un esquema de alineamiento</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/TS.html#TSBATI">8.3.5. </a>]</td>
             </tr>
             <tr itemprop="row">
-              <td id="TEI.att.transcriptional"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-att.transcriptional.html">att.transcriptional</a></span>: <span lang="es" itemprop="seg">proporciona a los atributos específicos a los elementos que codifican la intervención authorial o scribal en un texto al transcribir el manuscrito o las fuentes similares.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/ST.html#ST">1. </a>]</td>
+              <td id="TEI.att.transcriptional"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-att.transcriptional.html">att.transcriptional</a></span>: <span lang="es" itemprop="seg">proporciona a los atributos específicos a los elementos que codifican la intervención authorial o scribal en un texto al transcribir el manuscrito o las fuentes similares.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/PH.html#PHAD">11.3.1.4. </a>]</td>
             </tr>
             <tr itemprop="row">
               <td id="TEI.att.translatable"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-att.translatable.html">att.translatable</a></span>: <span lang="es" itemprop="seg">proporciona atributos utilizados para indicar el estatus de un fragmento traducibile de un documento aislado.</span></td>
@@ -2584,7 +1186,7 @@ element q
               <td id="TEI.biblFull"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-biblFull.html">biblFull</a></span>: (<span lang="es" itemprop="seg">citación bibliográfica estructurada completa</span>) <span lang="es" itemprop="seg">contiene una cita bibliográfica completamente estructurada, en la cual están presentes todos los componentes de la descripción del archivo TEI.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CO.html#COBITY">3.11.1. </a> <a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/HD.html#HD2">2.2. </a> <a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/HD.html#HD3">2.2.7. </a> <a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CC.html#CCAS2">15.3.2. </a>]</td>
             </tr>
             <tr itemprop="row">
-              <td id="TEI.biblScope"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-biblScope.html">biblScope</a></span>: (<span lang="es" itemprop="seg">extensión de una cita</span>) <span lang="es" itemprop="seg">define la extensión de una referencia bibliográfica, como por ejemplo los números de página u otra subdivisión numerada en la obra mayor.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CO.html#COBICOI">3.11.2.4. </a>]</td>
+              <td id="TEI.biblScope"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-biblScope.html">biblScope</a></span>: (<span lang="es" itemprop="seg">extensión de una cita</span>) <span lang="es" itemprop="seg">define la extensión de una referencia bibliográfica, como por ejemplo los números de página u otra subdivisión numerada en la obra mayor.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CO.html#COBICOB">3.11.2.5. </a>]</td>
             </tr>
             <tr itemprop="row">
               <td id="TEI.biblStruct"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-biblStruct.html">biblStruct</a></span>: (<span lang="es" itemprop="seg">cita bibliográfica estructurada.</span>) <span lang="es" itemprop="seg">contiene una cita bibliográfica estructurada, en la cual sólo aparecen los subelementos bibliográficos y en un orden especificado.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CO.html#COBITY">3.11.1. </a> <a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/HD.html#HD3">2.2.7. </a> <a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CC.html#CCAS2">15.3.2. </a>]</td>
@@ -2623,7 +1225,7 @@ element q
               <td id="TEI.cell"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-cell.html">cell</a></span>: <span lang="es" itemprop="seg">contiene una celda de una tabla.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/FT.html#FTTAB1">14.1.1. </a>]</td>
             </tr>
             <tr itemprop="row">
-              <td id="TEI.change"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-change.html">change</a></span>: <span lang="es" itemprop="seg">resume un cambio o corrección determinada llevada a cabo en una versión dada de un texto electrónico en el que trabajan diversos investigadores.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/HD.html#HD6">2.5. </a> <a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/HD.html#HD4C">2.4.1. </a>]</td>
+              <td id="TEI.change"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-change.html">change</a></span>: <span lang="es" itemprop="seg">resume un cambio o corrección determinada llevada a cabo en una versión dada de un texto electrónico en el que trabajan diversos investigadores.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/HD.html#HD6">2.5. </a> <a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/HD.html#HD4C">2.4.1. </a> <a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/PH.html#PH-changes">11.7. </a>]</td>
             </tr>
             <tr itemprop="row">
               <td id="TEI.choice"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-choice.html">choice</a></span>: <span lang="es" itemprop="seg">agrupa un número de codificaciones alternativas para el mismo punto en un texto.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CO.html#COED">3.4. </a>]</td>
@@ -2632,7 +1234,7 @@ element q
               <td id="TEI.cit"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-cit.html">cit</a></span>: (<span lang="es" itemprop="seg">cita</span>) <span lang="es" itemprop="seg">Una cita de algún otro documento junto a la referencia bibliográfica a la fuente.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CO.html#COHQQ">3.3.3. </a> <a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/DS.html#DSGRP">4.3.1. </a> <a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/DI.html#DITPEG">9.3.5.1. </a>]</td>
             </tr>
             <tr itemprop="row">
-              <td id="TEI.citedRange"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-citedRange.html">citedRange</a></span>: (<span lang="en" itemprop="seg">cited range</span>) <span lang="en" itemprop="seg">defines the range of cited content, often represented by pages or other units</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CO.html#COBICOI">3.11.2.4. </a>]</td>
+              <td id="TEI.citedRange"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-citedRange.html">citedRange</a></span>: (<span lang="en" itemprop="seg">cited range</span>) <span lang="en" itemprop="seg">defines the range of cited content, often represented by pages or other units</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CO.html#COBICOB">3.11.2.5. </a>]</td>
             </tr>
             <tr itemprop="row">
               <td id="TEI.classCode"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-classCode.html">classCode</a></span>: (<span lang="es" itemprop="seg">código de clasificación</span>) <span lang="es" itemprop="seg">indica el código de clasificación empleado para este texto en algún sistema de clasificación estándard.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/HD.html#HD43">2.4.3. </a>]</td>
@@ -2674,7 +1276,7 @@ element q
               <td id="TEI.data.name"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-data.name.html">data.name</a></span>: <span lang="es" itemprop="seg">define la gama de valores de atributos expresados como identificador o un nombre en XML.</span></td>
             </tr>
             <tr itemprop="row">
-              <td id="TEI.data.namespace"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-data.namespace.html">data.namespace</a></span>: <span lang="es" itemprop="seg">define la gama de valores de atributos usados para indicar los nombres de los espacios en XML como establecen las recomendaciones técnicas del W3C para los <a class="link_ptr" itemprop="ptr" href="http://www.w3.org/TR/1999/REC-xml-names-19990114"><span>http://www.w3.org/TR/1999/REC-xml-names-19990114</span></a></span></td>
+              <td id="TEI.data.namespace"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-data.namespace.html">data.namespace</a></span>: <span lang="es" itemprop="seg">define la gama de valores de atributos usados para indicar los nombres de los espacios en XML como establecen las recomendaciones técnicas del W3C para los <a class="link_ptr" itemprop="ptr" href="http://www.w3.org/TR/1999/REC-xml-names-19990114/"><span>http://www.w3.org/TR/1999/REC-xml-names-19990114/</span></a></span></td>
             </tr>
             <tr itemprop="row">
               <td id="TEI.data.numeric"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-data.numeric.html">data.numeric</a></span>: <span lang="es" itemprop="seg">define la gama de valores de atributos para valores numéricos.</span></td>
@@ -2695,7 +1297,7 @@ element q
               <td id="TEI.data.replacement"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-data.replacement.html">data.replacement</a></span>: <span lang="en" itemprop="seg">defines attribute values which contain a replacement template.</span></td>
             </tr>
             <tr itemprop="row">
-              <td id="TEI.data.temporal.w3c"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-data.temporal.w3c.html">data.temporal.w3c</a></span>: <span lang="es" itemprop="seg">define la gama de valores de atributos que expresan un valor temporal del tipo fecha, hora, o combinación de ambas, de acuerdo con la especificación de W3C <span class="titlem">XML Schema Part 2: Datatypes</span>.</span></td>
+              <td id="TEI.data.temporal.w3c"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-data.temporal.w3c.html">data.temporal.w3c</a></span>: <span lang="es" itemprop="seg">define la gama de valores de atributos que expresan un valor temporal del tipo fecha, hora, o combinación de ambas, de acuerdo con la especificación de W3C <span class="titlem">XML Schema Part 2: Datatypes Second Edition</span>.</span></td>
             </tr>
             <tr itemprop="row">
               <td id="TEI.data.text"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-data.text.html">data.text</a></span>: <span lang="en" itemprop="seg">defines the range of attribute values used to express some kind of identifying string as a single sequence of unicode characters possibly including whitespace.</span></td>
@@ -2827,7 +1429,7 @@ element q
               <td id="TEI.funder"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-funder.html">funder</a></span>: (<span lang="es" itemprop="seg">responsable de la financiación</span>) <span lang="es" itemprop="seg">proporciona el nombre del individuo, la institución o la organización responsable de la financiación de un proyecto o de un texto.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/HD.html#HD21">2.2.1. </a>]</td>
             </tr>
             <tr itemprop="row">
-              <td id="TEI.gap"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-gap.html">gap</a></span>: (<span lang="en" itemprop="seg">gap</span>) <span lang="es" itemprop="seg">indicada un punto donde algún material ha sido omitido en una transcripción, bien por criterios de edición descritos en el cabezado TEI, bien como parte de una práctica habitual, o bien porqué el material es ilegible o incomprensible.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CO.html#COEDADD">3.4.3. </a>]</td>
+              <td id="TEI.gap"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-gap.html">gap</a></span>: <span lang="es" itemprop="seg">indicada un punto donde algún material ha sido omitido en una transcripción, bien por criterios de edición descritos en el cabezado TEI, bien como parte de una práctica habitual, o bien porqué el material es ilegible o incomprensible.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CO.html#COEDADD">3.4.3. </a>]</td>
             </tr>
             <tr itemprop="row">
               <td id="TEI.gb"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-gb.html">gb</a></span>: (<span lang="en" itemprop="seg">gathering begins</span>) <span lang="en" itemprop="seg">marks the point in a transcribed codex at which a new gathering or quire begins.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CO.html#CORS5">3.10.3. </a>]</td>
@@ -2917,7 +1519,7 @@ element q
               <td id="TEI.linkGrp"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-linkGrp.html">linkGrp</a></span>: (<span lang="es" itemprop="seg">grupo de enlace</span>) <span lang="es" itemprop="seg">define un conjunto de asociaciones o de vínculos hipertextuales.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/SA.html#SAPT">16.1. </a>]</td>
             </tr>
             <tr itemprop="row">
-              <td id="TEI.list"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-list.html">list</a></span>: (<span lang="en" itemprop="seg">list</span>) <span lang="es" itemprop="seg">contiene cualquier secuencia de ítems o elementos organizados en una lista.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CO.html#COLI">3.7. </a>]</td>
+              <td id="TEI.list"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-list.html">list</a></span>: <span lang="es" itemprop="seg">contiene cualquier secuencia de ítems o elementos organizados en una lista.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CO.html#COLI">3.7. </a>]</td>
             </tr>
             <tr itemprop="row">
               <td id="TEI.listBibl"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-listBibl.html">listBibl</a></span>: (<span lang="es" itemprop="seg">lista de cita</span>) <span lang="es" itemprop="seg">contiene una lista de citas bibliográficas de cualquier tipo.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CO.html#COBITY">3.11.1. </a> <a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/HD.html#HD3">2.2.7. </a> <a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CC.html#CCAS2">15.3.2. </a>]</td>
@@ -3274,6 +1876,9 @@ element q
               <td id="TEI.publisher"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-publisher.html">publisher</a></span>: <span lang="es" itemprop="seg">proporciona el nombre de la organización responsable de la publicación o la distribución de un elemento bibliográfico.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CO.html#COBICOI">3.11.2.4. </a> <a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/HD.html#HD24">2.2.4. </a>]</td>
             </tr>
             <tr itemprop="row">
+              <td id="TEI.punctuation"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-punctuation.html">punctuation</a></span>: <span lang="en" itemprop="seg">specifies editorial practice adopted with respect to punctuation marks in the original.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/HD.html#HD53">2.3.3. </a> <a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CO.html#COPU">3.2. </a>]</td>
+            </tr>
+            <tr itemprop="row">
               <td id="TEI.quotation"><span class="hi" itemprop="hi"><a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/es/html/ref-quotation.html">quotation</a></span>: <span lang="es" itemprop="seg">indica las prácticas editoriales adoptadas respecto al entrecomillado en el original.</span> [<a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/HD.html#HD53">2.3.3. </a> <a class="link_ref" itemprop="ref" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/CC.html#CCAS2">15.3.2. </a>]</td>
             </tr>
             <tr itemprop="row">
@@ -3434,7 +2039,7 @@ element q
       </section>
     </div>
     <div class="stdfooter autogenerated">
-      <div class="footer"><!--standard links to project, instiution etc--><a class="plain" href="http://www.tei-c.org/">TEI</a> <a class="plain" href="/">Home</a> </div>
+      <div class="footer"><!--standard links to project, institution etc--><a class="plain" href="http://www.tei-c.org/">TEI</a> <a class="plain" href="/">Home</a> </div>
       <address>Sebastian Rahtz.
 	    <br/><!--
 	  Generated from index.xml using 
