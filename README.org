@@ -3,3 +3,15 @@
 Attempting to hack the stylesheets so they work with eledmac.
 
 For test files, see https://github.com/sarit/SARIT-corpus.
+
+Typical workflow:
+
+#+BEGIN_SRC bash
+saxonb-xslt -ext:on -xsl:/some/path/to/tei_stylesheets/profiles/sarit/latex/to.xsl \
+-s:/some/other/path/to/SARIT/pramanavarttikavrtti.xml \
+-o:/tmp/pvv.tex
+xelatex -8bit -shell-escape pvv
+#+END_SRC
+
+Though you usually want to add --interaction=nonstopmode to the
+xelatex command.
