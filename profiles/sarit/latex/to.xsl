@@ -1,24 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:xlink="http://www.w3.org/1999/xlink"
-                xmlns:dbk="http://docbook.org/ns/docbook"
-                xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                xmlns:tei="http://www.tei-c.org/ns/1.0"
-                xmlns:teix="http://www.tei-c.org/ns/Examples"
-                xmlns:xhtml="http://www.w3.org/1999/xhtml"
-                xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
-                xmlns:html="http://www.w3.org/1999/xhtml"
-		xmlns:exsl="http://exslt.org/common"                
-                xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:saxon="http://saxon.sf.net/"
-                exclude-result-prefixes="xlink dbk rng tei teix xhtml a html xs xsl"
-                version="2.0">
-   <xsl:import href="../../../latex/latex.xsl"/>
-
+<xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dbk="http://docbook.org/ns/docbook" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:teix="http://www.tei-c.org/ns/Examples" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:exsl="http://exslt.org/common" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:saxon="http://saxon.sf.net/" exclude-result-prefixes="xlink dbk rng tei teix xhtml a html xs xsl" version="2.0">
+  <xsl:import href="../../../latex/latex.xsl"/>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" scope="stylesheet" type="stylesheet">
-      <desc>
-
-         <p>This software is dual-licensed:
+    <desc>
+      <p>This software is dual-licensed:
 
 1. Distributed under a Creative Commons Attribution-ShareAlike 3.0
 Unported License http://creativecommons.org/licenses/by-sa/3.0/ 
@@ -50,51 +35,48 @@ theory of liability, whether in contract, strict liability, or tort
 (including negligence or otherwise) arising in any way out of the use
 of this software, even if advised of the possibility of such damage.
 </p>
-         <p>Author: See AUTHORS</p>
-         <p>Id: $Id$</p>
-         <p>Copyright: 2013, TEI Consortium</p>
-      </desc>
-   </doc>
-
-   <xsl:param name="publisher">SARIT</xsl:param>
-   <xsl:param name="title">SARIT title</xsl:param>
-   <xsl:param name="useHeaderFrontMatter">true</xsl:param>
-   <xsl:param name="debuglatex">true</xsl:param>
-   <xsl:param name="documentclass">memoir</xsl:param>
-   <xsl:param name="homeURL">http://sarit.indology.info</xsl:param>
-   <xsl:param name="ledmac">true</xsl:param>
-   <xsl:param name="printtoc">true</xsl:param>
-   <xsl:param name="reencode">false</xsl:param>
-   <xsl:param name="defaultfontfeatures">Scale=MatchLowercase,Mapping=tex-text</xsl:param>
-   <xsl:param name="romanFont">TeX Gyre Schola</xsl:param>
-   <xsl:param name="latinFont">TeX Gyre Pagella</xsl:param>
-   <xsl:param name="devanagariFont">Chandas</xsl:param>
-   <xsl:param name="boFont">Tibetan Machine Uni</xsl:param>
-   <xsl:param name="sansFont">TeX Gyre Bonum</xsl:param>
-   <xsl:param name="showteiheader">true</xsl:param>
-   <xsl:param name="standalone">false</xsl:param>
-   <xsl:param name="userpackage"></xsl:param>
-   <xsl:param name="biblatex">true</xsl:param>
-   <xsl:param name="bibliography"></xsl:param>
-   <xsl:param name="usetitling">true</xsl:param>
-   <xsl:param name="leftside" as="xs:boolean">false</xsl:param>
-   <xsl:param name="rightside" as="xs:boolean">false</xsl:param>
-   <xsl:param name="showLineBreaks" as="xs:boolean">false</xsl:param>
-   <xsl:param name="showPageBreaks" as="xs:boolean">true</xsl:param>
-   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
-     <desc>At which level to restart the numbering</desc>
-   </doc>
-   <xsl:param name="ledmacNumberDepth">2</xsl:param>
-   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
-     <desc>An output format for saxon's serialize</desc>
-   </doc>
-   <xsl:output name="xmlstring" indent="yes" omit-xml-declaration="yes" />
-
-   
+      <p>Author: See AUTHORS</p>
+      <p>Id: $Id$</p>
+      <p>Copyright: 2013, TEI Consortium</p>
+    </desc>
+  </doc>
+  <xsl:param name="publisher">SARIT</xsl:param>
+  <xsl:param name="title">SARIT title</xsl:param>
+  <xsl:param name="useHeaderFrontMatter">true</xsl:param>
+  <xsl:param name="debuglatex">true</xsl:param>
+  <xsl:param name="documentclass">memoir</xsl:param>
+  <xsl:param name="homeURL">http://sarit.indology.info</xsl:param>
+  <xsl:param name="ledmac">true</xsl:param>
+  <xsl:param name="printtoc">true</xsl:param>
+  <xsl:param name="reencode">false</xsl:param>
+  <xsl:param name="defaultfontfeatures">Scale=MatchLowercase,Mapping=tex-text</xsl:param>
+  <xsl:param name="romanFont">TeX Gyre Schola</xsl:param>
+  <xsl:param name="latinFont">TeX Gyre Pagella</xsl:param>
+  <xsl:param name="devanagariFont">Chandas</xsl:param>
+  <xsl:param name="boFont">Tibetan Machine Uni</xsl:param>
+  <xsl:param name="sansFont">TeX Gyre Bonum</xsl:param>
+  <xsl:param name="showteiheader">true</xsl:param>
+  <xsl:param name="standalone">false</xsl:param>
+  <xsl:param name="userpackage"/>
+  <xsl:param name="biblatex">true</xsl:param>
+  <xsl:param name="bibliography"/>
+  <xsl:param name="usetitling">true</xsl:param>
+  <xsl:param name="leftside" as="xs:boolean">false</xsl:param>
+  <xsl:param name="rightside" as="xs:boolean">false</xsl:param>
+  <xsl:param name="showLineBreaks" as="xs:boolean">false</xsl:param>
+  <xsl:param name="showPageBreaks" as="xs:boolean">true</xsl:param>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
-      <desc>
-         <p>LaTeX setup</p>
-         <p>The basic LaTeX setup which you should not 
+    <desc>At which level to restart the numbering</desc>
+  </doc>
+  <xsl:param name="ledmacNumberDepth">2</xsl:param>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
+    <desc>An output format for saxon's serialize</desc>
+  </doc>
+  <xsl:output name="xmlstring" indent="yes" omit-xml-declaration="yes"/>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
+    <desc>
+      <p>LaTeX setup</p>
+      <p>The basic LaTeX setup which you should not 
 really tinker with unless you really understand  why and how. Note
 that we need to set up a mapping here for Unicode 8421, 10100 and
 10100 to glyphs for backslash and the two curly brackets, to provide literal
@@ -103,12 +85,12 @@ Note that if $reencode is set to false, no input or output encoding
 packages are loaded, since it is assumed you are using a TeX variant
 capable of dealing with UTF-8 directly.
 </p>
-      </desc>
-   </doc>
-   <xsl:template name="latexSetup">
-   <xsl:call-template name="latexSetupHook"/>
-      <xsl:choose>
-         <xsl:when test="$reencode='true'">
+    </desc>
+  </doc>
+  <xsl:template name="latexSetup">
+    <xsl:call-template name="latexSetupHook"/>
+    <xsl:choose>
+      <xsl:when test="$reencode='true'">
 \IfFileExists{utf8x.def}%
  {\usepackage[utf8x]{inputenc}
     \PrerenderUnicode{–}
@@ -125,22 +107,22 @@ capable of dealing with UTF-8 directly.
 \uc@dclc{8491}{default}{\AA{}}
 \uc@dclc{8239}{default}{\,}
 \uc@dclc{20154}{default}{ }
-\uc@dclc{10148}{default}{>}
+\uc@dclc{10148}{default}{&gt;}
 \def\textschwa{\rotatebox{-90}{e}}
 \def\textJapanese{}
 \def\textChinese{}
 </xsl:when>
-<xsl:otherwise>
-  <xsl:text>
+      <xsl:otherwise>
+        <xsl:text>
   \usepackage{euler}
   \usepackage{xltxtra}
   \usepackage{polyglossia}
   \setdefaultlanguage</xsl:text>
-  <xsl:value-of select="$defaultlanguageoptions"/>
-  <xsl:text>{</xsl:text>
-  <xsl:value-of select="$defaultlanguage"/>
-  <xsl:text>}</xsl:text>
-  <xsl:text>
+        <xsl:value-of select="$defaultlanguageoptions"/>
+        <xsl:text>{</xsl:text>
+        <xsl:value-of select="$defaultlanguage"/>
+        <xsl:text>}</xsl:text>
+        <xsl:text>
   % english should be available, notes and stuff
   \setotherlanguage{english}
   \setotherlanguage[numerals=arabic]{tibetan}
@@ -159,79 +141,77 @@ capable of dealing with UTF-8 directly.
   \def\textKorean{\fontspec{Baekmuk Gulim} }
   % set up a devanagari font
   \newfontfamily\devanagarifont</xsl:text>
-  <xsl:choose>
-    <xsl:when test="//tei:text[@xml:lang='sa'] or //tei:text[@xml:lang='sa-Deva'] or //tei:body[@xml:lang='sa'] or //tei:body[@xml:lang='sa-Deva']">
-      <xsl:text>[Script=Devanagari]{</xsl:text>
-      <xsl:value-of select="$devanagariFont"/>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:choose>
-	<xsl:when test="not(latinFont='')">
-	  <xsl:text>{</xsl:text>
-	  <xsl:value-of select="$latinFont"/>
-	</xsl:when>
-	<xsl:otherwise>
-	  <xsl:text>{%no latinFont set!
+        <xsl:choose>
+          <xsl:when test="//tei:text[@xml:lang='sa'] or //tei:text[@xml:lang='sa-Deva'] or //tei:body[@xml:lang='sa'] or //tei:body[@xml:lang='sa-Deva']">
+            <xsl:text>[Script=Devanagari]{</xsl:text>
+            <xsl:value-of select="$devanagariFont"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:choose>
+              <xsl:when test="not(latinFont='')">
+                <xsl:text>{</xsl:text>
+                <xsl:value-of select="$latinFont"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:text>{%no latinFont set!
 	  TeX Gyre Pagella</xsl:text>
-	</xsl:otherwise>
-      </xsl:choose>
-    </xsl:otherwise>
-  </xsl:choose>
-  <xsl:text>}</xsl:text>
-  <xsl:text>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:otherwise>
+        </xsl:choose>
+        <xsl:text>}</xsl:text>
+        <xsl:text>
   \newfontfamily\rmlatinfont{</xsl:text>
-  <xsl:choose>
-  <xsl:when test="not(latinFont='')">
-    <xsl:value-of select="$latinFont"/>
-  </xsl:when>
-  <xsl:otherwise>
-    <xsl:text>%no latinFont set!
+        <xsl:choose>
+          <xsl:when test="not(latinFont='')">
+            <xsl:value-of select="$latinFont"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:text>%no latinFont set!
     TeX Gyre Pagella</xsl:text>
-  </xsl:otherwise>
-  </xsl:choose>
-  <xsl:text>}
+          </xsl:otherwise>
+        </xsl:choose>
+        <xsl:text>}
   \newfontfamily\tibetanfont[Script=Tibetan,Scale=1.3]{</xsl:text>
-  <xsl:value-of select="$boFont"/>
-  <xsl:text>}
+        <xsl:value-of select="$boFont"/>
+        <xsl:text>}
   \newcommand\bo\tibetanfont
   </xsl:text>
-  <xsl:if test="not($defaultfontfeatures='')">
+        <xsl:if test="not($defaultfontfeatures='')">
     \defaultfontfeatures{<xsl:value-of select="$defaultfontfeatures"/>}
   </xsl:if>
-  <xsl:if test="not(latinFont='')">
+        <xsl:if test="not(latinFont='')">
     \setmainfont{<xsl:value-of select="$latinFont"/>}
   </xsl:if>
-  <xsl:if test="not($sansFont='')">
+        <xsl:if test="not($sansFont='')">
     \setsansfont{<xsl:value-of select="$sansFont"/>}
   </xsl:if>
-  <xsl:text>
+        <xsl:text>
   \setmonofont{</xsl:text>
-  <xsl:value-of select="$typewriterFont"/>
-  <xsl:text>}</xsl:text>
-  <!-- <xsl:if test="not($romanFont='')"> -->
-  <!--   \setromanfont{<xsl:value-of select="$romanFont"/>} -->
-  <!-- </xsl:if> -->
-  <!-- <xsl:text> -->
-  <!-- \usepackage{ucharclasses} -->
-  <!-- \makeatletter -->
-  <!-- \setTransitionsFor{Devanagari}% -->
-  <!-- {\let\curfamily\f@family\let\curshape\f@shape\let\curseries\f@series\devanagarifont} -->
-  <!-- {\fontfamily{\curfamily}\fontshape{\curshape}\fontseries{\curseries}\selectfont} -->
-  <!-- \setTransitionsFor{Tibetan}% -->
-  <!-- {\let\curfamily\f@family\let\curshape\f@shape\let\curseries\f@series\tibetanfont} -->
-  <!-- {\fontfamily{\curfamily}\fontshape{\curshape}\fontseries{\curseries}\selectfont} -->
-  <!-- \setTransitionsForLatin% -->
-  <!-- {\let\curfamily\f@family\let\curshape\f@shape\let\curseries\f@series\normalfontlatin} -->
-  <!-- {\fontfamily{\curfamily}\fontshape{\curshape}\fontseries{\curseries}\selectfont} -->
-  <!-- \makeatother -->
-
-  <!-- </xsl:text> -->
-
-</xsl:otherwise>
-      </xsl:choose>
-      <xsl:choose>
-	<xsl:when test="$documentclass='memoir'">
-	  <xsl:text>
+        <xsl:value-of select="$typewriterFont"/>
+        <xsl:text>}</xsl:text>
+        <!-- <xsl:if test="not($romanFont='')"> -->
+        <!--   \setromanfont{<xsl:value-of select="$romanFont"/>} -->
+        <!-- </xsl:if> -->
+        <!-- <xsl:text> -->
+        <!-- \usepackage{ucharclasses} -->
+        <!-- \makeatletter -->
+        <!-- \setTransitionsFor{Devanagari}% -->
+        <!-- {\let\curfamily\f@family\let\curshape\f@shape\let\curseries\f@series\devanagarifont} -->
+        <!-- {\fontfamily{\curfamily}\fontshape{\curshape}\fontseries{\curseries}\selectfont} -->
+        <!-- \setTransitionsFor{Tibetan}% -->
+        <!-- {\let\curfamily\f@family\let\curshape\f@shape\let\curseries\f@series\tibetanfont} -->
+        <!-- {\fontfamily{\curfamily}\fontshape{\curshape}\fontseries{\curseries}\selectfont} -->
+        <!-- \setTransitionsForLatin% -->
+        <!-- {\let\curfamily\f@family\let\curshape\f@shape\let\curseries\f@series\normalfontlatin} -->
+        <!-- {\fontfamily{\curfamily}\fontshape{\curshape}\fontseries{\curseries}\selectfont} -->
+        <!-- \makeatother -->
+        <!-- </xsl:text> -->
+      </xsl:otherwise>
+    </xsl:choose>
+    <xsl:choose>
+      <xsl:when test="$documentclass='memoir'">
+        <xsl:text>
 	    % numbering depth
 	    \maxtocdepth{section}
 	    \setsecnumdepth{all}
@@ -249,72 +229,72 @@ capable of dealing with UTF-8 directly.
 	  \raggedleft
 	  \vspace*{\baselineskip}
 	  </xsl:text>
-	  <xsl:variable name="titleauthor">
-	    <xsl:sequence select="tei:generateAuthor(/*)"/>
-	  </xsl:variable>
-	  <xsl:if test="$titleauthor != ''">
-	    <xsl:text>
+        <xsl:variable name="titleauthor">
+          <xsl:sequence select="tei:generateAuthor(/*)"/>
+        </xsl:variable>
+        <xsl:if test="$titleauthor != ''">
+          <xsl:text>
 	      % author(s)
-	    {\Large </xsl:text> 
-	    <xsl:value-of select="$titleauthor"/>
-	  <xsl:text>}\\[0.167\textheight]</xsl:text>
-	  </xsl:if>
-	  <xsl:variable name="titlepretitle">
-	    <!-- <xsl:sequence select="tei:generatePreTitle(/*)"/> -->
-	    <xsl:text>No pretitle</xsl:text>
-	  </xsl:variable>
-	  <xsl:if test="$titlepretitle != ''">
-	    <xsl:text>
+	    {\Large </xsl:text>
+          <xsl:value-of select="$titleauthor"/>
+          <xsl:text>}\\[0.167\textheight]</xsl:text>
+        </xsl:if>
+        <xsl:variable name="titlepretitle">
+          <!-- <xsl:sequence select="tei:generatePreTitle(/*)"/> -->
+          <xsl:text>No pretitle</xsl:text>
+        </xsl:variable>
+        <xsl:if test="$titlepretitle != ''">
+          <xsl:text>
 	      % pretitle
 	    {\bfseries </xsl:text>
-	    <xsl:value-of select="$titlepretitle"/>
-	    <xsl:text>}\\[\baselineskip]</xsl:text>
-	  </xsl:if>
-	  <xsl:variable name="maintitle">
-	    <xsl:sequence select="tei:generateMetadataTitle(/*)"/>
-	  </xsl:variable>
-	  <xsl:variable name="title">
-	    <xsl:sequence select="tei:generateMetadataTitle(/*)"/>
-	  </xsl:variable>
-	  <xsl:if test="$maintitle != ''">	  
-	    <xsl:text>
+          <xsl:value-of select="$titlepretitle"/>
+          <xsl:text>}\\[\baselineskip]</xsl:text>
+        </xsl:if>
+        <xsl:variable name="maintitle">
+          <xsl:sequence select="tei:generateMetadataTitle(/*)"/>
+        </xsl:variable>
+        <xsl:variable name="title">
+          <xsl:sequence select="tei:generateMetadataTitle(/*)"/>
+        </xsl:variable>
+        <xsl:if test="$maintitle != ''">
+          <xsl:text>
 	    {\Huge </xsl:text>
-	    <xsl:value-of select="$maintitle"/>
-	    <!-- title 2 --> 
-	    <xsl:text>}\\[\baselineskip]</xsl:text>
-	  </xsl:if>
-	  <xsl:variable name="titlesubtitle">
-	    <xsl:sequence select="tei:generateSubTitle(/*)"/>
-	  </xsl:variable>
-	  <xsl:if test="$titlesubtitle !=''">
-	    <xsl:text>
+          <xsl:value-of select="$maintitle"/>
+          <!-- title 2 -->
+          <xsl:text>}\\[\baselineskip]</xsl:text>
+        </xsl:if>
+        <xsl:variable name="titlesubtitle">
+          <xsl:sequence select="tei:generateSubTitle(/*)"/>
+        </xsl:variable>
+        <xsl:if test="$titlesubtitle !=''">
+          <xsl:text>
 	    {\small </xsl:text>
-	    <!-- subtitle -->
-	    <xsl:value-of select="$titlesubtitle"/>
-	  <xsl:text>}\\[\baselineskip]</xsl:text>
-	  </xsl:if>
-	  <xsl:variable  name="titleeditor">
-	    <!-- the editor -->
-	    <xsl:sequence select="tei:generateEditor(/*)"/>  
-	  </xsl:variable>
-	  <xsl:if  test="$titleeditor != ''">
-	    <xsl:text>
+          <!-- subtitle -->
+          <xsl:value-of select="$titlesubtitle"/>
+          <xsl:text>}\\[\baselineskip]</xsl:text>
+        </xsl:if>
+        <xsl:variable name="titleeditor">
+          <!-- the editor -->
+          <xsl:sequence select="tei:generateEditor(/*)"/>
+        </xsl:variable>
+        <xsl:if test="$titleeditor != ''">
+          <xsl:text>
 	    {\Large Edited by </xsl:text>
-	    <xsl:value-of select="$titleeditor"/>
-	    <xsl:text> }\\
+          <xsl:value-of select="$titleeditor"/>
+          <xsl:text> }\\
 	    \vfill</xsl:text>
-	  </xsl:if>
-	  <xsl:variable name="titlepublisher">
-	    <xsl:sequence select="tei:generatePublisher(/*,$publisher)"/>
-	  </xsl:variable>
-	  <xsl:if test="$titlepublisher != ''">
-	    <xsl:text>
+        </xsl:if>
+        <xsl:variable name="titlepublisher">
+          <xsl:sequence select="tei:generatePublisher(/*,$publisher)"/>
+        </xsl:variable>
+        <xsl:if test="$titlepublisher != ''">
+          <xsl:text>
 	    {\Large </xsl:text>
-	    <xsl:value-of select="$titlepublisher"/>
-	    <xsl:text>}\\</xsl:text>
-	  </xsl:if>
-	  <xsl:text>\vspace*{\baselineskip}\plogo</xsl:text>
-	  <xsl:text>\par
+          <xsl:value-of select="$titlepublisher"/>
+          <xsl:text>}\\</xsl:text>
+        </xsl:if>
+        <xsl:text>\vspace*{\baselineskip}\plogo</xsl:text>
+        <xsl:text>\par
 	  \vspace*{3\baselineskip}
 	  \endgroup
 	  \end{english}}
@@ -330,127 +310,123 @@ capable of dealing with UTF-8 directly.
 	  \newcommand{\deletion}[1]{(#1$^{-}$)}
 	  \newcommand{\pratIka}[1]{\textcolor{cyan}{#1}}
 	  </xsl:text>
-	</xsl:when>
-	<xsl:otherwise>
-    <!-- \DeclareTextSymbol{\textpi}{OML}{25} -->
-    <!-- \usepackage{relsize} -->
-    <!-- \def\textsubscript#1{% -->
-    <!--   \@textsubscript{\selectfont#1}} -->
-    <!-- \def\@textsubscript#1{% -->
-    <!--   {\m@th\ensuremath{_{\mbox{\fontsize\sf@size\z@#1}}}}} -->
-    <!-- \def\textquoted#1{‘#1’} -->
-    <!-- \def\textsmall#1{{\small #1}} -->
-    <!-- \def\textlarge#1{{\large #1}} -->
-    <!-- \def\textoverbar#1{\ensuremath{\overline{#1}}} -->
-    <!-- \def\textgothic#1{{\fontspec{<xsl:value-of select="$gothicFont"/>}#1}} -->
-    <!-- \def\textcal#1{{\fontspec{<xsl:value-of select="$calligraphicFont"/>}#1}} -->
-    <!-- \newenvironment{biblfree}{}{\ifvmode\par\fi } -->
-    <!-- \newenvironment{docImprint}{\vskip 6pt}{\ifvmode\par\fi } -->
-    <!-- \newenvironment{docDate}{}{\ifvmode\par\fi } -->
-    <!-- \newenvironment{docAuthor}{\ifvmode\vskip4pt\fontsize{16pt}{18pt}\selectfont\fi\itshape}{\ifvmode\par\fi } -->
-    <!-- \newenvironment{docTitle}{\vskip6pt\bfseries\fontsize{18pt}{22pt}\selectfont}{\par } -->
-    <!-- \newenvironment{titlePart}{}{\par } -->
-    <!-- \newenvironment{byline}{\vskip6pt\itshape\fontsize{16pt}{18pt}\selectfont}{\par } -->
-    <!-- \newenvironment{citbibl}{}{\ifvmode\par\fi } -->
-    <!-- \newenvironment{bibl}{}{} -->
-    <!-- \newenvironment{rubric}{}{} -->
-    <!-- \newenvironment{msItem}{\vskip 6pt}{\par} -->
-    <!-- \newenvironment{msHead}{\vskip 6pt}{\par} -->
-    <!-- \def\titlem#1{\emph{#1}} -->
-    <!-- \def\corr#1{#1} -->
-    <!-- \def\sic#1{#1} -->
-    <!-- \def\reg#1{#1} -->
-    <!-- \def\orig#1{#1} -->
-    <!-- \def\gap{} -->
-    <!-- \def\abbr#1{#1} -->
-    <!-- \def\expan#1{#1} -->
-    <!-- \RequirePackage{array} -->
-    <!-- \def\@testpach{\@chclass -->
-    <!--  \ifnum \@lastchclass=6 \@ne \@chnum \@ne \else -->
-    <!--   \ifnum \@lastchclass=7 5 \else -->
-    <!--    \ifnum \@lastchclass=8 \tw@ \else -->
-    <!--     \ifnum \@lastchclass=9 \thr@@ -->
-    <!--    \else \z@ -->
-    <!--    \ifnum \@lastchclass = 10 \else -->
-    <!--    \edef\@nextchar{\expandafter\string\@nextchar}% -->
-    <!--    \@chnum -->
-    <!--    \if \@nextchar c\z@ \else -->
-    <!--     \if \@nextchar l\@ne \else -->
-    <!--      \if \@nextchar r\tw@ \else -->
-    <!--    \z@ \@chclass -->
-    <!--    \if\@nextchar |\@ne \else -->
-    <!--     \if \@nextchar !6 \else -->
-    <!--      \if \@nextchar @7 \else -->
-    <!--       \if \@nextchar (8 \else -->
-    <!--        \if \@nextchar )9 \else -->
-    <!--   10 -->
-    <!--   \@chnum -->
-    <!--   \if \@nextchar m\thr@@\else -->
-    <!--    \if \@nextchar p4 \else -->
-    <!--     \if \@nextchar b5 \else -->
-    <!--    \z@ \@chclass \z@ \@preamerr \z@ \fi \fi \fi \fi -->
-    <!--    \fi \fi  \fi  \fi  \fi  \fi  \fi \fi \fi \fi \fi \fi} -->
-    
-    <!-- \gdef\arraybackslash{\let\\=\@arraycr} -->
-    <!-- \def\textxi{\ensuremath{\xi}} -->
-    <!-- \def\Panel#1#2#3#4{\multicolumn{#3}{){\columncolor{#2}}#4}{#1}} -->
-    <xsl:text disable-output-escaping="yes">
-      <!-- \newcolumntype{L}[1]{){\raggedright\arraybackslash}p{#1}} -->
-      <!-- \newcolumntype{C}[1]{){\centering\arraybackslash}p{#1}} -->
-      <!-- \newcolumntype{R}[1]{){\raggedleft\arraybackslash}p{#1}} -->
-      <!-- \newcolumntype{P}[1]{){\arraybackslash}p{#1}} -->
-      <!-- \newcolumntype{B}[1]{){\arraybackslash}b{#1}} -->
-      <!-- \newcolumntype{M}[1]{){\arraybackslash}m{#1}} -->
-      <!-- \definecolor{label}{gray}{0.75} -->
-      <!-- \def\unusedattribute#1{\sout{\textcolor{label}{#1}}} -->
-      <!-- \DeclareRobustCommand*{\xref}{\hyper@normalise\xref@} -->
-      <!-- \def\xref@#1#2{\hyper@linkurl{#2}{#1}} -->
-      <!-- \begingroup -->
-      <!-- \catcode`\_=\active -->
-      <!-- \gdef_#1{\ensuremath{\sb{\mathrm{#1}}}} -->
-      <!-- \endgroup -->
-      <!-- \mathcode`\_=\string"8000 -->
-      <!-- \catcode`\_=12\relax -->
-    </xsl:text>
-  </xsl:otherwise>
-</xsl:choose>
-</xsl:template>
-
-
-<doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>[latex] <param name="ptr">ptr</param>
+      </xsl:when>
+      <xsl:otherwise>
+        <!-- \DeclareTextSymbol{\textpi}{OML}{25} -->
+        <!-- \usepackage{relsize} -->
+        <!-- \def\textsubscript#1{% -->
+        <!--   \@textsubscript{\selectfont#1}} -->
+        <!-- \def\@textsubscript#1{% -->
+        <!--   {\m@th\ensuremath{_{\mbox{\fontsize\sf@size\z@#1}}}}} -->
+        <!-- \def\textquoted#1{‘#1’} -->
+        <!-- \def\textsmall#1{{\small #1}} -->
+        <!-- \def\textlarge#1{{\large #1}} -->
+        <!-- \def\textoverbar#1{\ensuremath{\overline{#1}}} -->
+        <!-- \def\textgothic#1{{\fontspec{<xsl:value-of select="$gothicFont"/>}#1}} -->
+        <!-- \def\textcal#1{{\fontspec{<xsl:value-of select="$calligraphicFont"/>}#1}} -->
+        <!-- \newenvironment{biblfree}{}{\ifvmode\par\fi } -->
+        <!-- \newenvironment{docImprint}{\vskip 6pt}{\ifvmode\par\fi } -->
+        <!-- \newenvironment{docDate}{}{\ifvmode\par\fi } -->
+        <!-- \newenvironment{docAuthor}{\ifvmode\vskip4pt\fontsize{16pt}{18pt}\selectfont\fi\itshape}{\ifvmode\par\fi } -->
+        <!-- \newenvironment{docTitle}{\vskip6pt\bfseries\fontsize{18pt}{22pt}\selectfont}{\par } -->
+        <!-- \newenvironment{titlePart}{}{\par } -->
+        <!-- \newenvironment{byline}{\vskip6pt\itshape\fontsize{16pt}{18pt}\selectfont}{\par } -->
+        <!-- \newenvironment{citbibl}{}{\ifvmode\par\fi } -->
+        <!-- \newenvironment{bibl}{}{} -->
+        <!-- \newenvironment{rubric}{}{} -->
+        <!-- \newenvironment{msItem}{\vskip 6pt}{\par} -->
+        <!-- \newenvironment{msHead}{\vskip 6pt}{\par} -->
+        <!-- \def\titlem#1{\emph{#1}} -->
+        <!-- \def\corr#1{#1} -->
+        <!-- \def\sic#1{#1} -->
+        <!-- \def\reg#1{#1} -->
+        <!-- \def\orig#1{#1} -->
+        <!-- \def\gap{} -->
+        <!-- \def\abbr#1{#1} -->
+        <!-- \def\expan#1{#1} -->
+        <!-- \RequirePackage{array} -->
+        <!-- \def\@testpach{\@chclass -->
+        <!--  \ifnum \@lastchclass=6 \@ne \@chnum \@ne \else -->
+        <!--   \ifnum \@lastchclass=7 5 \else -->
+        <!--    \ifnum \@lastchclass=8 \tw@ \else -->
+        <!--     \ifnum \@lastchclass=9 \thr@@ -->
+        <!--    \else \z@ -->
+        <!--    \ifnum \@lastchclass = 10 \else -->
+        <!--    \edef\@nextchar{\expandafter\string\@nextchar}% -->
+        <!--    \@chnum -->
+        <!--    \if \@nextchar c\z@ \else -->
+        <!--     \if \@nextchar l\@ne \else -->
+        <!--      \if \@nextchar r\tw@ \else -->
+        <!--    \z@ \@chclass -->
+        <!--    \if\@nextchar |\@ne \else -->
+        <!--     \if \@nextchar !6 \else -->
+        <!--      \if \@nextchar @7 \else -->
+        <!--       \if \@nextchar (8 \else -->
+        <!--        \if \@nextchar )9 \else -->
+        <!--   10 -->
+        <!--   \@chnum -->
+        <!--   \if \@nextchar m\thr@@\else -->
+        <!--    \if \@nextchar p4 \else -->
+        <!--     \if \@nextchar b5 \else -->
+        <!--    \z@ \@chclass \z@ \@preamerr \z@ \fi \fi \fi \fi -->
+        <!--    \fi \fi  \fi  \fi  \fi  \fi  \fi \fi \fi \fi \fi \fi} -->
+        <!-- \gdef\arraybackslash{\let\\=\@arraycr} -->
+        <!-- \def\textxi{\ensuremath{\xi}} -->
+        <!-- \def\Panel#1#2#3#4{\multicolumn{#3}{){\columncolor{#2}}#4}{#1}} -->
+        <xsl:text disable-output-escaping="yes">
+          <!-- \newcolumntype{L}[1]{){\raggedright\arraybackslash}p{#1}} -->
+          <!-- \newcolumntype{C}[1]{){\centering\arraybackslash}p{#1}} -->
+          <!-- \newcolumntype{R}[1]{){\raggedleft\arraybackslash}p{#1}} -->
+          <!-- \newcolumntype{P}[1]{){\arraybackslash}p{#1}} -->
+          <!-- \newcolumntype{B}[1]{){\arraybackslash}b{#1}} -->
+          <!-- \newcolumntype{M}[1]{){\arraybackslash}m{#1}} -->
+          <!-- \definecolor{label}{gray}{0.75} -->
+          <!-- \def\unusedattribute#1{\sout{\textcolor{label}{#1}}} -->
+          <!-- \DeclareRobustCommand*{\xref}{\hyper@normalise\xref@} -->
+          <!-- \def\xref@#1#2{\hyper@linkurl{#2}{#1}} -->
+          <!-- \begingroup -->
+          <!-- \catcode`\_=\active -->
+          <!-- \gdef_#1{\ensuremath{\sb{\mathrm{#1}}}} -->
+          <!-- \endgroup -->
+          <!-- \mathcode`\_=\string"8000 -->
+          <!-- \catcode`\_=12\relax -->
+        </xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>[latex] <param name="ptr">ptr</param>
          <param name="dest">dest</param>
       </desc>
-   </doc>
+  </doc>
   <xsl:template name="makeExternalLink">
-      <xsl:param name="ptr" as="xs:boolean"  select="false()"/>
-      <xsl:param name="dest"/>
-      <xsl:param name="title"/>
-      <xsl:choose>
-         <xsl:when test="$ptr">
-            <xsl:text>\url{</xsl:text>
-	    <xsl:sequence select="tei:escapeChars($dest,.)"/>
-            <xsl:text>}</xsl:text>
-         </xsl:when>
-         <xsl:otherwise>
-            <xsl:text>\href{</xsl:text>
-	    <xsl:value-of select="tei:escapeCharsPartial($dest)"/>
-            <xsl:text>}{</xsl:text>
-            <xsl:value-of select="tei:escapeChars($dest,.)"/>
-            <xsl:text>}</xsl:text>
-         </xsl:otherwise>
-      </xsl:choose>
+    <xsl:param name="ptr" as="xs:boolean" select="false()"/>
+    <xsl:param name="dest"/>
+    <xsl:param name="title"/>
+    <xsl:choose>
+      <xsl:when test="$ptr">
+        <xsl:text>\url{</xsl:text>
+        <xsl:sequence select="tei:escapeChars($dest,.)"/>
+        <xsl:text>}</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:text>\href{</xsl:text>
+        <xsl:value-of select="tei:escapeCharsPartial($dest)"/>
+        <xsl:text>}{</xsl:text>
+        <xsl:value-of select="tei:escapeChars($dest,.)"/>
+        <xsl:text>}</xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
-
-   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
-      <desc>
-         <p>LaTeX package setup</p>
-         <p>Declaration of the LaTeX packages needed to implement
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
+    <desc>
+      <p>LaTeX package setup</p>
+      <p>Declaration of the LaTeX packages needed to implement
     this markup</p>
-      </desc>
-   </doc>
-   <xsl:template name="latexPackages">
-     <xsl:text>% running latexPackages template
+    </desc>
+  </doc>
+  <xsl:template name="latexPackages">
+    <xsl:text>% running latexPackages template
      \usepackage{xcolor}
      \definecolor{shadecolor}{gray}{0.95}
      \usepackage{longtable}
@@ -459,17 +435,11 @@ capable of dealing with UTF-8 directly.
      \usepackage{lscape}
      \usepackage{ragged2e}
      </xsl:text>
-     <xsl:choose>
-     <xsl:when test="not($documentclass='memoir')">
-       <xsl:text>
-       \usepackage[</xsl:text>
-       <xsl:value-of select="$latexPaperSize"/>
-       <xsl:text>,</xsl:text>
-       <xsl:value-of select="$latexGeometryOptions"/>
-       <xsl:text>]{geometry}
+    <xsl:choose>
+      <xsl:when test="not($documentclass='memoir')"><xsl:text>
+       \usepackage[</xsl:text><xsl:value-of select="$latexPaperSize"/><xsl:text>,</xsl:text><xsl:value-of select="$latexGeometryOptions"/><xsl:text>]{geometry}
        \usepackage{framed}
-       </xsl:text>
-       <xsl:text>
+       </xsl:text><xsl:text>
 	 \usepackage{xcolor}
 	 \definecolor{shadecolor}{gray}{0.95}
 	 \usepackage{longtable}
@@ -478,65 +448,44 @@ capable of dealing with UTF-8 directly.
        </xsl:text>
        \usepackage{fancyhdr}
      </xsl:when>
-     <xsl:otherwise>
-       <xsl:text>
+      <xsl:otherwise><xsl:text>
 	 \usepackage{titling}
 	 \usepackage{marginnote}
 	 \renewcommand*{\marginfont}{\itshape\footnotesize}
 	 \setlength\marginparwidth{.75in}
 	 \usepackage{graphicx}
-       </xsl:text>
-       <xsl:if test="key('ENDNOTES',1)">
+       </xsl:text><xsl:if test="key('ENDNOTES',1)">
 	 \usepackage{endnotes}
-	 <xsl:choose>
-	   <xsl:when test="key('FOOTNOTES',1)">
+	 <xsl:choose><xsl:when test="key('FOOTNOTES',1)">
 	     \def\theendnote{\@alph\c@endnote}
-	   </xsl:when>
-	   <xsl:otherwise>
+	   </xsl:when><xsl:otherwise>
 	     \def\theendnote{\@arabic\c@endnote}
-	   </xsl:otherwise>
-	 </xsl:choose>
-       </xsl:if>
-       <xsl:text>
+	   </xsl:otherwise></xsl:choose>
+       </xsl:if><xsl:text>
 	 \def\Gin@extensions{.pdf,.png,.jpg,.mps,.tif}
-       </xsl:text>
-       <xsl:if test="$biblatex='true'">
+       </xsl:text><xsl:if test="$biblatex='true'">
 	 \usepackage[backend=biber]{biblatex}
-       </xsl:if>
-       <xsl:if test="$bibliography != ''">
+       </xsl:if><xsl:if test="$bibliography != ''">
 	 \bibliography{<xsl:value-of select="$bibliography"/>}
-       </xsl:if>
-       <xsl:if test="$debuglatex='true'">
+       </xsl:if><xsl:if test="$debuglatex='true'">
 	 \setcounter{errorcontextlines}{400}
-       </xsl:if>
-       <xsl:if test="$showteiheader='true'">
+       </xsl:if><xsl:if test="$showteiheader='true'">
 	 \usepackage{lscape}
 	 \usepackage{minted}
-       </xsl:if>
-       <xsl:choose>
-	 <xsl:when test="$reencode='true'">
-           <xsl:text>
+       </xsl:if><xsl:choose><xsl:when test="$reencode='true'"><xsl:text>
 	     \IfFileExists{tipa.sty}{\usepackage{tipa}}{}
 	     \usepackage{times}
-	   </xsl:text>
-	 </xsl:when>
-       </xsl:choose>
-       <xsl:if test="$userpackage != 'false' and not($userpackage='')">
+	   </xsl:text></xsl:when></xsl:choose><xsl:if test="$userpackage != 'false' and not($userpackage='')">
 	 \usepackage{<xsl:value-of select="$userpackage"/>}
-       </xsl:if>
-       <xsl:choose>
-	 <xsl:when test="$documentclass='memoir'">
+       </xsl:if><xsl:choose><xsl:when test="$documentclass='memoir'">
 	   % pagestyles
 	   \pagestyle{ruled}
 	   \makeoddfoot{ruled}{{\tiny \textit{Draft: \today}}}{\thepage}{}
 	   \makeevenfoot{ruled}{}{\thepage}{{\tiny \textit{Draft: \today}}}
 	   
-	 </xsl:when>
-	 <xsl:otherwise>
+	 </xsl:when><xsl:otherwise>
 	   \pagestyle{fancy} 
-	 </xsl:otherwise>
-       </xsl:choose>
-       <xsl:if test="$ledmac='true'">
+	 </xsl:otherwise></xsl:choose><xsl:if test="$ledmac='true'">
 	 \usepackage{eledmac,eledpar}
 	 <xsl:call-template name="ledmacOptions"/>
        </xsl:if>
@@ -547,84 +496,92 @@ capable of dealing with UTF-8 directly.
        \usepackage[english]{cleveref}% clashes with eledmac &lt; 1.10.1!
        % \newcommand{\cref}{\href}
      </xsl:otherwise>
-     </xsl:choose>
-   </xsl:template>
-   
+    </xsl:choose>
+  </xsl:template>
   <xsl:template name="mainDocument">
-      <xsl:if test="not($realFigures='true')">
-         <xsl:text>%BEGINFIGMAP</xsl:text>
-         <xsl:if test="not($latexLogo='')">
-	   <xsl:text>&#10;%FIGMAP </xsl:text>
-	   <xsl:value-of select="$latexLogo"/>
-	   <xsl:text> FIG0 </xsl:text>
-         </xsl:if>
-         <xsl:for-each select="//tei:figure">
-	   <xsl:variable name="c">
-	     <xsl:number level="any"/>
-	   </xsl:variable>
-	   <xsl:text>&#10;%FIGMAP </xsl:text>
-	   <xsl:variable name="f">
-	     <xsl:choose>
-	       <xsl:when test="@url">
-		 <xsl:sequence select="tei:resolveURI(.,@url)"/>
-	       </xsl:when>
-	       <xsl:when test="@entity">
-		 <xsl:value-of select="unparsed-entity-uri(@entity)"/>
-	       </xsl:when>
-	       <xsl:when test="tei:graphic">
-		 <xsl:sequence select="tei:resolveURI(tei:graphic,tei:graphic/@url)"/>
-	       </xsl:when>
-	     </xsl:choose>
-	   </xsl:variable>
-	   <xsl:choose>
-	     <xsl:when test="contains($f,'.')">
-	       <xsl:value-of select="$f"/>
-	     </xsl:when>
-	     <xsl:otherwise>
-	       <xsl:value-of select="concat($f,'.png')"/>
-	     </xsl:otherwise>
-	   </xsl:choose>
-	   <xsl:text> FIG</xsl:text>
-	   <xsl:value-of select="$c + 1000"/>
-	   <xsl:text>&#10;</xsl:text>
-         </xsl:for-each>
-         <xsl:text>&#10;%ENDFIGMAP&#10;</xsl:text>
+    <xsl:if test="not($realFigures='true')">
+      <xsl:text>%BEGINFIGMAP</xsl:text>
+      <xsl:if test="not($latexLogo='')">
+        <xsl:text>
+%FIGMAP </xsl:text>
+        <xsl:value-of select="$latexLogo"/>
+        <xsl:text> FIG0 </xsl:text>
       </xsl:if>
-      <xsl:text>\documentclass[</xsl:text>
-      <xsl:value-of select="$classParameters"/>
-      <xsl:text>,</xsl:text>
-      <xsl:value-of select="$latexPaperSize"/>
-      <xsl:text>]{</xsl:text>
-      <xsl:value-of select="$documentclass"/>
-      <xsl:text>}</xsl:text>
-      <xsl:call-template name="latexSetup"/>
-      <xsl:call-template name="latexPackages"/>
-      <!-- <xsl:call-template name="latexLayout"/> -->
-      <!-- <xsl:call-template name="latexOther"/> -->
-      <xsl:text>&#10;\begin{document}&#10;</xsl:text>
-      <xsl:if test="not(tei:text/tei:front/tei:titlePage)">
-	<xsl:if test="$usetitling='true'">
-	  <xsl:call-template name="printTitleAndLogo"/>
-	</xsl:if>
+      <xsl:for-each select="//tei:figure">
+        <xsl:variable name="c">
+          <xsl:number level="any"/>
+        </xsl:variable>
+        <xsl:text>
+%FIGMAP </xsl:text>
+        <xsl:variable name="f">
+          <xsl:choose>
+            <xsl:when test="@url">
+              <xsl:sequence select="tei:resolveURI(.,@url)"/>
+            </xsl:when>
+            <xsl:when test="@entity">
+              <xsl:value-of select="unparsed-entity-uri(@entity)"/>
+            </xsl:when>
+            <xsl:when test="tei:graphic">
+              <xsl:sequence select="tei:resolveURI(tei:graphic,tei:graphic/@url)"/>
+            </xsl:when>
+          </xsl:choose>
+        </xsl:variable>
+        <xsl:choose>
+          <xsl:when test="contains($f,'.')">
+            <xsl:value-of select="$f"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="concat($f,'.png')"/>
+          </xsl:otherwise>
+        </xsl:choose>
+        <xsl:text> FIG</xsl:text>
+        <xsl:value-of select="$c + 1000"/>
+        <xsl:text>
+</xsl:text>
+      </xsl:for-each>
+      <xsl:text>
+%ENDFIGMAP
+</xsl:text>
+    </xsl:if>
+    <xsl:text>\documentclass[</xsl:text>
+    <xsl:value-of select="$classParameters"/>
+    <xsl:text>,</xsl:text>
+    <xsl:value-of select="$latexPaperSize"/>
+    <xsl:text>]{</xsl:text>
+    <xsl:value-of select="$documentclass"/>
+    <xsl:text>}</xsl:text>
+    <xsl:call-template name="latexSetup"/>
+    <xsl:call-template name="latexPackages"/>
+    <!-- <xsl:call-template name="latexLayout"/> -->
+    <!-- <xsl:call-template name="latexOther"/> -->
+    <xsl:text>
+\begin{document}
+</xsl:text>
+    <xsl:if test="not(tei:text/tei:front/tei:titlePage)">
+      <xsl:if test="$usetitling='true'">
+        <xsl:call-template name="printTitleAndLogo"/>
       </xsl:if>
-      <!-- certainly don't touch this line -->
-      <xsl:text disable-output-escaping="yes">\let\tabcellsep&amp;</xsl:text>
-      <xsl:call-template name="beginDocumentHook"/>
-      <xsl:apply-templates/>
-      <xsl:if test="key('ENDNOTES',1)">
-	<xsl:text>&#10;\theendnotes</xsl:text>
-      </xsl:if>
-      <xsl:call-template name="endDocumentHook"/>
-      <xsl:text>&#10;\end{document}&#10;</xsl:text>
-   </xsl:template>
-
-   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
-      <desc>
-         <p>LaTeX setup commands for ledmac package</p>
-      </desc>
-   </doc>
-   <xsl:template name="ledmacOptions">
-     <xsl:text>
+    </xsl:if>
+    <!-- certainly don't touch this line -->
+    <xsl:text disable-output-escaping="yes">\let\tabcellsep&amp;</xsl:text>
+    <xsl:call-template name="beginDocumentHook"/>
+    <xsl:apply-templates/>
+    <xsl:if test="key('ENDNOTES',1)">
+      <xsl:text>
+\theendnotes</xsl:text>
+    </xsl:if>
+    <xsl:call-template name="endDocumentHook"/>
+    <xsl:text>
+\end{document}
+</xsl:text>
+  </xsl:template>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
+    <desc>
+      <p>LaTeX setup commands for ledmac package</p>
+    </desc>
+  </doc>
+  <xsl:template name="ledmacOptions">
+    <xsl:text>
        % simplify what ledmac does with fonts, because it breaks. From the documentation of ledmac:
        % The notes are actually given seven parameters: the page, line, and sub-line num-
        % ber for the start of the lemma; the same three numbers for the end of the lemma;
@@ -635,10 +592,10 @@ capable of dealing with UTF-8 directly.
        \makeatother
        \setlength{\stanzaindentbase}{20pt}
      \setstanzaindents{8,</xsl:text>
-     <xsl:for-each  select="1 to tei:maxstanzalines(.)">
-       <xsl:text>2,2,</xsl:text>
-     </xsl:for-each>
-     <xsl:text>}
+    <xsl:for-each select="1 to tei:maxstanzalines(.)">
+      <xsl:text>2,2,</xsl:text>
+    </xsl:for-each>
+    <xsl:text>}
      % \setstanzapenalties{1,5000,10500}
      \renewcommand{\notenumfont}{\bfseries}
      \lineation{page}
@@ -649,371 +606,363 @@ capable of dealing with UTF-8 directly.
      \sidenotemargin{outer}
      \linenummargin{inner}
        </xsl:text>
-   </xsl:template>
-
+  </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>[common] Count the maximum number of lines in a linegroup, documentwide.</desc>
-   </doc>
+    <desc>[common] Count the maximum number of lines in a linegroup, documentwide.</desc>
+  </doc>
   <xsl:function name="tei:maxstanzalines">
     <xsl:param name="context"/>
-    <xsl:variable name="lines" as="item()*" >
+    <xsl:variable name="lines" as="item()*">
       <xsl:for-each select="$context//tei:lg">
-	<xsl:sequence select="count(./tei:l)"/>
+        <xsl:sequence select="count(./tei:l)"/>
       </xsl:for-each>
     </xsl:variable>
     <xsl:value-of select="max($lines)"/>
   </xsl:function>
-
-   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-         <p>Process element app</p>
-         <p>Process lem and rdg within app. Sends lots of information
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>
+      <p>Process element app</p>
+      <p>Process lem and rdg within app. Sends lots of information
 	 to a footnote. If a lem is not found, the first rdg is
 	 used as the base text. 
 	 </p>
-      </desc>
-   </doc>
+    </desc>
+  </doc>
   <xsl:template match="tei:app">
     <xsl:choose>
       <xsl:when test="ancestor::tei:listApp">
       </xsl:when>
       <xsl:otherwise>
-	<xsl:call-template name="makeApp"/>
+        <xsl:call-template name="makeApp"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  
-    <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-         <p>Creating an apparatus criticus reading.</p>
-      </desc>
-   </doc>
-   <xsl:template name="appReading">
-     <xsl:param name="endpoint" as="xs:boolean"  select="false()"/>
-     <xsl:param name="lemma"/>
-     <xsl:param name="lemmawitness"/>
-     <xsl:param name="readings"/>
-     <xsl:param name="from"/>
-     <xsl:param name="to"/>
-     <xsl:text>\edtext{</xsl:text>
-     <xsl:choose>
-       <xsl:when test="$endpoint" />
-       <xsl:otherwise>
-	 <xsl:value-of select="$lemma"/>
-       </xsl:otherwise>
-     </xsl:choose>
-     <xsl:text>}{</xsl:text>
-     <xsl:if test="$endpoint">
-	 <xsl:text>\lemma{</xsl:text>
-	 <xsl:value-of select="$lemma"/>
-	 <xsl:text>}</xsl:text>
-	 <xsl:text>\xxref{</xsl:text>
-	 <xsl:value-of select="$from"/>
-	 <xsl:text>}{</xsl:text>
-	 <xsl:value-of select="$to"/>
-	 <xsl:text>}</xsl:text>
-     </xsl:if>
-     <xsl:text>\Afootnote{</xsl:text>
-     <xsl:if test="@xml:id">
-       <xsl:text>\label{</xsl:text>
-       <xsl:value-of select="@xml:id"/>
-       <xsl:text>}</xsl:text>
-     </xsl:if>
-     <xsl:copy-of select="$readings"/>
-     <xsl:if test="@type">
-       <xsl:text>  [</xsl:text>
-       <xsl:value-of select="@type"/>
-       <xsl:text>]</xsl:text>
-     </xsl:if>
-     <xsl:text>}}</xsl:text>
-     </xsl:template>
-
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>
+      <p>Creating an apparatus criticus reading.</p>
+    </desc>
+  </doc>
+  <xsl:template name="appReading">
+    <xsl:param name="endpoint" as="xs:boolean" select="false()"/>
+    <xsl:param name="lemma"/>
+    <xsl:param name="lemmawitness"/>
+    <xsl:param name="readings"/>
+    <xsl:param name="from"/>
+    <xsl:param name="to"/>
+    <xsl:text>\edtext{</xsl:text>
+    <xsl:choose>
+      <xsl:when test="$endpoint"/>
+      <xsl:otherwise>
+        <xsl:value-of select="$lemma"/>
+      </xsl:otherwise>
+    </xsl:choose>
+    <xsl:text>}{</xsl:text>
+    <xsl:if test="$endpoint">
+      <xsl:text>\lemma{</xsl:text>
+      <xsl:value-of select="$lemma"/>
+      <xsl:text>}</xsl:text>
+      <xsl:text>\xxref{</xsl:text>
+      <xsl:value-of select="$from"/>
+      <xsl:text>}{</xsl:text>
+      <xsl:value-of select="$to"/>
+      <xsl:text>}</xsl:text>
+    </xsl:if>
+    <xsl:text>\Afootnote{</xsl:text>
+    <xsl:if test="@xml:id">
+      <xsl:text>\label{</xsl:text>
+      <xsl:value-of select="@xml:id"/>
+      <xsl:text>}</xsl:text>
+    </xsl:if>
+    <xsl:copy-of select="$readings"/>
+    <xsl:if test="@type">
+      <xsl:text>  [</xsl:text>
+      <xsl:value-of select="@type"/>
+      <xsl:text>]</xsl:text>
+    </xsl:if>
+    <xsl:text>}}</xsl:text>
+  </xsl:template>
   <xsl:template name="makeApp">
-    <xsl:param name="endpoint" as="xs:boolean"  select="false()"/>
+    <xsl:param name="endpoint" as="xs:boolean" select="false()"/>
     <xsl:param name="lem"/>
     <xsl:call-template name="appReading">
-      <xsl:with-param name="endpoint" as="xs:boolean"  select="$endpoint"/>
+      <xsl:with-param name="endpoint" as="xs:boolean" select="$endpoint"/>
       <xsl:with-param name="lemma">
-	<xsl:choose>
-	  <xsl:when test="tei:lem">
-	    <xsl:value-of select="tei:lem"/>
-	  </xsl:when>
-	  <xsl:when test="not($lem='')">
-	    <xsl:value-of select="$lem"/>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <xsl:value-of select="tei:rdg[1]"/>
-	  </xsl:otherwise>
-	</xsl:choose>
+        <xsl:choose>
+          <xsl:when test="tei:lem">
+            <xsl:value-of select="tei:lem"/>
+          </xsl:when>
+          <xsl:when test="not($lem='')">
+            <xsl:value-of select="$lem"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="tei:rdg[1]"/>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:with-param>
       <xsl:with-param name="lemmawitness">
-	<xsl:value-of select="@wit"/>
+        <xsl:value-of select="@wit"/>
       </xsl:with-param>
       <xsl:with-param name="readings">
-	<xsl:for-each select="tei:rdg">
-	  <!--	    <xsl:when test="$lem='' or (not(../tei:lem) and position()=1)"/>--> 
-	  <xsl:if test="@xml:lang">
-	    <xsl:choose>
-	      <xsl:when test="@xml:lang='bo'">
-		<xsl:text>\texttibetan{</xsl:text>
-	      </xsl:when>
-	      <xsl:when test="@xml:lang='en'">
-		<xsl:text>\textenglish{</xsl:text>
-	      </xsl:when>
-	      <xsl:when test="@xml:lang='sa'">
-		<xsl:text>\textsanskrit{</xsl:text>
-	      </xsl:when>
-	      <xsl:otherwise>
-		<xsl:text>{\normalfontlatin </xsl:text>
-	      </xsl:otherwise>
-	    </xsl:choose>
-	  </xsl:if>
-	  <xsl:apply-templates/>
-	  <xsl:if test="@cause='omission'">[]</xsl:if>
-	  <xsl:if test="@xml:lang">
-	    <xsl:text>}</xsl:text>
-	  </xsl:if>
-	  <xsl:text> \parencite{</xsl:text>
-	  <xsl:value-of select="translate(substring(@wit,2),' #',', ')"/>
-	  <xsl:text>}</xsl:text>
-	  <xsl:if test="following-sibling::tei:rdg">; </xsl:if>
-	</xsl:for-each>
-	<xsl:for-each select="tei:note">
-	  <xsl:if test="@xml:lang">
-	    <xsl:choose>
-	      <xsl:when test="@xml:lang='bo'">
-		<xsl:text>\texttibetan{</xsl:text>
-	      </xsl:when>
-	      <xsl:when test="@xml:lang='en'">
-		<xsl:text>\textenglish{</xsl:text>
-	      </xsl:when>
-	      <xsl:when test="@xml:lang='sa'">
-		<xsl:text>\textsanskrit{</xsl:text>
-	      </xsl:when>
-	      <xsl:otherwise>
-		<xsl:text>{\normalfontlatin </xsl:text>
-	      </xsl:otherwise>
-	    </xsl:choose>
-	  </xsl:if>
-	  <xsl:text>---\textsc{Note} </xsl:text>
-	  <xsl:apply-templates/>
-	  <xsl:if test="@xml:lang">
-	    <xsl:text>}</xsl:text>
-	  </xsl:if>
-	</xsl:for-each>
+        <xsl:for-each select="tei:rdg">
+          <!--	    <xsl:when test="$lem='' or (not(../tei:lem) and position()=1)"/>-->
+          <xsl:if test="@xml:lang">
+            <xsl:choose>
+              <xsl:when test="@xml:lang='bo'">
+                <xsl:text>\texttibetan{</xsl:text>
+              </xsl:when>
+              <xsl:when test="@xml:lang='en'">
+                <xsl:text>\textenglish{</xsl:text>
+              </xsl:when>
+              <xsl:when test="@xml:lang='sa'">
+                <xsl:text>\textsanskrit{</xsl:text>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:text>{\normalfontlatin </xsl:text>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:if>
+          <xsl:apply-templates/>
+          <xsl:if test="@cause='omission'">[]</xsl:if>
+          <xsl:if test="@xml:lang">
+            <xsl:text>}</xsl:text>
+          </xsl:if>
+          <xsl:text> \parencite{</xsl:text>
+          <xsl:value-of select="translate(substring(@wit,2),' #',', ')"/>
+          <xsl:text>}</xsl:text>
+          <xsl:if test="following-sibling::tei:rdg">; </xsl:if>
+        </xsl:for-each>
+        <xsl:for-each select="tei:note">
+          <xsl:if test="@xml:lang">
+            <xsl:choose>
+              <xsl:when test="@xml:lang='bo'">
+                <xsl:text>\texttibetan{</xsl:text>
+              </xsl:when>
+              <xsl:when test="@xml:lang='en'">
+                <xsl:text>\textenglish{</xsl:text>
+              </xsl:when>
+              <xsl:when test="@xml:lang='sa'">
+                <xsl:text>\textsanskrit{</xsl:text>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:text>{\normalfontlatin </xsl:text>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:if>
+          <xsl:text>---\textsc{Note} </xsl:text>
+          <xsl:apply-templates/>
+          <xsl:if test="@xml:lang">
+            <xsl:text>}</xsl:text>
+          </xsl:if>
+        </xsl:for-each>
       </xsl:with-param>
       <xsl:with-param name="from">
-	<xsl:value-of select="substring(@from, 2)"/>
+        <xsl:value-of select="substring(@from, 2)"/>
       </xsl:with-param>
       <xsl:with-param name="to">
-	<xsl:value-of select="substring(@to, 2)"/>
+        <xsl:value-of select="substring(@to, 2)"/>
       </xsl:with-param>
     </xsl:call-template>
     <xsl:apply-templates select="tei:note"/>
-    </xsl:template>
-
-    <xsl:template match="tei:lg">
-      <xsl:choose>
-	<xsl:when test="$ledmac='true' and not(ancestor::tei:note)">
-	  <xsl:text>
+  </xsl:template>
+  <xsl:template match="tei:lg">
+    <xsl:choose>
+      <xsl:when test="$ledmac='true' and not(ancestor::tei:note)">
+        <xsl:text>
 	    
-	    \stanza&#10;</xsl:text>
-	  <xsl:if test="@xml:id">
-	    <xsl:text>\edlabel{</xsl:text>
-	    <xsl:value-of select="@xml:id"/>
-	    <xsl:text>}</xsl:text>
-	  </xsl:if>
-	  <xsl:choose>
-	    <xsl:when test="@n">
-	      <xsl:text>\flagstanza{\tiny\textenglish{</xsl:text>
-	      <xsl:value-of select="concat('...', substring(tei:escapeChars(@n,.), (string-length(@n) - 6)))"/>
-	      <xsl:text>}}</xsl:text>
-	    </xsl:when>
-	    <xsl:when test="@xml:id">
-	      <xsl:text>\flagstanza{\tiny\textenglish{</xsl:text>
-	      <xsl:value-of select="concat('...', substring(tei:escapeChars(@xml:id,.), (string-length(@xml:id) - 5)))"/>
-	      <xsl:text>}}</xsl:text>
-	    </xsl:when>
-	  </xsl:choose>
-	  <xsl:for-each select="tei:l">
-	    <xsl:if test="parent::tei:lg/@xml:lang='Av'">{\itshape </xsl:if>
-	    <xsl:apply-templates/>
-	    <xsl:if test="parent::tei:lg/@xml:lang='Av'">}</xsl:if>
-	    <xsl:if test="following-sibling::tei:l">
-	      <xsl:text>&amp;</xsl:text>
-	    </xsl:if>
-	  </xsl:for-each>
-	  <xsl:apply-templates select="tei:note"/>
-	  <xsl:text>\&amp;&#10;
+	    \stanza
+</xsl:text>
+        <xsl:if test="@xml:id">
+          <xsl:text>\edlabel{</xsl:text>
+          <xsl:value-of select="@xml:id"/>
+          <xsl:text>}</xsl:text>
+        </xsl:if>
+        <xsl:choose>
+          <xsl:when test="@n">
+            <xsl:text>\flagstanza{\tiny\textenglish{</xsl:text>
+            <xsl:value-of select="concat('...', substring(tei:escapeChars(@n,.), (string-length(@n) - 6)))"/>
+            <xsl:text>}}</xsl:text>
+          </xsl:when>
+          <xsl:when test="@xml:id">
+            <xsl:text>\flagstanza{\tiny\textenglish{</xsl:text>
+            <xsl:value-of select="concat('...', substring(tei:escapeChars(@xml:id,.), (string-length(@xml:id) - 5)))"/>
+            <xsl:text>}}</xsl:text>
+          </xsl:when>
+        </xsl:choose>
+        <xsl:for-each select="tei:l">
+          <xsl:if test="parent::tei:lg/@xml:lang='Av'">{\itshape </xsl:if>
+          <xsl:apply-templates/>
+          <xsl:if test="parent::tei:lg/@xml:lang='Av'">}</xsl:if>
+          <xsl:if test="following-sibling::tei:l">
+            <xsl:text>&amp;</xsl:text>
+          </xsl:if>
+        </xsl:for-each>
+        <xsl:apply-templates select="tei:note"/>
+        <xsl:text>\&amp;
+
 
 	  </xsl:text>
-	</xsl:when>
-	<xsl:when test="ancestor::tei:note">
-	  <xsl:text>
+      </xsl:when>
+      <xsl:when test="ancestor::tei:note">
+        <xsl:text>
 	    \begin{verse}
 	  </xsl:text>
-	  <xsl:for-each select="tei:l">
-	    <xsl:apply-templates/>
-	    <xsl:text>\\
+        <xsl:for-each select="tei:l">
+          <xsl:apply-templates/>
+          <xsl:text>\\
 	    </xsl:text>
-	  </xsl:for-each>
-	  <xsl:text>
+        </xsl:for-each>
+        <xsl:text>
 	    \end{verse}
 	  </xsl:text>
-	</xsl:when>
-	<xsl:otherwise>
-	  <xsl:apply-templates/>
-	</xsl:otherwise>
-      </xsl:choose>
-    </xsl:template>
-
-   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="hook">
-      <desc>[latex] Hook where LaTeX commands can be inserted after 
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:apply-templates/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="hook">
+    <desc>[latex] Hook where LaTeX commands can be inserted after 
 the beginning of the document</desc>
-   </doc>
-   <xsl:template name="beginDocumentHook">
-
-     <xsl:if test="$printtoc='true'">
-       <xsl:text>
+  </doc>
+  <xsl:template name="beginDocumentHook">
+    <xsl:if test="$printtoc='true'">
+      <xsl:text>
 	 \cleardoublepage
 	 \tableofcontents
 	 % \listoffigures
 	 % \listoftables
 	 \cleardoublepage
        </xsl:text>
-     </xsl:if>
-   </xsl:template>
-
-   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="hook">
-      <desc>[latex] Hook where LaTeX commands can be inserted just before the end of the document</desc>
-   </doc>
-   
-   <xsl:template name="endDocumentHook">
-     <xsl:text>% running endDocumentHook
+    </xsl:if>
+  </xsl:template>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="hook">
+    <desc>[latex] Hook where LaTeX commands can be inserted just before the end of the document</desc>
+  </doc>
+  <xsl:template name="endDocumentHook">
+    <xsl:text>% running endDocumentHook
      </xsl:text>
-     <xsl:if test="$showteiheader='true'">
-       <!-- if there's a tei:back element, the backmatter command should already be there -->
-       <xsl:if test="not(.//tei:back)">
-         <xsl:text>\backmatter </xsl:text>
-       </xsl:if>
-       <xsl:text>
+    <xsl:if test="$showteiheader='true'">
+      <!-- if there's a tei:back element, the backmatter command should already be there -->
+      <xsl:if test="not(.//tei:back)">
+        <xsl:text>\backmatter </xsl:text>
+      </xsl:if>
+      <xsl:text>
 	 \chapter{The TEI Header}
 	 \begin{landscape}
 	 \begin{minted}[fontfamily=rmfamily,fontsize=\footnotesize]{xml}
        </xsl:text>
-       <xsl:copy-of select="saxon:serialize(tei:teiHeader, 'xmlstring')"/>
-       <xsl:text>
+      <xsl:copy-of select="saxon:serialize(tei:teiHeader, 'xmlstring')"/>
+      <xsl:text>
 	 \end{minted}
 	 \end{landscape}
        </xsl:text>
-     </xsl:if>
-   </xsl:template>
-
-
-
+    </xsl:if>
+  </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>If verseNumbering is requested,
+    <desc>If verseNumbering is requested,
  counts all the verse lines since the last container (<gi xmlns="">div1</gi> by
  default) and labels every fifth verse using a LaTeX box 3 ems wide.
 
   </desc>
-   </doc>
+  </doc>
   <xsl:template match="tei:l">
-      <xsl:choose>
-         <xsl:when test="$verseNumbering='true'">
-            <xsl:variable name="id" select="generate-id()"/>
-            <xsl:variable name="pos">
-               <xsl:for-each select="ancestor::*[name()=$resetVerseLineNumbering]//l">
-                  <xsl:if test="generate-id()=$id">
-                     <xsl:value-of select="position()"/>
-                  </xsl:if>
-               </xsl:for-each>
-            </xsl:variable>
-            <xsl:choose>
-               <xsl:when test="$pos mod $everyHowManyLines = 0">
-                  <xsl:text>\leftline{\makebox[3em][r]{</xsl:text>
-                  <xsl:value-of select="$pos"/>
-                  <xsl:text>}\quad{}</xsl:text>
-                  <xsl:apply-templates/>
-                  <xsl:text>}</xsl:text> 
-               </xsl:when>
-               <xsl:otherwise>
-                  <xsl:text>&#10;\leftline{\makebox[3em][r]{}\quad{}</xsl:text>
-                  <xsl:apply-templates/>
-                  <xsl:text>}</xsl:text> 
-               </xsl:otherwise>
-            </xsl:choose>
-         </xsl:when>
-         <xsl:when test="ancestor::tei:quote and following-sibling::tei:l">
-            <xsl:apply-templates/>\\
+    <xsl:choose>
+      <xsl:when test="$verseNumbering='true'">
+        <xsl:variable name="id" select="generate-id()"/>
+        <xsl:variable name="pos">
+          <xsl:for-each select="ancestor::*[name()=$resetVerseLineNumbering]//l">
+            <xsl:if test="generate-id()=$id">
+              <xsl:value-of select="position()"/>
+            </xsl:if>
+          </xsl:for-each>
+        </xsl:variable>
+        <xsl:choose>
+          <xsl:when test="$pos mod $everyHowManyLines = 0">
+            <xsl:text>\leftline{\makebox[3em][r]{</xsl:text>
+            <xsl:value-of select="$pos"/>
+            <xsl:text>}\quad{}</xsl:text>
+            <xsl:apply-templates/>
+            <xsl:text>}</xsl:text>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:text>
+\leftline{\makebox[3em][r]{}\quad{}</xsl:text>
+            <xsl:apply-templates/>
+            <xsl:text>}</xsl:text>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:when test="ancestor::tei:quote and following-sibling::tei:l"><xsl:apply-templates/>\\
 	 </xsl:when>
-	 <xsl:when test="parent::tei:sp">
-	   <xsl:apply-templates/>
-	   <xsl:text>\hfill\\</xsl:text>
-	 </xsl:when>
-	 <xsl:when test="parent::tei:div">
-	   <xsl:text>&#10;\paragraph*</xsl:text>
-	   <xsl:choose>
-	     <xsl:when test="@n">
-	       <xsl:text>{</xsl:text>
-	       <xsl:value-of select="@n"/>
-	       <xsl:text>}</xsl:text>
-	     </xsl:when>
-	       <xsl:when test="@xml:id">
-	       <xsl:text>{</xsl:text>
-	       <xsl:value-of select="@xml:id"/>
-	       <xsl:text>}</xsl:text>
-	       </xsl:when>
-	       <xsl:otherwise>
-		 <xsl:text>{}</xsl:text>
-	       </xsl:otherwise>
-	   </xsl:choose>
-	   <xsl:apply-templates/>
-	   <xsl:if test="not(node()[not(self::text()[not(normalize-space())])])">
-	     <xsl:text>—</xsl:text>
-	   </xsl:if>
-	 </xsl:when>
-	 <xsl:otherwise>
-	   <xsl:text>&#10;\leftline{</xsl:text>
-	   <xsl:apply-templates/>
-	   <xsl:text>}</xsl:text>
-	 </xsl:otherwise>
-      </xsl:choose>
+      <xsl:when test="parent::tei:sp">
+        <xsl:apply-templates/>
+        <xsl:text>\hfill\\</xsl:text>
+      </xsl:when>
+      <xsl:when test="parent::tei:div">
+        <xsl:text>
+\paragraph*</xsl:text>
+        <xsl:choose>
+          <xsl:when test="@n">
+            <xsl:text>{</xsl:text>
+            <xsl:value-of select="@n"/>
+            <xsl:text>}</xsl:text>
+          </xsl:when>
+          <xsl:when test="@xml:id">
+            <xsl:text>{</xsl:text>
+            <xsl:value-of select="@xml:id"/>
+            <xsl:text>}</xsl:text>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:text>{}</xsl:text>
+          </xsl:otherwise>
+        </xsl:choose>
+        <xsl:apply-templates/>
+        <xsl:if test="not(node()[not(self::text()[not(normalize-space())])])">
+          <xsl:text>—</xsl:text>
+        </xsl:if>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:text>
+\leftline{</xsl:text>
+        <xsl:apply-templates/>
+        <xsl:text>}</xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
-
-<doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>Process element &lt;p&gt;. Try to avoid \par constructs.</desc>
-   </doc>
-   <xsl:template match="tei:p">
-     <xsl:message>Processing a par</xsl:message>
+  </doc>
+  <xsl:template match="tei:p">
+    <xsl:message>Processing a par</xsl:message>
     <xsl:choose>
       <xsl:when test="parent::tei:note and not(preceding-sibling::tei:p)">
-	<xsl:message>Processing a par: do nothing</xsl:message>
+        <xsl:message>Processing a par: do nothing</xsl:message>
       </xsl:when>
       <xsl:when test="$ledmac='true' and not(ancestor::tei:note or ancestor::tei:front or ancestor::tei:back)">
-	<xsl:message>Processing a par in ledmac mode</xsl:message>
-	<xsl:choose>
-	  <xsl:when test="$leftside">
-	    <xsl:text>\begin{Leftside}</xsl:text>
-	  </xsl:when>
-	<xsl:when test="$rightside">
-	  <xsl:text>\begin{Rightside}</xsl:text>
-	</xsl:when>
-	<xsl:otherwise>
-	  <xsl:text>
+        <xsl:message>Processing a par in ledmac mode</xsl:message>
+        <xsl:choose>
+          <xsl:when test="$leftside">
+            <xsl:text>\begin{Leftside}</xsl:text>
+          </xsl:when>
+          <xsl:when test="$rightside">
+            <xsl:text>\begin{Rightside}</xsl:text>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:text>
 
 	  </xsl:text>
-	</xsl:otherwise>
-	</xsl:choose>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:when>
       <xsl:when test="parent::tei:div or parent::tei:quote">
-	<xsl:message>Par in simple mode</xsl:message>
-	<xsl:text>
+        <xsl:message>Par in simple mode</xsl:message>
+        <xsl:text>
 	  
 	</xsl:text>
       </xsl:when>
       <xsl:otherwise>
-	<xsl:text>\par&#10;</xsl:text>
+        <xsl:text>\par
+</xsl:text>
       </xsl:otherwise>
     </xsl:choose>
     <xsl:if test="$numberParagraphs='true'">
@@ -1021,216 +970,206 @@ the beginning of the document</desc>
     </xsl:if>
     <xsl:apply-templates/>
     <xsl:if test="$ledmac='true' and not(ancestor::tei:note or ancestor::tei:front or ancestor::tei:back)">
-	<xsl:if test="$leftside">
-	  <xsl:text>\end{Leftside}
+      <xsl:if test="$leftside">
+        <xsl:text>\end{Leftside}
 	  \Pages
 	  </xsl:text>
-	</xsl:if>
-	<xsl:if test="$rightside">
-	  <xsl:text>\end{Rightside}</xsl:text>
-	</xsl:if>
+      </xsl:if>
+      <xsl:if test="$rightside">
+        <xsl:text>\end{Rightside}</xsl:text>
+      </xsl:if>
     </xsl:if>
   </xsl:template>
-
-<xsl:template name="insertApp">
-  <xsl:param  name="elementID"/>
-  <xsl:message>
-    <xsl:text>Calling insertApp with </xsl:text>
-    <xsl:value-of select="$elementID"/>
-  </xsl:message>
-  <xsl:for-each select="//tei:TEI/tei:text/tei:back//tei:listApp/tei:app[@from=concat('#', $elementID)]">
-    <!-- <xsl:message>Found a match.</xsl:message> -->
-    <xsl:call-template name="makeApp">
-      <xsl:with-param name="endpoint"  select="true()"/>
-    </xsl:call-template>
-  </xsl:for-each>
-</xsl:template>
-
-<doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-  <desc>Process element anchor</desc>
-</doc>
-<xsl:template match="tei:anchor">
-  <xsl:choose>
-    <xsl:when test="$ledmac='true' and not(parent::tei:note)">
-      <xsl:text>\edlabel{</xsl:text>
-      <xsl:value-of select="@xml:id"/>
-      <xsl:text>}</xsl:text>
-      <xsl:text>\label{</xsl:text>
-      <xsl:value-of select="@xml:id"/>
-      <xsl:text>}</xsl:text>
-      <xsl:call-template name="insertApp">
-	<xsl:with-param name="elementID">
-	  <xsl:value-of select="@xml:id"/>
-	</xsl:with-param>
+  <xsl:template name="insertApp">
+    <xsl:param name="elementID"/>
+    <xsl:message>
+      <xsl:text>Calling insertApp with </xsl:text>
+      <xsl:value-of select="$elementID"/>
+    </xsl:message>
+    <xsl:for-each select="//tei:TEI/tei:text/tei:back//tei:listApp/tei:app[@from=concat('#', $elementID)]">
+      <!-- <xsl:message>Found a match.</xsl:message> -->
+      <xsl:call-template name="makeApp">
+        <xsl:with-param name="endpoint" select="true()"/>
       </xsl:call-template>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:text>\hypertarget{</xsl:text>
-      <xsl:value-of select="@xml:id"/>
-      <xsl:text>}{}</xsl:text>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:template>
-
-<xsl:template match="tei:gap" priority="10">
-  <xsl:text>\gap{}</xsl:text>
-</xsl:template>
-
+    </xsl:for-each>
+  </xsl:template>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>Process element anchor</desc>
+  </doc>
+  <xsl:template match="tei:anchor">
+    <xsl:choose>
+      <xsl:when test="$ledmac='true' and not(parent::tei:note)">
+        <xsl:text>\edlabel{</xsl:text>
+        <xsl:value-of select="@xml:id"/>
+        <xsl:text>}</xsl:text>
+        <xsl:text>\label{</xsl:text>
+        <xsl:value-of select="@xml:id"/>
+        <xsl:text>}</xsl:text>
+        <xsl:call-template name="insertApp">
+          <xsl:with-param name="elementID">
+            <xsl:value-of select="@xml:id"/>
+          </xsl:with-param>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:text>\hypertarget{</xsl:text>
+        <xsl:value-of select="@xml:id"/>
+        <xsl:text>}{}</xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  <xsl:template match="tei:gap" priority="10">
+    <xsl:text>\gap{}</xsl:text>
+  </xsl:template>
   <xsl:template match="tei:unclear" priority="10">
     <xsl:text>\unclear{</xsl:text>
     <xsl:apply-templates/>
     <xsl:text>}</xsl:text>
   </xsl:template>
-
-   <xsl:template match="tei:pb">
-   <!-- string " Page " is now managed through the i18n file -->
-   <xsl:if test="$showPageBreaks">
-    <xsl:choose>
-         <xsl:when test="$pagebreakStyle='active'">
-            <xsl:text>\clearpage </xsl:text>
-         </xsl:when>
-         <xsl:when test="$pagebreakStyle='visible'">
-            <xsl:text>✁[</xsl:text>
-            <xsl:value-of select="@unit"/>
-            <xsl:text> </xsl:text>
-            <xsl:sequence select="tei:i18n('page')"/>
-            <xsl:text> </xsl:text>
-            <xsl:value-of select="@n"/>
-            <xsl:text>]✁</xsl:text>
-         </xsl:when>
-         <xsl:when test="$pagebreakStyle='bracketsonly'"> <!-- To avoid trouble with the scisssors character "✁" -->
-        <xsl:text>[</xsl:text>
-            <xsl:value-of select="@unit"/>
-            <xsl:text> </xsl:text>
-            <xsl:sequence select="tei:i18n('page')"/>
-            <xsl:text> </xsl:text>
-            <xsl:value-of select="@n"/>
-            <xsl:text>]</xsl:text>
-         </xsl:when>
-	 <xsl:when test="@facs">
-	   <xsl:value-of select="concat('% image:', tei:resolveURI(.,@facs),'&#10;')"/>
-	 </xsl:when>
-         <xsl:otherwise>
-	       <xsl:text>•\textsuperscript{\normalfont\tiny [</xsl:text>
-	       <xsl:choose>
-		 <xsl:when test="@n">
-		   <xsl:text>p. </xsl:text>
-		   <xsl:value-of select="@n"/>
-		   <xsl:if test="@ed">
-		     <xsl:text> in </xsl:text>
-		     <xsl:value-of select="@ed"/>
-		   </xsl:if>
-		 </xsl:when>
-		 <xsl:otherwise>
-		   <xsl:text>pb</xsl:text>
-		   <xsl:if test="@ed">
-		     <xsl:text> in </xsl:text>
-		     <xsl:value-of select="@ed"/>
-		   </xsl:if>
-		 </xsl:otherwise>
-	       </xsl:choose>
-	       <xsl:text>]}</xsl:text>
-	 </xsl:otherwise>
-    </xsl:choose>
-   </xsl:if>
-      <xsl:if test="@xml:id">
-         <xsl:text>\label{</xsl:text>
-         <xsl:value-of select="@xml:id"/>
-         <xsl:text>}</xsl:text>
-      </xsl:if>
+  <xsl:template match="tei:pb">
+    <!-- string " Page " is now managed through the i18n file -->
+    <xsl:if test="$showPageBreaks">
+      <xsl:choose>
+        <xsl:when test="$pagebreakStyle='active'">
+          <xsl:text>\clearpage </xsl:text>
+        </xsl:when>
+        <xsl:when test="$pagebreakStyle='visible'">
+          <xsl:text>✁[</xsl:text>
+          <xsl:value-of select="@unit"/>
+          <xsl:text> </xsl:text>
+          <xsl:sequence select="tei:i18n('page')"/>
+          <xsl:text> </xsl:text>
+          <xsl:value-of select="@n"/>
+          <xsl:text>]✁</xsl:text>
+        </xsl:when>
+        <xsl:when test="$pagebreakStyle='bracketsonly'">
+          <!-- To avoid trouble with the scisssors character "✁" -->
+          <xsl:text>[</xsl:text>
+          <xsl:value-of select="@unit"/>
+          <xsl:text> </xsl:text>
+          <xsl:sequence select="tei:i18n('page')"/>
+          <xsl:text> </xsl:text>
+          <xsl:value-of select="@n"/>
+          <xsl:text>]</xsl:text>
+        </xsl:when>
+        <xsl:when test="@facs">
+          <xsl:value-of select="concat('% image:', tei:resolveURI(.,@facs),'&#10;')"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:text>•\textsuperscript{\normalfont\tiny [</xsl:text>
+          <xsl:choose>
+            <xsl:when test="@n">
+              <xsl:text>p. </xsl:text>
+              <xsl:value-of select="@n"/>
+              <xsl:if test="@ed">
+                <xsl:text> in </xsl:text>
+                <xsl:value-of select="@ed"/>
+              </xsl:if>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:text>pb</xsl:text>
+              <xsl:if test="@ed">
+                <xsl:text> in </xsl:text>
+                <xsl:value-of select="@ed"/>
+              </xsl:if>
+            </xsl:otherwise>
+          </xsl:choose>
+          <xsl:text>]}</xsl:text>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:if>
+    <xsl:if test="@xml:id">
+      <xsl:text>\label{</xsl:text>
+      <xsl:value-of select="@xml:id"/>
+      <xsl:text>}</xsl:text>
+    </xsl:if>
   </xsl:template>
-
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>[common] whether to put quotes around something. check the
+    <desc>[common] whether to put quotes around something. check the
       quotation element, @rend, @rendition etc</desc>
-   </doc>
-   <xsl:template name="makeQuote">
-     <xsl:call-template name="startLanguage"/>
-     <xsl:choose>
-       <xsl:when
-	   test="/*/tei:teiHeader//tei:editorialDecl/tei:quotation[@marks='all']">
-	 <xsl:apply-templates/>
-       </xsl:when>
-       <xsl:when test="@rend='inline'">
-	 <xsl:value-of select="$preQuote"/>
-	 <xsl:apply-templates/>
-	 <xsl:value-of select="$postQuote"/>
-       </xsl:when>
-       <xsl:when test="$outputTarget='latex'">
-	 <xsl:choose>
-	   <xsl:when test="@type='pratīka'">
-	     <xsl:text>\pratIka{</xsl:text>
-	     <xsl:apply-templates/>
-	     <xsl:text>}</xsl:text>
-	   </xsl:when>
-	   <xsl:otherwise>
-	     <xsl:value-of select="$preQuote"/>
-	     <xsl:apply-templates/>
-	     <xsl:value-of select="$postQuote"/>
-	   </xsl:otherwise>
-	 </xsl:choose>
-       </xsl:when>
-       <xsl:when test="@rend or @rendition or
-		       key('TAGREND',local-name(.))">
-	 <xsl:apply-templates/>
-       </xsl:when>
-       <xsl:otherwise>
-	 <xsl:message>hello</xsl:message>
-	 <xsl:value-of select="$preQuote"/>
-	 <xsl:apply-templates/>
-	 <xsl:value-of select="$postQuote"/>
-       </xsl:otherwise>
-     </xsl:choose>
-     <xsl:call-template name="endLanguage"/>
-   </xsl:template>
-
+  </doc>
+  <xsl:template name="makeQuote">
+    <xsl:call-template name="startLanguage"/>
+    <xsl:choose>
+      <xsl:when test="/*/tei:teiHeader//tei:editorialDecl/tei:quotation[@marks='all']">
+        <xsl:apply-templates/>
+      </xsl:when>
+      <xsl:when test="@rend='inline'">
+        <xsl:value-of select="$preQuote"/>
+        <xsl:apply-templates/>
+        <xsl:value-of select="$postQuote"/>
+      </xsl:when>
+      <xsl:when test="$outputTarget='latex'">
+        <xsl:choose>
+          <xsl:when test="@type='pratīka'">
+            <xsl:text>\pratIka{</xsl:text>
+            <xsl:apply-templates/>
+            <xsl:text>}</xsl:text>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="$preQuote"/>
+            <xsl:apply-templates/>
+            <xsl:value-of select="$postQuote"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:when test="@rend or @rendition or          key('TAGREND',local-name(.))">
+        <xsl:apply-templates/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:message>hello</xsl:message>
+        <xsl:value-of select="$preQuote"/>
+        <xsl:apply-templates/>
+        <xsl:value-of select="$postQuote"/>
+      </xsl:otherwise>
+    </xsl:choose>
+    <xsl:call-template name="endLanguage"/>
+  </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>Process a note element which has a @place for footnote</desc>
-   </doc>
+    <desc>Process a note element which has a @place for footnote</desc>
+  </doc>
   <xsl:template name="footNote">
     <xsl:if test="@xml:id">
       <xsl:choose>
-	<xsl:when test="$ledmac='true'">
-	  <xsl:text>\edlabel{</xsl:text>
-	  <xsl:value-of select="@xml:id"/>
-	  <xsl:text>}</xsl:text>
-	</xsl:when>
+        <xsl:when test="$ledmac='true'">
+          <xsl:text>\edlabel{</xsl:text>
+          <xsl:value-of select="@xml:id"/>
+          <xsl:text>}</xsl:text>
+        </xsl:when>
       </xsl:choose>
     </xsl:if>
     <xsl:choose>
-	<xsl:when test="@target">
-	  <xsl:text>\footnotetext{</xsl:text>
-	  <xsl:apply-templates/>
-	  <xsl:text>}</xsl:text>
-	</xsl:when>
-	<xsl:when test="parent::tei:app">
-	  <!-- already processed i guess -->
-	</xsl:when>
-	<xsl:when test="(ancestor::tei:p or ancestor::tei:lg) and not(ancestor::tei:note)">
-	  <xsl:text>\footnote{</xsl:text>
-	  <xsl:if test="@xml:id">
-	    <xsl:text>\label{</xsl:text>
-	    <xsl:value-of select="@xml:id"/>
-	    <xsl:text>}  </xsl:text>
-	  </xsl:if>
-	  <xsl:call-template name="startLanguage"/>
-	  <xsl:apply-templates/>
-	  <xsl:call-template name="endLanguage"/>
-	  <xsl:text>}</xsl:text>
-	</xsl:when>
-	<xsl:otherwise>
-	  <xsl:message>Note in weird context.</xsl:message>
-	  <xsl:text>[[</xsl:text>
-	  <xsl:apply-templates/>
-	  <xsl:text>]]</xsl:text>
-	</xsl:otherwise>
-      </xsl:choose>
+      <xsl:when test="@target">
+        <xsl:text>\footnotetext{</xsl:text>
+        <xsl:apply-templates/>
+        <xsl:text>}</xsl:text>
+      </xsl:when>
+      <xsl:when test="parent::tei:app">
+        <!-- already processed i guess -->
+      </xsl:when>
+      <xsl:when test="(ancestor::tei:p or ancestor::tei:lg) and not(ancestor::tei:note)">
+        <xsl:text>\footnote{</xsl:text>
+        <xsl:if test="@xml:id">
+          <xsl:text>\label{</xsl:text>
+          <xsl:value-of select="@xml:id"/>
+          <xsl:text>}  </xsl:text>
+        </xsl:if>
+        <xsl:call-template name="startLanguage"/>
+        <xsl:apply-templates/>
+        <xsl:call-template name="endLanguage"/>
+        <xsl:text>}</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:message>Note in weird context.</xsl:message>
+        <xsl:text>[[</xsl:text>
+        <xsl:apply-templates/>
+        <xsl:text>]]</xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
-  
-
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>Process element lb</desc>
-   </doc>
+    <desc>Process element lb</desc>
+  </doc>
   <xsl:template match="tei:lb">
     <xsl:choose>
       <xsl:when test="parent::tei:body"/>
@@ -1242,357 +1181,346 @@ the beginning of the document</desc>
       </xsl:when>
       <xsl:when test="@rend='-' or @type='hyphenInWord'">
         <xsl:text>-</xsl:text>
-	<xsl:text>{\hskip1pt}\newline </xsl:text>
+        <xsl:text>{\hskip1pt}\newline </xsl:text>
       </xsl:when>
       <xsl:when test="not(tei:is-inline(..)) and (tei:is-last(.) or tei:is-first(.))"/>
       <xsl:when test="not($showLineBreaks)"/>
       <xsl:otherwise>
-      <xsl:text>{\tiny $_{</xsl:text>
-      <xsl:choose>
-	<xsl:when test="@n">
-	  <xsl:value-of select="@n"/>
-	</xsl:when>
-	<xsl:otherwise>
-	  <xsl:text>lb</xsl:text>
-	</xsl:otherwise>
-      </xsl:choose>
-      <xsl:text>}$}\-</xsl:text>
+        <xsl:text>{\tiny $_{</xsl:text>
+        <xsl:choose>
+          <xsl:when test="@n">
+            <xsl:value-of select="@n"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:text>lb</xsl:text>
+          </xsl:otherwise>
+        </xsl:choose>
+        <xsl:text>}$}\-</xsl:text>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-
-
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>[latex] <param name="target">target</param>
+    <desc>[latex] <param name="target">target</param>
          <param name="ptr">ptr</param>
          <param name="dest">dest</param>
          <param name="body">body</param>
       </desc>
-   </doc>
+  </doc>
   <xsl:template name="makeInternalLink">
-      <xsl:param name="target"/>
-      <xsl:param name="class"/>
-      <xsl:param name="ptr" as="xs:boolean"  select="false()"/>
-      <xsl:param name="dest"/>
-      <xsl:param name="body"/>
-      <xsl:choose>
-         <xsl:when test="id($dest)">
-            <xsl:choose>
-               <xsl:when test="not($body='')">
-		 <xsl:text>\hyperlink{</xsl:text>
-		 <xsl:value-of select="$dest"/>
-		 <xsl:text>}{</xsl:text>
-		 <xsl:value-of select="$body"/>
-		 <xsl:text>}</xsl:text>
-               </xsl:when>
-               <xsl:when test="$ptr">
-		 <xsl:for-each select="id($dest)">
-		   <xsl:choose>
-		     <xsl:when test="$class='pageref'">
-		       <xsl:text>\pageref{</xsl:text>
-		       <xsl:value-of select="@xml:id"/>
-		       <xsl:text>}</xsl:text>
-		     </xsl:when>
-		     <xsl:when test="self::tei:note[@xml:id]">
-		       <xsl:text>\ref{</xsl:text>
-		       <xsl:value-of select="@xml:id"/>
-		       <xsl:text>}</xsl:text>
-		     </xsl:when>
-		     <xsl:when test="self::tei:figure[tei:head and @xml:id]">
-		       <xsl:text>\ref{</xsl:text>
-		       <xsl:value-of select="@xml:id"/>
-		       <xsl:text>}</xsl:text>
-		     </xsl:when>
-		     <xsl:when test="self::tei:table[tei:head and @xml:id]">
-		       <xsl:text>\ref{</xsl:text>
-		       <xsl:value-of select="@xml:id"/>
-		       <xsl:text>}</xsl:text>
-		     </xsl:when>
-		     <xsl:when test="starts-with(local-name(.),'div')">
-		       <xsl:text>\textit{\hyperref[</xsl:text>
-		       <xsl:value-of select="$dest"/>
-		       <xsl:text>]{</xsl:text>
-		       <xsl:apply-templates mode="xref" select=".">
-			 <xsl:with-param name="minimal" select="$minimalCrossRef"/>
-		       </xsl:apply-templates>
-		       <xsl:text>}}</xsl:text>
-		     </xsl:when>
-		     <xsl:otherwise>
-		       <xsl:text>\hyperlink{</xsl:text>
-		       <xsl:value-of select="$dest"/>
-		       <xsl:text>}{</xsl:text>
-		       <xsl:value-of select="$body"/>
-		       <xsl:apply-templates mode="xref" select=".">
-			 <xsl:with-param name="minimal" select="$minimalCrossRef"/>
-		       </xsl:apply-templates>
-		       <xsl:text>}</xsl:text>
-		     </xsl:otherwise>
-		   </xsl:choose>
-		 </xsl:for-each>
-               </xsl:when>
-	       <xsl:when test="$body=''">
-		 <xsl:text>\cref{</xsl:text>
-		 <xsl:value-of select="$dest"/>
-		 <xsl:text>}</xsl:text>
-	       </xsl:when>
-               <xsl:otherwise>
-		 <xsl:text>\hyperlink{</xsl:text>
-		 <xsl:value-of select="$dest"/>
-		 <xsl:text>}{</xsl:text>
-		 <xsl:value-of select="$body"/>
-		 <xsl:apply-templates/>
-		 <xsl:text>}</xsl:text>
-	       </xsl:otherwise>
-            </xsl:choose>
-         </xsl:when>
-         <xsl:otherwise>
-	   <xsl:choose>
-	     <xsl:when test="not($body='')">
-	       <xsl:value-of select="$body"/>
-	     </xsl:when>
-	     <xsl:when test="$ptr">
-	       <xsl:value-of select="$dest"/>
-	     </xsl:when>
-	     <xsl:otherwise>
-	       <xsl:apply-templates/>
-	     </xsl:otherwise>
-	   </xsl:choose>
-         </xsl:otherwise>
-      </xsl:choose>
-  
+    <xsl:param name="target"/>
+    <xsl:param name="class"/>
+    <xsl:param name="ptr" as="xs:boolean" select="false()"/>
+    <xsl:param name="dest"/>
+    <xsl:param name="body"/>
+    <xsl:choose>
+      <xsl:when test="id($dest)">
+        <xsl:choose>
+          <xsl:when test="not($body='')">
+            <xsl:text>\hyperlink{</xsl:text>
+            <xsl:value-of select="$dest"/>
+            <xsl:text>}{</xsl:text>
+            <xsl:value-of select="$body"/>
+            <xsl:text>}</xsl:text>
+          </xsl:when>
+          <xsl:when test="$ptr">
+            <xsl:for-each select="id($dest)">
+              <xsl:choose>
+                <xsl:when test="$class='pageref'">
+                  <xsl:text>\pageref{</xsl:text>
+                  <xsl:value-of select="@xml:id"/>
+                  <xsl:text>}</xsl:text>
+                </xsl:when>
+                <xsl:when test="self::tei:note[@xml:id]">
+                  <xsl:text>\ref{</xsl:text>
+                  <xsl:value-of select="@xml:id"/>
+                  <xsl:text>}</xsl:text>
+                </xsl:when>
+                <xsl:when test="self::tei:figure[tei:head and @xml:id]">
+                  <xsl:text>\ref{</xsl:text>
+                  <xsl:value-of select="@xml:id"/>
+                  <xsl:text>}</xsl:text>
+                </xsl:when>
+                <xsl:when test="self::tei:table[tei:head and @xml:id]">
+                  <xsl:text>\ref{</xsl:text>
+                  <xsl:value-of select="@xml:id"/>
+                  <xsl:text>}</xsl:text>
+                </xsl:when>
+                <xsl:when test="starts-with(local-name(.),'div')">
+                  <xsl:text>\textit{\hyperref[</xsl:text>
+                  <xsl:value-of select="$dest"/>
+                  <xsl:text>]{</xsl:text>
+                  <xsl:apply-templates mode="xref" select=".">
+                    <xsl:with-param name="minimal" select="$minimalCrossRef"/>
+                  </xsl:apply-templates>
+                  <xsl:text>}}</xsl:text>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:text>\hyperlink{</xsl:text>
+                  <xsl:value-of select="$dest"/>
+                  <xsl:text>}{</xsl:text>
+                  <xsl:value-of select="$body"/>
+                  <xsl:apply-templates mode="xref" select=".">
+                    <xsl:with-param name="minimal" select="$minimalCrossRef"/>
+                  </xsl:apply-templates>
+                  <xsl:text>}</xsl:text>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:for-each>
+          </xsl:when>
+          <xsl:when test="$body=''">
+            <xsl:text>\cref{</xsl:text>
+            <xsl:value-of select="$dest"/>
+            <xsl:text>}</xsl:text>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:text>\hyperlink{</xsl:text>
+            <xsl:value-of select="$dest"/>
+            <xsl:text>}{</xsl:text>
+            <xsl:value-of select="$body"/>
+            <xsl:apply-templates/>
+            <xsl:text>}</xsl:text>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:choose>
+          <xsl:when test="not($body='')">
+            <xsl:value-of select="$body"/>
+          </xsl:when>
+          <xsl:when test="$ptr">
+            <xsl:value-of select="$dest"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:apply-templates/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   <xsl:template match="tei:del">
     <xsl:text>\deletion{</xsl:text>
     <xsl:apply-templates/>
     <xsl:text>}</xsl:text>
   </xsl:template>
-
   <xsl:template match="tei:add">
     <xsl:text>\add{</xsl:text>
     <xsl:apply-templates/>
     <xsl:text>}</xsl:text>
   </xsl:template>
-
-<doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
-  <desc>
-    <p>Default language of document: we look in text and body elements for the xml:lang attribute, and use its value if we find it. Otherwise, default to "sanskrit". In the xml file, the xml:lang tag should have a value according to <ref>http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry</ref>. Anything starting with "sa-" we match to "sanskrit" (also the default), anything with "bo-" to Tibetan, and anything with "en-" to "english". </p>
-  </desc>
-</doc>
-<xsl:param name="defaultlanguage">
-  <xsl:choose>
-    <xsl:when test="starts-with(.//tei:text/@xml:lang, 'bo')">
-      <xsl:text>tibetan</xsl:text>
-    </xsl:when>
-    <xsl:when test="starts-with(.//tei:text/@xml:lang, 'en')">
-      <xsl:text>english</xsl:text>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:text>sanskrit</xsl:text>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:param>
-
-<doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
-  <desc>
-    <p>Options of default language of document that get passed to setdefaultlanguage</p>
-  </desc>
-</doc>
-<xsl:param name="defaultlanguageoptions">
-  <xsl:choose>
-    <xsl:when test="starts-with(.//tei:text/@xml:lang, 'bo')">
-      <xsl:text>[numerals=arabic]</xsl:text>
-    </xsl:when>
-    <xsl:when test="starts-with(.//tei:text/@xml:lang, 'en')"/>
-    <xsl:otherwise/>
-  </xsl:choose>
-</xsl:param>
-
-<xsl:template name="startLanguage">
-  <xsl:if test="@xml:lang">
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
+    <desc>
+      <p>Default language of document: we look in text and body elements for the xml:lang attribute, and use its value if we find it. Otherwise, default to "sanskrit". In the xml file, the xml:lang tag should have a value according to <ref>http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry</ref>. Anything starting with "sa-" we match to "sanskrit" (also the default), anything with "bo-" to Tibetan, and anything with "en-" to "english". </p>
+    </desc>
+  </doc>
+  <xsl:param name="defaultlanguage">
     <xsl:choose>
-      <xsl:when test="@xml:lang='bo'">
-	<xsl:text>\begin{tibetan}</xsl:text>
+      <xsl:when test="starts-with(.//tei:text/@xml:lang, 'bo')">
+        <xsl:text>tibetan</xsl:text>
       </xsl:when>
-      <xsl:when test="@xml:lang='sa'">
-	<xsl:text>\begin{sanskrit}</xsl:text>
+      <xsl:when test="starts-with(.//tei:text/@xml:lang, 'en')">
+        <xsl:text>english</xsl:text>
       </xsl:when>
       <xsl:otherwise>
-	<xsl:text>\begin{english}</xsl:text>
+        <xsl:text>sanskrit</xsl:text>
       </xsl:otherwise>
     </xsl:choose>
-  </xsl:if>
-</xsl:template>
-
-<xsl:template name="endLanguage">
-	  <xsl:if test="@xml:lang">
-	    <xsl:choose>
-	      <xsl:when test="@xml:lang='bo'">
-		<xsl:text>\end{tibetan}</xsl:text>
-	      </xsl:when>
-	      <xsl:when test="@xml:lang='sa'">
-		<xsl:text>\end{sanskrit}</xsl:text>
-	      </xsl:when>
-	      <xsl:otherwise>
-		<xsl:text>\end{english}</xsl:text>
-	      </xsl:otherwise>
-	    </xsl:choose>
-	  </xsl:if>
-</xsl:template>
-
+  </xsl:param>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
+    <desc>
+      <p>Options of default language of document that get passed to setdefaultlanguage</p>
+    </desc>
+  </doc>
+  <xsl:param name="defaultlanguageoptions">
+    <xsl:choose>
+      <xsl:when test="starts-with(.//tei:text/@xml:lang, 'bo')">
+        <xsl:text>[numerals=arabic]</xsl:text>
+      </xsl:when>
+      <xsl:when test="starts-with(.//tei:text/@xml:lang, 'en')"/>
+      <xsl:otherwise/>
+    </xsl:choose>
+  </xsl:param>
+  <xsl:template name="startLanguage">
+    <xsl:if test="@xml:lang">
+      <xsl:choose>
+        <xsl:when test="@xml:lang='bo'">
+          <xsl:text>\begin{tibetan}</xsl:text>
+        </xsl:when>
+        <xsl:when test="@xml:lang='sa'">
+          <xsl:text>\begin{sanskrit}</xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:text>\begin{english}</xsl:text>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:if>
+  </xsl:template>
+  <xsl:template name="endLanguage">
+    <xsl:if test="@xml:lang">
+      <xsl:choose>
+        <xsl:when test="@xml:lang='bo'">
+          <xsl:text>\end{tibetan}</xsl:text>
+        </xsl:when>
+        <xsl:when test="@xml:lang='sa'">
+          <xsl:text>\end{sanskrit}</xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:text>\end{english}</xsl:text>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:if>
+  </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>Process a note element which has a @place attribute
+    <desc>Process a note element which has a @place attribute
       pointing to margin</desc>
-   </doc>
+  </doc>
   <xsl:template name="marginalNote">
     <xsl:choose>
       <xsl:when test="$ledmac='true'">
-	<xsl:text>\ledsidenote{</xsl:text>
-	<xsl:if test="@xml:id">
-	  <xsl:text>\label{</xsl:text>
-	  <xsl:value-of select="@xml:id"/>
-	  <xsl:text>}</xsl:text>
-	</xsl:if>
-	<xsl:call-template name="startLanguage"/>
-	<xsl:apply-templates/>
-	<xsl:call-template name="endLanguage"/>
-	<xsl:text>}</xsl:text>
+        <xsl:text>\ledsidenote{</xsl:text>
+        <xsl:if test="@xml:id">
+          <xsl:text>\label{</xsl:text>
+          <xsl:value-of select="@xml:id"/>
+          <xsl:text>}</xsl:text>
+        </xsl:if>
+        <xsl:call-template name="startLanguage"/>
+        <xsl:apply-templates/>
+        <xsl:call-template name="endLanguage"/>
+        <xsl:text>}</xsl:text>
       </xsl:when>
       <xsl:otherwise>
-	<xsl:text>\marginnote{</xsl:text>
-	<xsl:if test="@xml:id">
-	  <xsl:text>\label{</xsl:text>
-	  <xsl:value-of select="@xml:id"/>
-	  <xsl:text>}</xsl:text>
-	</xsl:if>
-	<xsl:apply-templates/>
-	<xsl:text>}</xsl:text>
+        <xsl:text>\marginnote{</xsl:text>
+        <xsl:if test="@xml:id">
+          <xsl:text>\label{</xsl:text>
+          <xsl:value-of select="@xml:id"/>
+          <xsl:text>}</xsl:text>
+        </xsl:if>
+        <xsl:apply-templates/>
+        <xsl:text>}</xsl:text>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>Process elements tei:table</desc>
+    <desc>Process elements tei:table</desc>
   </doc>
   <xsl:template match="tei:table">
-      <!-- count the rows of the table -->
-      <xsl:variable name="table-rows">
-	<xsl:value-of select="count(tei:row)"/>
-      </xsl:variable>
-      <xsl:variable name="table-columns">
-	<xsl:value-of select="count(tei:row[1]/tei:cell)"/>
-      </xsl:variable>
-      <!-- <xsl:if test="@xml:id"> -->
-      <!-- 	<xsl:text>\label{</xsl:text> -->
-      <!-- 	<xsl:value-of   select="@xml:id"/> -->
-      <!-- 	<xsl:text>}</xsl:text> -->
-      <!-- </xsl:if> -->
-      <xsl:text> \par </xsl:text>
-      <xsl:choose>
-	<xsl:when test="contains(@rend,'sideways')">
-	  <xsl:text>
+    <!-- count the rows of the table -->
+    <xsl:variable name="table-rows">
+      <xsl:value-of select="count(tei:row)"/>
+    </xsl:variable>
+    <xsl:variable name="table-columns">
+      <xsl:value-of select="count(tei:row[1]/tei:cell)"/>
+    </xsl:variable>
+    <!-- <xsl:if test="@xml:id"> -->
+    <!-- 	<xsl:text>\label{</xsl:text> -->
+    <!-- 	<xsl:value-of   select="@xml:id"/> -->
+    <!-- 	<xsl:text>}</xsl:text> -->
+    <!-- </xsl:if> -->
+    <xsl:text> \par </xsl:text>
+    <xsl:choose>
+      <xsl:when test="contains(@rend,'sideways')">
+        <xsl:text>
 	    \begin{landscape}
 	  </xsl:text>
-	</xsl:when>
-	<xsl:otherwise>
+      </xsl:when>
+      <xsl:otherwise>
 	</xsl:otherwise>
-      </xsl:choose>
-      <!-- check if we're in a table env? -->
-      <xsl:choose>
-      <xsl:when test="ancestor::tei:table"> 
-	<xsl:text>\begin{tabular}</xsl:text>
-	<xsl:call-template  name="makeTable"> 
-	  <xsl:with-param name="longtable">false</xsl:with-param>
-	</xsl:call-template>
-	<xsl:text>\end{tabular}</xsl:text>
-      </xsl:when>      
+    </xsl:choose>
+    <!-- check if we're in a table env? -->
+    <xsl:choose>
+      <xsl:when test="ancestor::tei:table">
+        <xsl:text>\begin{tabular}</xsl:text>
+        <xsl:call-template name="makeTable">
+          <xsl:with-param name="longtable">false</xsl:with-param>
+        </xsl:call-template>
+        <xsl:text>\end{tabular}</xsl:text>
+      </xsl:when>
       <xsl:when test="$table-rows &gt; 40 or contains(@rend,'long')">
-	<xsl:variable name="longtable">true</xsl:variable>
-	<xsl:text>
+        <xsl:variable name="longtable">true</xsl:variable>
+        <xsl:text>
 	  % uncomment in twocolumn mode: \onecolumn
 	{\footnotesize
 	\begin{longtable}</xsl:text>
-	<xsl:call-template name="makeTable">
-	  <xsl:with-param name="longtable">true</xsl:with-param>
-	</xsl:call-template>
-	<xsl:text>\tabularnewline 
+        <xsl:call-template name="makeTable">
+          <xsl:with-param name="longtable">true</xsl:with-param>
+        </xsl:call-template>
+        <xsl:text>\tabularnewline 
 	\bottomrule
 	\end{longtable}
 	}
 	% uncomment in twocolumn mode: \twocolumn 
 	</xsl:text>
       </xsl:when>
-      <xsl:otherwise> 
-	<xsl:text>\ctable[</xsl:text>
-	<!-- check caption -->
-	<xsl:choose>
-	  <xsl:when test="tei:head and not(@rend='display')">
-	    <xsl:text>caption={</xsl:text>
-	    <xsl:for-each select="tei:head">
-	      <xsl:if test="not(@type='toc')">
-		<xsl:apply-templates/>
-	      </xsl:if>
-	    </xsl:for-each>
-	    <xsl:text>},</xsl:text>
-	  </xsl:when>
-	</xsl:choose>
-	<!-- set toc caption -->
-	<xsl:choose>
-	  <xsl:when test="tei:head and not(@rend='display') and tei:head[@type='toc']">
-	    <xsl:text>cap={</xsl:text>
-	    <xsl:for-each select="tei:head">
-	      <xsl:if test="@type='toc'">
-		<xsl:apply-templates/>
-	      </xsl:if>
-	    </xsl:for-each>
-	    <xsl:text>},</xsl:text>
-	  </xsl:when>
-	</xsl:choose>
-	<!-- set the label -->
-	<xsl:choose>
-	  <xsl:when test="@xml:id">
-	    <xsl:text>label=</xsl:text>
-	    <xsl:value-of  select="@xml:id" />
-	    <xsl:text>,</xsl:text>
-	  </xsl:when>
-	</xsl:choose>
-	<!-- check position -->
-	<xsl:if test="contains(@rend,'puthere')">
-	  <xsl:text>pos=H,</xsl:text>
-	</xsl:if>
-	<xsl:if test="contains(@rend,'putrighthere')">
-	  <xsl:text>pos=h!,</xsl:text>
-	</xsl:if>
-	<xsl:if test="contains(@rend,'bottom')">
-	  <xsl:text>pos=b!,</xsl:text>
-	</xsl:if>
-	<!-- set a maxwidth -->
-	<xsl:if test="contains(@rend,'sideways')">
-	  <!-- \textheight  was ignored by ctable? -->
-	  <xsl:text>maxwidth=600pt
+      <xsl:otherwise>
+        <xsl:text>\ctable[</xsl:text>
+        <!-- check caption -->
+        <xsl:choose>
+          <xsl:when test="tei:head and not(@rend='display')">
+            <xsl:text>caption={</xsl:text>
+            <xsl:for-each select="tei:head">
+              <xsl:if test="not(@type='toc')">
+                <xsl:apply-templates/>
+              </xsl:if>
+            </xsl:for-each>
+            <xsl:text>},</xsl:text>
+          </xsl:when>
+        </xsl:choose>
+        <!-- set toc caption -->
+        <xsl:choose>
+          <xsl:when test="tei:head and not(@rend='display') and tei:head[@type='toc']">
+            <xsl:text>cap={</xsl:text>
+            <xsl:for-each select="tei:head">
+              <xsl:if test="@type='toc'">
+                <xsl:apply-templates/>
+              </xsl:if>
+            </xsl:for-each>
+            <xsl:text>},</xsl:text>
+          </xsl:when>
+        </xsl:choose>
+        <!-- set the label -->
+        <xsl:choose>
+          <xsl:when test="@xml:id">
+            <xsl:text>label=</xsl:text>
+            <xsl:value-of select="@xml:id"/>
+            <xsl:text>,</xsl:text>
+          </xsl:when>
+        </xsl:choose>
+        <!-- check position -->
+        <xsl:if test="contains(@rend,'puthere')">
+          <xsl:text>pos=H,</xsl:text>
+        </xsl:if>
+        <xsl:if test="contains(@rend,'putrighthere')">
+          <xsl:text>pos=h!,</xsl:text>
+        </xsl:if>
+        <xsl:if test="contains(@rend,'bottom')">
+          <xsl:text>pos=b!,</xsl:text>
+        </xsl:if>
+        <!-- set a maxwidth -->
+        <xsl:if test="contains(@rend,'sideways')">
+          <!-- \textheight  was ignored by ctable? -->
+          <xsl:text>maxwidth=600pt
 	  </xsl:text>
-	</xsl:if>
-	<xsl:if test="not(contains(@rend,'sideways'))">
-	  <xsl:text>maxwidth=\textwidth
+        </xsl:if>
+        <xsl:if test="not(contains(@rend,'sideways'))">
+          <xsl:text>maxwidth=\textwidth
 	  </xsl:text>
-	</xsl:if>
-	<xsl:text>,doinside=\small]</xsl:text>
-	<xsl:call-template name="makeCTableData"/>
-	<xsl:text>
+        </xsl:if>
+        <xsl:text>,doinside=\small]</xsl:text>
+        <xsl:call-template name="makeCTableData"/>
+        <xsl:text>
 	</xsl:text>
       </xsl:otherwise>
-      </xsl:choose>
-      <xsl:if test="contains(@rend,'sideways')">
-	<xsl:text>
+    </xsl:choose>
+    <xsl:if test="contains(@rend,'sideways')">
+      <xsl:text>
 	  \end{landscape}
 	</xsl:text>
-      </xsl:if>
-    </xsl:template>
-
+    </xsl:if>
+  </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>[latex] table stuff. </desc>
   </doc>
   <xsl:template name="makeTable">
-    <xsl:param name="longtable" />
+    <xsl:param name="longtable"/>
     <xsl:param name="calculateTable"/>
     <xsl:variable name="r">
       <xsl:value-of select="@rend"/>
@@ -1603,9 +1531,8 @@ the beginning of the document</desc>
       <xsl:when test="@preamble">
         <xsl:value-of select="@preamble"/>
       </xsl:when>
-      <xsl:when test="function-available('exsl:node-set') and
-		      (calculateTable or contains($r,'calculatewidth'))">
-	<xsl:call-template name="makePreamble-complex">
+      <xsl:when test="function-available('exsl:node-set') and         (calculateTable or contains($r,'calculatewidth'))">
+        <xsl:call-template name="makePreamble-complex">
           <xsl:with-param name="r" select="$r"/>
         </xsl:call-template>
       </xsl:when>
@@ -1615,82 +1542,82 @@ the beginning of the document</desc>
         </xsl:call-template>
       </xsl:otherwise>
     </xsl:choose>
-    <xsl:text>}&#10;</xsl:text>
+    <xsl:text>}
+</xsl:text>
     <xsl:call-template name="tableHline"/>
     <xsl:choose>
       <xsl:when test="tei:head and not(@rend='display')">
         <xsl:if test="not(ancestor::tei:table)">
-	  <xsl:text>\caption</xsl:text>
-	  <xsl:if test="count(tei:head[@type='toc']) &gt; 0">
-	    <xsl:text>[</xsl:text>
-	    <xsl:for-each select="tei:head[@type='toc']">
-	      <xsl:apply-templates/>
-	    </xsl:for-each>
-	    <xsl:text>]</xsl:text>
-	  </xsl:if>
-	  <xsl:text>{</xsl:text>
-	  <xsl:for-each select="tei:head">
-	    <xsl:if test="not(@type='toc')">
-	    <xsl:apply-templates/>
-	    </xsl:if>
-	  </xsl:for-each>
-	  <xsl:if test="@xml:id">
-	    <xsl:text>\label{</xsl:text>
-	    <xsl:value-of   select="@xml:id"/>
-	    <xsl:text>}</xsl:text>
-	  </xsl:if>
-	  <xsl:text>}\tabularnewline \toprule
+          <xsl:text>\caption</xsl:text>
+          <xsl:if test="count(tei:head[@type='toc']) &gt; 0">
+            <xsl:text>[</xsl:text>
+            <xsl:for-each select="tei:head[@type='toc']">
+              <xsl:apply-templates/>
+            </xsl:for-each>
+            <xsl:text>]</xsl:text>
+          </xsl:if>
+          <xsl:text>{</xsl:text>
+          <xsl:for-each select="tei:head">
+            <xsl:if test="not(@type='toc')">
+              <xsl:apply-templates/>
+            </xsl:if>
+          </xsl:for-each>
+          <xsl:if test="@xml:id">
+            <xsl:text>\label{</xsl:text>
+            <xsl:value-of select="@xml:id"/>
+            <xsl:text>}</xsl:text>
+          </xsl:if>
+          <xsl:text>}\tabularnewline \toprule
 	  </xsl:text>
-	  <xsl:if test="tei:row[@role='label']">
-	    <xsl:for-each select="tei:row[1]">
-	      <xsl:apply-templates/>
-	    </xsl:for-each>
-	  <xsl:text>\tabularnewline
+          <xsl:if test="tei:row[@role='label']">
+            <xsl:for-each select="tei:row[1]">
+              <xsl:apply-templates/>
+            </xsl:for-each>
+            <xsl:text>\tabularnewline
 	  \midrule
 	  </xsl:text>
-	  </xsl:if>
+          </xsl:if>
           <xsl:text>\endfirsthead
 	  </xsl:text>
-	  <!-- head for following pages -->
+          <!-- head for following pages -->
           <xsl:text>\caption[]{</xsl:text>
-	  <xsl:for-each select="tei:head">
-	    <xsl:if test="not(@type='toc')">
-	    <xsl:apply-templates/>
-	    </xsl:if>
-	  </xsl:for-each>
-	<!-- the following does not properly escape special characters -->
-	  <!-- <xsl:apply-templates mode="ok" select="tei:head"/> -->
+          <xsl:for-each select="tei:head">
+            <xsl:if test="not(@type='toc')">
+              <xsl:apply-templates/>
+            </xsl:if>
+          </xsl:for-each>
+          <!-- the following does not properly escape special characters -->
+          <!-- <xsl:apply-templates mode="ok" select="tei:head"/> -->
           <xsl:text> (cont.)}\tabularnewline \toprule
 	  </xsl:text>
-	  <xsl:if test="tei:row[@role='label']">
-	    <xsl:for-each select="tei:row[1]">
-	      <xsl:apply-templates/>
-	    </xsl:for-each>
-	  <xsl:text>\tabularnewline
+          <xsl:if test="tei:row[@role='label']">
+            <xsl:for-each select="tei:row[1]">
+              <xsl:apply-templates/>
+            </xsl:for-each>
+            <xsl:text>\tabularnewline
 	    \midrule</xsl:text>
-	  </xsl:if>
-	  <xsl:text>\endhead </xsl:text>
+          </xsl:if>
+          <xsl:text>\endhead </xsl:text>
         </xsl:if>
         <xsl:if test="ancestor::tei:table">
-        <xsl:text>\caption{</xsl:text>
-        <xsl:for-each select="tei:head">
-	  <xsl:apply-templates/>
-	</xsl:for-each>
-        <!-- <xsl:apply-templates mode="ok" select="tei:head"/> -->
-        <xsl:text>}\\ </xsl:text>
-	</xsl:if>
+          <xsl:text>\caption{</xsl:text>
+          <xsl:for-each select="tei:head">
+            <xsl:apply-templates/>
+          </xsl:for-each>
+          <!-- <xsl:apply-templates mode="ok" select="tei:head"/> -->
+          <xsl:text>}\\ </xsl:text>
+        </xsl:if>
       </xsl:when>
       <xsl:otherwise> </xsl:otherwise>
     </xsl:choose>
     <xsl:if test="contains($r,'rules')"> \hline </xsl:if>
     <xsl:apply-templates>
-      <xsl:with-param name="longtable" select="$longtable" />
+      <xsl:with-param name="longtable" select="$longtable"/>
     </xsl:apply-templates>
     <xsl:if test="contains($r,'rules')">
       <xsl:text>\tabularnewline \hline </xsl:text>
     </xsl:if>
   </xsl:template>
-
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>[latex] ctable stuff. generates the column section, and the two data sections.</desc>
   </doc>
@@ -1699,42 +1626,41 @@ the beginning of the document</desc>
       <xsl:value-of select="@rend"/>
     </xsl:variable>
     <xsl:text>{</xsl:text>
-
     <!-- table alignment -->
-      <xsl:choose>
-	<!-- if we have a rend attribute that contains a LaTeX directive, use its value -->
-	<xsl:when test="contains($r, 'LaTeX:')">
-	  <xsl:choose>
-	    <xsl:when test="contains(substring-after($r, 'LaTeX:'), ' ')">
-	      <xsl:value-of select="substring-before(substring-after($r, 'LaTeX:'), ' ')" />
-	    </xsl:when>
-	    <xsl:otherwise>
-	      <xsl:value-of select="substring-after($r, 'LaTeX:')" />
-	    </xsl:otherwise>
-	  </xsl:choose>
-	</xsl:when>
-	<xsl:otherwise>
-      <!-- figure out how many cells there are, taking into account multicolumn cells -->
-      <xsl:for-each select="tei:row[1]/tei:cell">
-	<!-- does this cell have a cols attribute? -->
-	<xsl:choose>
-	  <xsl:when test="@cols">
-	    <xsl:variable name="cellnum">
-	      <xsl:value-of select="@cols"/>
-	    </xsl:variable>
-	    <xsl:call-template name="fake-while">
-	      <xsl:with-param name="until-num" select="$cellnum" />
-	      <xsl:with-param name="print">X<xsl:if test="contains($r,'rules')">|</xsl:if></xsl:with-param>
-	    </xsl:call-template>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <xsl:text>X</xsl:text>
-	    <xsl:if test="contains($r,'rules')">|</xsl:if>
-	  </xsl:otherwise>
-	</xsl:choose>
-	</xsl:for-each>
-	</xsl:otherwise>
-      </xsl:choose>
+    <xsl:choose>
+      <!-- if we have a rend attribute that contains a LaTeX directive, use its value -->
+      <xsl:when test="contains($r, 'LaTeX:')">
+        <xsl:choose>
+          <xsl:when test="contains(substring-after($r, 'LaTeX:'), ' ')">
+            <xsl:value-of select="substring-before(substring-after($r, 'LaTeX:'), ' ')"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="substring-after($r, 'LaTeX:')"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:otherwise>
+        <!-- figure out how many cells there are, taking into account multicolumn cells -->
+        <xsl:for-each select="tei:row[1]/tei:cell">
+          <!-- does this cell have a cols attribute? -->
+          <xsl:choose>
+            <xsl:when test="@cols">
+              <xsl:variable name="cellnum">
+                <xsl:value-of select="@cols"/>
+              </xsl:variable>
+              <xsl:call-template name="fake-while">
+                <xsl:with-param name="until-num" select="$cellnum"/>
+                <xsl:with-param name="print">X<xsl:if test="contains($r,'rules')">|</xsl:if></xsl:with-param>
+              </xsl:call-template>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:text>X</xsl:text>
+              <xsl:if test="contains($r,'rules')">|</xsl:if>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:for-each>
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:text>}{}{\toprule
     </xsl:text>
     <xsl:apply-templates>
@@ -1742,96 +1668,97 @@ the beginning of the document</desc>
     </xsl:apply-templates>
     <xsl:text>\tabularnewline \bottomrule}</xsl:text>
   </xsl:template>
-
-<xsl:template name="tableHline">
+  <xsl:template name="tableHline">
     <xsl:choose>
       <xsl:when test="ancestor::tei:table or @rend='display'">\midrule <!-- \hline --> </xsl:when>
-      <xsl:otherwise> <!-- \hline\endfoot\hline\endlastfoot --> </xsl:otherwise>
+      <xsl:otherwise>
+        <!-- \hline\endfoot\hline\endlastfoot -->
+      </xsl:otherwise>
     </xsl:choose>
-</xsl:template>
-
-<doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-  <desc>See http://www.dpawson.co.uk/xsl/sect2/repetition.html. This
+  </xsl:template>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>See http://www.dpawson.co.uk/xsl/sect2/repetition.html. This
   substitutes for a while function.</desc>
-</doc>
-<xsl:template name="fake-while">
-  <xsl:param name="until-num"/>
-  <xsl:param name="print"/>
-  <xsl:if test="number($until-num) > 0">
-    <xsl:value-of select="$print"/>
-    <xsl:call-template name="fake-while">
-      <xsl:with-param name="until-num" select="number($until-num) - 1"/>
-      <xsl:with-param name="print" select="$print" />
-    </xsl:call-template>
-  </xsl:if>
-</xsl:template>
-
-<doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-  <desc>Process elements tei:row</desc>
-</doc>
+  </doc>
+  <xsl:template name="fake-while">
+    <xsl:param name="until-num"/>
+    <xsl:param name="print"/>
+    <xsl:if test="number($until-num) &gt; 0">
+      <xsl:value-of select="$print"/>
+      <xsl:call-template name="fake-while">
+        <xsl:with-param name="until-num" select="number($until-num) - 1"/>
+        <xsl:with-param name="print" select="$print"/>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>Process elements tei:row</desc>
+  </doc>
   <xsl:template match="tei:row">
-    <xsl:param name="longtable" />
+    <xsl:param name="longtable"/>
     <xsl:variable name="first-row">
       <xsl:choose>
-	<xsl:when test="not(preceding-sibling::tei:row)">true</xsl:when>
-	<xsl:otherwise>false</xsl:otherwise>
+        <xsl:when test="not(preceding-sibling::tei:row)">true</xsl:when>
+        <xsl:otherwise>false</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:if test="@role='label'"><!-- \rowcolor{label} --></xsl:if>
+    <xsl:if test="@role='label'">
+      <!-- \rowcolor{label} -->
+    </xsl:if>
     <xsl:choose>
       <!-- for longtables we don't want to print the first line, cause that's already in the head-->
       <xsl:when test="$first-row='true' and $longtable='true' and @role='label'">
       </xsl:when>
       <xsl:otherwise>
-	<xsl:apply-templates/>
+        <xsl:apply-templates/>
       </xsl:otherwise>
     </xsl:choose>
     <xsl:if test="following-sibling::tei:row">
       <xsl:choose>
-	<xsl:when test="$longtable='false'">
-	  <xsl:text>\tabularnewline</xsl:text>
-	</xsl:when>
-	<xsl:otherwise>
-	  <xsl:if test="not(@role='label') and $first-row='true'">
-	    <xsl:text>\tabularnewline % first row but no label</xsl:text>
-	  </xsl:if>
-	  <xsl:if test="$first-row='false'">
-	    <xsl:text>\tabularnewline </xsl:text>
-	    <!-- if this row is not a label, but the immediately following one is, mark it -->
-	    <xsl:if test="following-sibling::tei:row[1][@role='label'] and not(@role='label')">
-	      <xsl:text>\midrule </xsl:text>
-	      <xsl:if test="$longtable='true'">
-		<!-- if we're in a longtable, tell latex that this would be a good point to break -->
-	      <xsl:text>\pagebreak[3] </xsl:text>
-	      </xsl:if>
-	    </xsl:if>
-	    <xsl:if test="following-sibling::tei:row[1][@role='sublabel'] and not(@role='label')">
-	      <xsl:text>\midrule[0.05em]</xsl:text>
-	    </xsl:if>
-	  </xsl:if>
-	</xsl:otherwise>
+        <xsl:when test="$longtable='false'">
+          <xsl:text>\tabularnewline</xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:if test="not(@role='label') and $first-row='true'">
+            <xsl:text>\tabularnewline % first row but no label</xsl:text>
+          </xsl:if>
+          <xsl:if test="$first-row='false'">
+            <xsl:text>\tabularnewline </xsl:text>
+            <!-- if this row is not a label, but the immediately following one is, mark it -->
+            <xsl:if test="following-sibling::tei:row[1][@role='label'] and not(@role='label')">
+              <xsl:text>\midrule </xsl:text>
+              <xsl:if test="$longtable='true'">
+                <!-- if we're in a longtable, tell latex that this would be a good point to break -->
+                <xsl:text>\pagebreak[3] </xsl:text>
+              </xsl:if>
+            </xsl:if>
+            <xsl:if test="following-sibling::tei:row[1][@role='sublabel'] and not(@role='label')">
+              <xsl:text>\midrule[0.05em]</xsl:text>
+            </xsl:if>
+          </xsl:if>
+        </xsl:otherwise>
       </xsl:choose>
       <!-- see if this was a label -->
-      <xsl:if test="@role='label'  and $longtable='false'">\midrule </xsl:if>     
+      <xsl:if test="@role='label'  and $longtable='false'">\midrule </xsl:if>
       <xsl:if test="@role='label'  and $longtable='true' and $first-row='false'">\midrule[0.08em] </xsl:if>
       <xsl:if test="@role='sublabel'  and $longtable='true' and $first-row='false'">\midrule[0.05em] </xsl:if>
-      <xsl:text>&#10;</xsl:text>
+      <xsl:text>
+</xsl:text>
     </xsl:if>
     <xsl:if test="@style='breakable' and $longtable='true'">
       <xsl:text>\pagebreak[4] </xsl:text>
     </xsl:if>
-    </xsl:template>
-
-<doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+  </xsl:template>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>[latex] </desc>
-</doc>
+  </doc>
   <xsl:template name="makePreamble-complex">
     <xsl:param name="r"/>
     <xsl:variable name="valign">
       <xsl:choose>
-	<xsl:when test="contains($r,'bottomAlign')">B</xsl:when>
-	<xsl:when test="contains($r,'midAlign')">M</xsl:when>
-	<xsl:otherwise>p</xsl:otherwise>
+        <xsl:when test="contains($r,'bottomAlign')">B</xsl:when>
+        <xsl:when test="contains($r,'midAlign')">M</xsl:when>
+        <xsl:otherwise>p</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
     <xsl:variable name="tds">
@@ -1855,18 +1782,17 @@ the beginning of the document</desc>
       <xsl:variable name="c" select="@col"/>
       <xsl:if test="not(preceding-sibling::cell[$c=@col])">
         <xsl:variable name="len">
-          <xsl:value-of
-            select="sum(following-sibling::cell[$c=@col]) + current()"/>
+          <xsl:value-of select="sum(following-sibling::cell[$c=@col]) + current()"/>
         </xsl:variable>
-	<xsl:value-of select="$valign"/>
+        <xsl:value-of select="$valign"/>
         <xsl:text>{</xsl:text>
         <xsl:value-of select="($len div $total) * $tableMaxWidth"/>
-      <xsl:if test="contains($r,'sideways')">
-        <xsl:text>\textheight}</xsl:text>
-      </xsl:if>
-      <xsl:if test="not(contains($r,'sideways'))">
-        <xsl:text>\textwidth}</xsl:text>
-      </xsl:if>
+        <xsl:if test="contains($r,'sideways')">
+          <xsl:text>\textheight}</xsl:text>
+        </xsl:if>
+        <xsl:if test="not(contains($r,'sideways'))">
+          <xsl:text>\textwidth}</xsl:text>
+        </xsl:if>
         <xsl:if test="contains($r,'rules')">|</xsl:if>
       </xsl:if>
     </xsl:for-each>
@@ -1878,24 +1804,23 @@ the beginning of the document</desc>
     <xsl:param name="r"/>
     <xsl:choose>
       <xsl:when test="contains($r, 'LaTeX:')">
-	<xsl:choose>
-	  <xsl:when test="contains(substring-after($r, 'LaTeX:'), ' ')">
-	    <xsl:value-of select="substring-before(substring-after($r, 'LaTeX:'), ' ')" />
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <xsl:value-of select="substring-after($r, 'LaTeX:')" />
-	  </xsl:otherwise>
-	</xsl:choose>
+        <xsl:choose>
+          <xsl:when test="contains(substring-after($r, 'LaTeX:'), ' ')">
+            <xsl:value-of select="substring-before(substring-after($r, 'LaTeX:'), ' ')"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="substring-after($r, 'LaTeX:')"/>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:when>
       <xsl:otherwise>
-	<xsl:for-each select="tei:row[1]/tei:cell">
-	  <xsl:text>l</xsl:text>
-	  <xsl:if test="contains($r,'rules')">|</xsl:if>
-	</xsl:for-each>
+        <xsl:for-each select="tei:row[1]/tei:cell">
+          <xsl:text>l</xsl:text>
+          <xsl:if test="contains($r,'rules')">|</xsl:if>
+        </xsl:for-each>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc/>
   </doc>
@@ -1905,8 +1830,6 @@ the beginning of the document</desc>
     </xsl:if>
     <xsl:apply-templates/>
   </xsl:template>
-
-
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>Escaping chars reserved in tex. Actually, we also substitute
     Sanskrit chars here where a break is allowed. Should be fixed
@@ -1916,315 +1839,260 @@ the beginning of the document</desc>
   <xsl:function name="tei:escapeChars" as="xs:string" override="yes">
     <xsl:param name="letters"/>
     <xsl:param name="context"/>
-      <xsl:value-of
-	  select="replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(translate($letters,'&#10;',' '), 
-		  '\\','\\textbackslash '),
-		  '_','\\textunderscore '),
-		  '\^','\\textasciicircum '),
-		  '~','\\textasciitilde '),
-		  '([\}\{%&amp;\$#])','\\$1'),
-		  'ā','ā\\-'),
-		  'ī','ī\\-'),
-		  'ū','ū\\-'),
-		  'ा','ा\\-'),
-		  'ी','ी\\-'),
-		  'ू','ू\\-'),
-		  '\[', '〔'),
-		  '\]', '〕')"/>
-
+    <xsl:value-of select="replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(translate($letters,'&#10;',' '),      '\\','\\textbackslash '),     '_','\\textunderscore '),     '\^','\\textasciicircum '),     '~','\\textasciitilde '),     '([\}\{%&amp;\$#])','\\$1'),     'ā','ā\\-'),     'ī','ī\\-'),     'ū','ū\\-'),     'ा','ा\\-'),     'ी','ी\\-'),     'ू','ू\\-'),     '\[', '〔'),     '\]', '〕')"/>
   </xsl:function>
-
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>Process element quote</desc>
-   </doc>
+    <desc>Process element quote</desc>
+  </doc>
   <xsl:template match="tei:quote">
-      <xsl:choose>
-	<xsl:when test="parent::tei:cit">
-	  <xsl:apply-templates/>
-	</xsl:when>
-	<xsl:when test="not(parent::tei:p) and not($ledmac='true')">
-	  <xsl:text>
+    <xsl:choose>
+      <xsl:when test="parent::tei:cit">
+        <xsl:apply-templates/>
+      </xsl:when>
+      <xsl:when test="not(parent::tei:p) and not($ledmac='true')">
+        <xsl:text>
 
 	  \begin{quote}</xsl:text>
-	  <xsl:apply-templates/>
-	  <xsl:text>\end{quote}
+        <xsl:apply-templates/>
+        <xsl:text>\end{quote}
 
 	  </xsl:text>
-	</xsl:when>
-	<xsl:when test="$ledmac='true'">
-	  <xsl:apply-templates/>
-	</xsl:when>
-	<xsl:otherwise>
-	   <xsl:call-template name="makeQuote"/>
-	</xsl:otherwise>
-      </xsl:choose>
+      </xsl:when>
+      <xsl:when test="$ledmac='true'">
+        <xsl:apply-templates/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:call-template name="makeQuote"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
-
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>Process element head</desc>
-   </doc>
+    <desc>Process element head</desc>
+  </doc>
   <xsl:template match="tei:head">
-      <xsl:choose>
-         <xsl:when test="parent::tei:castList"/>
-         <xsl:when test="parent::tei:figure"/>
-         <xsl:when test="parent::tei:list"/>
-         <xsl:when test="parent::tei:lg"> \subsection*{<xsl:apply-templates/>} </xsl:when>
-         <xsl:when test="parent::tei:table"/>
-	 <xsl:when test="preceding-sibling::tei:head"/>
-         <xsl:otherwise>
-            <xsl:variable name="depth">
-               <xsl:apply-templates mode="depth" select=".."/>
-            </xsl:variable>
-            <xsl:text>&#10;\</xsl:text>
+    <xsl:choose>
+      <xsl:when test="parent::tei:castList"/>
+      <xsl:when test="parent::tei:figure"/>
+      <xsl:when test="parent::tei:list"/>
+      <xsl:when test="parent::tei:lg"> \subsection*{<xsl:apply-templates/>} </xsl:when>
+      <xsl:when test="parent::tei:table"/>
+      <xsl:when test="preceding-sibling::tei:head"/>
+      <xsl:otherwise>
+        <xsl:variable name="depth">
+          <xsl:apply-templates mode="depth" select=".."/>
+        </xsl:variable>
+        <xsl:text>
+\</xsl:text>
+        <xsl:choose>
+          <xsl:when test="$documentclass='book'">
             <xsl:choose>
-	      <xsl:when test="$documentclass='book'">
-		<xsl:choose>
-		  <xsl:when test="$depth=0">chapter</xsl:when>
-		  <xsl:when test="$depth=1">section</xsl:when>
-		  <xsl:when test="$depth=2">subsection</xsl:when>
-		  <xsl:when test="$depth=3">subsubsection</xsl:when>
-		  <xsl:when test="$depth=4">paragraph</xsl:when>
-		  <xsl:when test="$depth=5">subparagraph</xsl:when>
-		  <xsl:otherwise>section</xsl:otherwise>
-		</xsl:choose>
-	      </xsl:when>
-	      <xsl:when test="$documentclass='memoir'">
-		<xsl:message>Processing head for memoir class.</xsl:message>
-		<xsl:choose>
-		  <xsl:when test="parent::tei:div[@type='part']">part</xsl:when>
-		  <xsl:when test="$depth=0">part</xsl:when>
-		  <xsl:when test="$depth=1">chapter</xsl:when>
-		  <xsl:when test="$depth=2">section</xsl:when>
-		  <xsl:when test="$depth=3">subsection</xsl:when>
-		  <xsl:when test="$depth=4">subsubsection</xsl:when>
-		  <xsl:when test="$depth=5">paragraph</xsl:when>
-		  <xsl:when test="$depth &gt;= 6">subparagraph</xsl:when>
-		  <xsl:when test="$depth &gt; 6"><xsl:message>This is deeply nested! Going for subpara.</xsl:message></xsl:when>
-		  <xsl:when test="parent::tei:div[@type]"><xsl:value-of select="parent::tei:div/@type"/></xsl:when>
-		  <xsl:otherwise>section</xsl:otherwise>
-		</xsl:choose>
-	      </xsl:when>
-	      <xsl:otherwise>
-		<xsl:choose>
-		  <xsl:when test="$depth=0">section</xsl:when>
-		  <xsl:when test="$depth=1">subsection</xsl:when>
-		  <xsl:when test="$depth=2">subsubsection</xsl:when>
-		  <xsl:when test="$depth=3">paragraph</xsl:when>
-		  <xsl:when test="$depth=4">subparagraph</xsl:when>
-		  <xsl:otherwise>section</xsl:otherwise>
-		</xsl:choose>
-	      </xsl:otherwise>
+              <xsl:when test="$depth=0">chapter</xsl:when>
+              <xsl:when test="$depth=1">section</xsl:when>
+              <xsl:when test="$depth=2">subsection</xsl:when>
+              <xsl:when test="$depth=3">subsubsection</xsl:when>
+              <xsl:when test="$depth=4">paragraph</xsl:when>
+              <xsl:when test="$depth=5">subparagraph</xsl:when>
+              <xsl:otherwise>section</xsl:otherwise>
             </xsl:choose>
+          </xsl:when>
+          <xsl:when test="$documentclass='memoir'">
+            <xsl:message>Processing head for memoir class.</xsl:message>
             <xsl:choose>
-               <xsl:when test="parent::tei:body or ancestor::tei:floatingText or
-	       parent::tei:div/@rend='nonumber' 
-	       or (ancestor::tei:back and $numberBackHeadings='')
-	       or (not($numberHeadings='true') and ancestor::tei:body)
-	       or (ancestor::tei:front and  $numberFrontHeadings='')">*</xsl:when>
-	       <xsl:otherwise>[{<xsl:value-of select="tei:escapeChars(.,.)"/>}]</xsl:otherwise>
+              <xsl:when test="parent::tei:div[@type='part']">part</xsl:when>
+              <xsl:when test="$depth=0">part</xsl:when>
+              <xsl:when test="$depth=1">chapter</xsl:when>
+              <xsl:when test="$depth=2">section</xsl:when>
+              <xsl:when test="$depth=3">subsection</xsl:when>
+              <xsl:when test="$depth=4">subsubsection</xsl:when>
+              <xsl:when test="$depth=5">paragraph</xsl:when>
+              <xsl:when test="$depth &gt;= 6">subparagraph</xsl:when>
+              <xsl:when test="$depth &gt; 6">
+                <xsl:message>This is deeply nested! Going for subpara.</xsl:message>
+              </xsl:when>
+              <xsl:when test="parent::tei:div[@type]">
+                <xsl:value-of select="parent::tei:div/@type"/>
+              </xsl:when>
+              <xsl:otherwise>section</xsl:otherwise>
             </xsl:choose>
-	    <xsl:text>{</xsl:text>
-	    <xsl:apply-templates/>
-	    <xsl:if test="following-sibling::tei:head">
-	      <xsl:text>: </xsl:text>
-	      <xsl:value-of select="following-sibling::tei:head/tei:escapeChars(.,.)"/>
-	    </xsl:if>
-	    <xsl:text>}</xsl:text>
-	    <xsl:if test="../@xml:id">
-	      <xsl:text>\label{</xsl:text>
-	      <xsl:value-of select="../@xml:id"/>
-	      <xsl:text>}</xsl:text>
-	    </xsl:if>
-         </xsl:otherwise>
-      </xsl:choose>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:choose>
+              <xsl:when test="$depth=0">section</xsl:when>
+              <xsl:when test="$depth=1">subsection</xsl:when>
+              <xsl:when test="$depth=2">subsubsection</xsl:when>
+              <xsl:when test="$depth=3">paragraph</xsl:when>
+              <xsl:when test="$depth=4">subparagraph</xsl:when>
+              <xsl:otherwise>section</xsl:otherwise>
+            </xsl:choose>
+          </xsl:otherwise>
+        </xsl:choose>
+        <xsl:choose>
+          <xsl:when test="parent::tei:body or ancestor::tei:floatingText or         parent::tei:div/@rend='nonumber'          or (ancestor::tei:back and $numberBackHeadings='')         or (not($numberHeadings='true') and ancestor::tei:body)         or (ancestor::tei:front and  $numberFrontHeadings='')">*</xsl:when>
+          <xsl:otherwise>[{<xsl:value-of select="tei:escapeChars(.,.)"/>}]</xsl:otherwise>
+        </xsl:choose>
+        <xsl:text>{</xsl:text>
+        <xsl:apply-templates/>
+        <xsl:if test="following-sibling::tei:head">
+          <xsl:text>: </xsl:text>
+          <xsl:value-of select="following-sibling::tei:head/tei:escapeChars(.,.)"/>
+        </xsl:if>
+        <xsl:text>}</xsl:text>
+        <xsl:if test="../@xml:id">
+          <xsl:text>\label{</xsl:text>
+          <xsl:value-of select="../@xml:id"/>
+          <xsl:text>}</xsl:text>
+        </xsl:if>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
-
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>Process the tei:div elements</desc>
-   </doc>
-   <xsl:template match="tei:div|tei:div1|tei:div2|tei:div3|tei:div4|tei:div5">
-     <xsl:variable name="depth">
-       <xsl:value-of select="count(ancestor::tei:div|tei:div1|tei:div2|tei:div3|tei:div4|tei:div5)"/>
-     </xsl:variable>
-     <xsl:variable name="resetLedmacNumbering">
-       <xsl:choose>
-	 <xsl:when test="$depth = $ledmacNumberDepth and (tei:head or (child::tei:p or child::tei:lg))">true</xsl:when>
-	 <xsl:when test="$depth &lt; $ledmacNumberDepth and (child::tei:p or child::tei:lg)">true</xsl:when>
-	 <xsl:otherwise>false</xsl:otherwise>
-       </xsl:choose>
-     </xsl:variable>
-     <xsl:if test="$resetLedmacNumbering='false' and $depth &gt; $ledmacNumberDepth">
-       <xsl:text>
+    <desc>Process the tei:div elements</desc>
+  </doc>
+  <xsl:template match="tei:div|tei:div1|tei:div2|tei:div3|tei:div4|tei:div5">
+    <xsl:variable name="depth">
+      <xsl:value-of select="count(ancestor::tei:div|tei:div1|tei:div2|tei:div3|tei:div4|tei:div5)"/>
+    </xsl:variable>
+    <xsl:variable name="resetLedmacNumbering">
+      <xsl:choose>
+        <xsl:when test="$depth = $ledmacNumberDepth and (tei:head or (child::tei:p or child::tei:lg))">true</xsl:when>
+        <xsl:when test="$depth &lt; $ledmacNumberDepth and (child::tei:p or child::tei:lg)">true</xsl:when>
+        <xsl:otherwise>false</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:if test="$resetLedmacNumbering='false' and $depth &gt; $ledmacNumberDepth">
+      <xsl:text>
 	 
 	 \pausenumbering
 
        </xsl:text>
-     </xsl:if>
-     <xsl:apply-templates select="tei:head"/>
-     <xsl:text>
+    </xsl:if>
+    <xsl:apply-templates select="tei:head"/>
+    <xsl:text>
 
-       % new div opening: depth here is </xsl:text><xsl:value-of select="$depth"/>
-       <xsl:text>
+       % new div opening: depth here is </xsl:text>
+    <xsl:value-of select="$depth"/>
+    <xsl:text>
        
        </xsl:text>
-       <xsl:choose>
-	 <xsl:when test="$resetLedmacNumbering='true'">
-	   <xsl:text>
+    <xsl:choose>
+      <xsl:when test="$resetLedmacNumbering='true'">
+        <xsl:text>
 	     
 	     \begingroup
 	     \beginnumbering% beginning numbering from div
 	     \autopar
 	     
 	   </xsl:text>
-	 </xsl:when>
-	 <xsl:when test="$resetLedmacNumbering='false' and $depth &gt; $ledmacNumberDepth">
-	   <xsl:text>
+      </xsl:when>
+      <xsl:when test="$resetLedmacNumbering='false' and $depth &gt; $ledmacNumberDepth">
+        <xsl:text>
 	     
 	     \resumenumbering
 	     
 	   </xsl:text>
-	 </xsl:when>
-       </xsl:choose>
-       <xsl:apply-templates select="child::*[not(self::tei:head)]"/>
-     <xsl:if test="$resetLedmacNumbering='true'">
-       <xsl:text>
+      </xsl:when>
+    </xsl:choose>
+    <xsl:apply-templates select="child::*[not(self::tei:head)]"/>
+    <xsl:if test="$resetLedmacNumbering='true'">
+      <xsl:text>
 
 	 \endnumbering% ending numbering from div
 	 \endgroup
 
        </xsl:text>
-     </xsl:if>
-   </xsl:template>
-
-   
-   <xsl:template match="tei:trailer">
-     <xsl:text>
+    </xsl:if>
+  </xsl:template>
+  <xsl:template match="tei:trailer">
+    <xsl:text>
 
      \begin{center}</xsl:text>
-      <xsl:apply-templates/>
-      <xsl:text>
+    <xsl:apply-templates/>
+    <xsl:text>
 	\end{center}
 
       </xsl:text>
-   </xsl:template>
-
+  </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-         <p>[common] </p>
-         <p>Generate simple title with no markup</p>
-      </desc>
-   </doc>
-  <xsl:function name="tei:generateSimpleTitle" >
+    <desc>
+      <p>[common] </p>
+      <p>Generate simple title with no markup</p>
+    </desc>
+  </doc>
+  <xsl:function name="tei:generateSimpleTitle">
     <xsl:param name="context"/>
     <xsl:for-each select="$context">
       <xsl:choose>
-         <xsl:when test="$useHeaderFrontMatter='true' and ancestor-or-self::tei:TEI/tei:text/tei:front//tei:docTitle">
-            <xsl:apply-templates select="ancestor-or-self::tei:TEI/tei:text/tei:front//tei:docTitle"
-                                 mode="simple"/>
-         </xsl:when>
-         <xsl:when test="ancestor-or-self::tei:teiCorpus">	
-            <xsl:apply-templates
-		select="tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title[not(@type='subordinate')]"
-		mode="simple"/>
-         </xsl:when>
-         <xsl:otherwise>
-            <xsl:for-each
-		select="ancestor-or-self::tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt">
-	      <xsl:for-each select="tei:title">
-		<xsl:apply-templates select="." mode="simple"/>
-		<xsl:if test="following-sibling::tei:title">
-		  <xsl:text>; </xsl:text>
-		</xsl:if>
-	      </xsl:for-each>
-	    </xsl:for-each>
-	    <xsl:if test="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:author">
-	      <xsl:text> // </xsl:text>
-	      <xsl:sequence select="replace(string-join(tei:generateAuthor(.),''),'; ','')"/>
-	    </xsl:if>
-         </xsl:otherwise>
+        <xsl:when test="$useHeaderFrontMatter='true' and ancestor-or-self::tei:TEI/tei:text/tei:front//tei:docTitle">
+          <xsl:apply-templates select="ancestor-or-self::tei:TEI/tei:text/tei:front//tei:docTitle" mode="simple"/>
+        </xsl:when>
+        <xsl:when test="ancestor-or-self::tei:teiCorpus">
+          <xsl:apply-templates select="tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title[not(@type='subordinate')]" mode="simple"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:for-each select="ancestor-or-self::tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt">
+            <xsl:for-each select="tei:title">
+              <xsl:apply-templates select="." mode="simple"/>
+              <xsl:if test="following-sibling::tei:title">
+                <xsl:text>; </xsl:text>
+              </xsl:if>
+            </xsl:for-each>
+          </xsl:for-each>
+          <xsl:if test="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:author">
+            <xsl:text> // </xsl:text>
+            <xsl:sequence select="replace(string-join(tei:generateAuthor(.),''),'; ','')"/>
+          </xsl:if>
+        </xsl:otherwise>
       </xsl:choose>
     </xsl:for-each>
   </xsl:function>
-
-   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>[latex] Title banner </desc>
-   </doc>
-   <xsl:template name="printTitleAndLogo">
-     <xsl:text>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>[latex] Title banner </desc>
+  </doc>
+  <xsl:template name="printTitleAndLogo">
+    <xsl:text>
      \makeCustomTitle
      </xsl:text>
-   </xsl:template>
-
-<xsl:template match="tei:note">
+  </xsl:template>
+  <xsl:template match="tei:note">
     <xsl:choose>
       <xsl:when test="@place='none'"/>
-      <xsl:when test="not(@place) and (parent::tei:head or ancestor::tei:bibl or
-		      ancestor::tei:biblFull or ancestor::tei:biblStruct)">
-	<xsl:call-template name="makeText">
-	  <xsl:with-param name="letters"> (</xsl:with-param>
-	</xsl:call-template>
-	<xsl:apply-templates/>
-	<xsl:call-template name="makeText">
-	  <xsl:with-param name="letters">)</xsl:with-param>
-	</xsl:call-template>
+      <xsl:when test="not(@place) and (parent::tei:head or ancestor::tei:bibl or         ancestor::tei:biblFull or ancestor::tei:biblStruct)">
+        <xsl:call-template name="makeText">
+          <xsl:with-param name="letters"> (</xsl:with-param>
+        </xsl:call-template>
+        <xsl:apply-templates/>
+        <xsl:call-template name="makeText">
+          <xsl:with-param name="letters">)</xsl:with-param>
+        </xsl:call-template>
       </xsl:when>
-
       <xsl:when test="@place='comment'">
-	<xsl:call-template name="commentNote"/>
+        <xsl:call-template name="commentNote"/>
       </xsl:when>
-
       <xsl:when test="@place='inline' and not(tei:is-inline(.))">
-	<xsl:call-template name="displayNote"/>
+        <xsl:call-template name="displayNote"/>
       </xsl:when>
-      
       <xsl:when test="@place='inline'">
-	<xsl:call-template name="plainNote"/>
+        <xsl:call-template name="plainNote"/>
       </xsl:when>
-
       <xsl:when test="tei:isEndNote(.) or $autoEndNotes='true'">
-	<xsl:call-template name="endNote"/>
+        <xsl:call-template name="endNote"/>
       </xsl:when>
-
       <xsl:when test="tei:isFootNote(.)">
-	<xsl:call-template name="footNote"/>
+        <xsl:call-template name="footNote"/>
       </xsl:when>
-
-      <xsl:when test="@place='margin' or 
-		      @place='margin/inline' or
-		      @place='marg1' or
-		      @place='marg2' or
-		      @place='marg3' or
-		      @place='marge' or
-		      @place='h' or
-		      @place='inter' or
-		      @place='right' or
-		      @place='left' or
-		      @place='divend' or
-		      @place='marginOuter' or
-		      @place='marginLeft' or
-		      @place='marginRight' or
-		      @place='margin-left' or
-		      @place='margin-right' or
-		      @place='margin_left' or
-		      @place='margin_right' or
-		      @place='margin-top' or
-		      @place='margin-bottom'
-		      ">
-	<xsl:call-template name="marginalNote"/>
+      <xsl:when test="@place='margin' or          @place='margin/inline' or         @place='marg1' or         @place='marg2' or         @place='marg3' or         @place='marge' or         @place='h' or         @place='inter' or         @place='right' or         @place='left' or         @place='divend' or         @place='marginOuter' or         @place='marginLeft' or         @place='marginRight' or         @place='margin-left' or         @place='margin-right' or         @place='margin_left' or         @place='margin_right' or         @place='margin-top' or         @place='margin-bottom'         ">
+        <xsl:call-template name="marginalNote"/>
       </xsl:when>
-
       <xsl:when test="(@place='display' or not(tei:is-inline(.)) or tei:q)">
-	<xsl:call-template name="footNote"/>
+        <xsl:call-template name="footNote"/>
       </xsl:when>
-
       <xsl:when test="@place">
-	<xsl:message>unknown @place for note, <xsl:value-of select="@place"/></xsl:message>
-	<xsl:call-template name="displayNote"/>
+        <xsl:message>unknown @place for note, <xsl:value-of select="@place"/></xsl:message>
+        <xsl:call-template name="displayNote"/>
       </xsl:when>
       <xsl:otherwise>
-	<xsl:call-template name="plainNote"/>
+        <xsl:call-template name="plainNote"/>
       </xsl:otherwise>
-      </xsl:choose>
+    </xsl:choose>
   </xsl:template>
-
 </xsl:stylesheet>
