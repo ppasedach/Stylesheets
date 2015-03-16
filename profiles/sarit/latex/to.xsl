@@ -309,6 +309,9 @@ capable of dealing with UTF-8 directly.
 	  \newcommand{\add}[1]{(#1$^{+}$)}
 	  \newcommand{\deletion}[1]{(#1$^{-}$)}
 	  \newcommand{\pratIka}[1]{\textcolor{cyan}{#1}}
+	  \newcommand{\name}[1]{#1}
+	  \newcommand{\persName}[1]{#1}
+	  \newcommand{\placeName}[1]{#1}
 	  </xsl:text>
       </xsl:when>
       <xsl:otherwise>
@@ -1870,6 +1873,7 @@ the beginning of the document</desc>
     <desc>Process element head</desc>
   </doc>
   <xsl:template match="tei:head">
+    <xsl:message>Head element found.</xsl:message>
     <xsl:choose>
       <xsl:when test="parent::tei:castList"/>
       <xsl:when test="parent::tei:figure"/>
@@ -1881,6 +1885,7 @@ the beginning of the document</desc>
         <xsl:variable name="depth">
           <xsl:apply-templates mode="depth" select=".."/>
         </xsl:variable>
+        <xsl:message>Depth of this head (<xsl:value-of select="."/>): <xsl:value-of select="$depth"/>.</xsl:message>
         <xsl:text>
 \</xsl:text>
         <xsl:choose>
@@ -2091,8 +2096,281 @@ the beginning of the document</desc>
         <xsl:call-template name="displayNote"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:call-template name="plainNote"/>
+        <xsl:call-template name="footNote"/>
       </xsl:otherwise>
     </xsl:choose>
+  </xsl:template>
+  <xsl:template match="tei:name|tei:persName|tei:placeName|tei:orgName">
+    <xsl:choose>
+      <xsl:when test="not(ancestor::tei:person|ancestor::tei:biblStruct)">
+        <xsl:call-template name="makeInline">
+          <xsl:with-param name="style" select="local-name()"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:when test="following-sibling::tei:name|following-sibling::tei:persName">
+        <xsl:call-template name="makeText">
+          <xsl:with-param name="letters">, </xsl:with-param>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:call-template name="makeSpan"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>inline objects</desc>
+  </doc>
+  <xsl:template name="makeInline">
+    <xsl:param name="before"/>
+    <xsl:param name="style"/>
+    <xsl:param name="after"/>
+    <xsl:value-of select="$before"/>
+    <xsl:sequence select="tei:makeHyperTarget(@xml:id)"/>
+    <xsl:choose>
+      <xsl:when test="$style=('add','unclear','bibl','docAuthor','titlem','italic','mentioned','term','foreign')">
+        <xsl:text>\textit{</xsl:text>
+        <xsl:value-of select="tei:escapeChars(normalize-space(.),.)"/>
+        <xsl:text>}</xsl:text>
+      </xsl:when>
+      <xsl:when test="$style='supplied'">
+        <xsl:value-of select="tei:escapeChars(normalize-space(.),.)"/>
+      </xsl:when>
+      <xsl:when test="$style='bold'">
+        <xsl:text>\textbf{</xsl:text>
+        <xsl:value-of select="tei:escapeChars(normalize-space(.),.)"/>
+        <xsl:text>}</xsl:text>
+      </xsl:when>
+      <xsl:when test="$style='strikethrough'">
+        <xsl:text>\sout{</xsl:text>
+        <xsl:value-of select="tei:escapeChars(normalize-space(.),.)"/>
+        <xsl:text>}</xsl:text>
+      </xsl:when>
+      <xsl:when test="$style='sup'">
+        <xsl:text>\textsuperscript{</xsl:text>
+        <xsl:value-of select="tei:escapeChars(normalize-space(.),.)"/>
+        <xsl:text>}</xsl:text>
+      </xsl:when>
+      <xsl:when test="$style='sub'">
+        <xsl:text>\textsubscript{</xsl:text>
+        <xsl:value-of select="tei:escapeChars(normalize-space(.),.)"/>
+        <xsl:text>}</xsl:text>
+      </xsl:when>
+      <xsl:when test="$style=''">
+        <xsl:sequence select="concat('{\',local-name(),' ')"/>
+        <xsl:apply-templates/>
+        <xsl:text>}</xsl:text>
+      </xsl:when>
+      <xsl:when test="$style = 'persName' or $style = 'name'">
+        <xsl:text>\</xsl:text>
+        <xsl:value-of select="local-name()"/>
+        <xsl:text>{</xsl:text>
+        <xsl:apply-templates/>
+        <xsl:text>}</xsl:text>
+      </xsl:when>
+      <xsl:when test="$style = 'ref'">
+        <xsl:choose>
+          <!-- @target is processed elsewhere, just check for cRef -->
+          <xsl:when test="@cRef">
+            <xsl:text>\cref{</xsl:text>
+            <xsl:value-of select="@cRef"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:text>\hyperlink{</xsl:text>
+            <xsl:value-of select="node()"/>
+            <xsl:text>}{</xsl:text>
+            <xsl:value-of select="node()"/>
+          </xsl:otherwise>
+        </xsl:choose>
+        <xsl:text>}</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="concat('{\',$style[1], ' ')"/>
+        <xsl:apply-templates/>
+        <xsl:text>}</xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
+    <xsl:value-of select="$after"/>
+  </xsl:template>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>Process element listBibl. This should be handled by biblatex.</desc>
+  </doc>
+  <xsl:template match="tei:listBibl">
+    <xsl:message>Processing listBibl. Won't do anything much here, configure biblatex.</xsl:message>
+    <xsl:text>
+       \chapter{Bibliographical Hacks}
+       \begin{minted}[fontfamily=rmfamily,fontsize=\footnotesize]{xml}
+     </xsl:text>
+    <xsl:copy-of select="saxon:serialize(//tei:listBibl, 'xmlstring')"/>
+    <xsl:text>
+       \end{minted}
+     </xsl:text>
+  </xsl:template>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>Process ptr and ref elements, hypertext pointers</desc>
+  </doc>
+  <xsl:template match="tei:ptr|tei:ref">
+    <xsl:if test="parent::tei:analytic or parent::tei:monogr">
+      <xsl:text> </xsl:text>
+    </xsl:if>
+    <xsl:choose>
+      <xsl:when test="@type='transclude' and self::tei:ptr">
+        <xsl:apply-templates select="doc(@target)"/>
+      </xsl:when>
+      <!-- omit empty ref elements that do not have @target -->
+      <xsl:when test="self::tei:ref and not(@target) and not(descendant-or-self::text())">
+        <xsl:message>Can't process ref <xsl:value-of select="node()"/></xsl:message>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:variable name="ptr" select="if (self::tei:ptr) then           true() else false()"/>
+        <xsl:variable name="xmllang" select="@xml:lang"/>
+        <xsl:variable name="here" select="."/>
+        <xsl:choose>
+          <xsl:when test="not(@target) and self::tei:ref">
+            <xsl:call-template name="makeInline">
+              <xsl:with-param name="style">ref</xsl:with-param>
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:when test="@cRef and self::tei:ptr">
+            <xsl:call-template name="makeInline">
+              <xsl:with-param name="style">ptr</xsl:with-param>
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:for-each select="tokenize(normalize-space(@target),' ')">
+              <xsl:variable name="a" select="."/>
+              <xsl:for-each select="$here">
+                <xsl:choose>
+                  <!-- If there is a target attribute starting with #, it is always a local reference -->
+                  <xsl:when test="starts-with($a,'#')">
+                    <xsl:call-template name="makeInternalLink">
+                      <xsl:with-param name="target" select="substring($a,2)"/>
+                      <xsl:with-param name="ptr" select="$ptr"/>
+                      <xsl:with-param name="dest">
+                        <xsl:call-template name="generateEndLink">
+                          <xsl:with-param name="where">
+                            <xsl:value-of select="substring($a,2)"/>
+                          </xsl:with-param>
+                        </xsl:call-template>
+                      </xsl:with-param>
+                    </xsl:call-template>
+                  </xsl:when>
+                  <!-- if we are doing TEI P4, all targets are local -->
+                  <xsl:when test="$teiP4Compat='true'">
+                    <xsl:call-template name="makeInternalLink">
+                      <xsl:with-param name="target" select="$a"/>
+                      <xsl:with-param name="ptr" select="$ptr"/>
+                      <xsl:with-param name="dest">
+                        <xsl:call-template name="generateEndLink">
+                          <xsl:with-param name="where">
+                            <xsl:value-of select="$a"/>
+                          </xsl:with-param>
+                        </xsl:call-template>
+                      </xsl:with-param>
+                    </xsl:call-template>
+                  </xsl:when>
+                  <!-- other uses of target means it is external -->
+                  <xsl:otherwise>
+                    <xsl:call-template name="makeExternalLink">
+                      <xsl:with-param name="ptr" select="$ptr"/>
+                      <xsl:with-param name="title" select="@n"/>
+                      <xsl:with-param name="dest">
+                        <xsl:sequence select="tei:resolveURI($here,$a)"/>
+                      </xsl:with-param>
+                    </xsl:call-template>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:for-each>
+              <xsl:call-template name="multiTargetSeparator">
+                <xsl:with-param name="xmllang" select="$xmllang"/>
+              </xsl:call-template>
+            </xsl:for-each>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:otherwise>
+    </xsl:choose>
+    <xsl:if test="parent::tei:analytic or parent::tei:monogr">
+      <xsl:text> </xsl:text>
+    </xsl:if>
+  </xsl:template>
+  <xsl:template match="tei:titlePage">
+    <xsl:apply-templates/>
+  </xsl:template>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>Rendering rules, turning @rend into LaTeX commands</desc>
+  </doc>
+  <xsl:template name="rendering">
+    <xsl:variable name="decls">
+      <xsl:for-each select="tokenize(normalize-space(@rend),' ')">
+        <xsl:if test=".='large'">\large</xsl:if>
+        <xsl:if test=".='larger'">\larger</xsl:if>
+        <xsl:if test=".='small'">\small</xsl:if>
+        <xsl:if test=".='smaller'">\smaller</xsl:if>
+        <xsl:if test="starts-with(.,'color')">
+          <xsl:text>\color</xsl:text>
+          <xsl:choose>
+            <xsl:when test="starts-with(.,'color(')">
+              <xsl:text>{</xsl:text>
+              <xsl:value-of select="substring-before(substring-after(.,'color('),')')"/>
+              <xsl:text>}</xsl:text>
+            </xsl:when>
+            <xsl:when test="starts-with(.,'color')">
+              <xsl:text>{</xsl:text>
+              <xsl:value-of select="substring-after(.,'color')"/>
+              <xsl:text>}</xsl:text>
+            </xsl:when>
+          </xsl:choose>
+        </xsl:if>
+      </xsl:for-each>
+    </xsl:variable>
+    <xsl:variable name="cmd">
+      <xsl:if test="tei:render-strike(.)">\sout </xsl:if>
+      <xsl:if test="tei:render-italic(.)">\textit </xsl:if>
+      <xsl:if test="tei:render-bold(.)">\textbf </xsl:if>
+      <xsl:if test="tei:render-typewriter(.)">\texttt </xsl:if>
+      <xsl:if test="tei:render-smallcaps(.)">\textsc </xsl:if>
+      <xsl:for-each select="tokenize(normalize-space(@rend),' ')">
+        <xsl:choose>
+          <xsl:when test=".='calligraphic'">\textcal </xsl:when>
+          <xsl:when test=".='capsall'">\uppercase </xsl:when>
+          <xsl:when test=".='center'">\centerline </xsl:when>
+          <xsl:when test=".='gothic'">\textgothic </xsl:when>
+          <xsl:when test=".='noindex'">\textrm </xsl:when>
+          <xsl:when test=".='overbar'">\textoverbar </xsl:when>
+          <xsl:when test=".='plain'">\textrm </xsl:when>
+          <xsl:when test=".='quoted'">\textquoted </xsl:when>
+          <xsl:when test=".='sub'">\textsubscript </xsl:when>
+          <xsl:when test=".='subscript'">\textsubscript </xsl:when>
+          <xsl:when test=".='underline'">\uline </xsl:when>
+          <xsl:when test=".='sup'">\textsuperscript </xsl:when>
+          <xsl:when test=".='superscript'">\textsuperscript </xsl:when>
+          <xsl:when test=".='underwavyline'">\uwave </xsl:when>
+          <xsl:when test=".='underdoubleline'">\uuline </xsl:when>
+        </xsl:choose>
+      </xsl:for-each>
+    </xsl:variable>
+    <xsl:for-each select="tokenize(normalize-space($cmd),' ')">
+      <xsl:value-of select="concat(.,'{')"/>
+    </xsl:for-each>
+    <xsl:choose>
+      <xsl:when test="$decls=''">
+        <xsl:apply-templates/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:if test="$cmd=''">
+          <xsl:text>{</xsl:text>
+        </xsl:if>
+        <xsl:value-of select="$decls"/>
+        <xsl:if test="matches($decls,'[a-z]$')">
+          <xsl:text> </xsl:text>
+        </xsl:if>
+        <xsl:apply-templates/>
+        <xsl:if test="$cmd=''">
+          <xsl:text>}</xsl:text>
+        </xsl:if>
+      </xsl:otherwise>
+    </xsl:choose>
+    <xsl:for-each select="tokenize(normalize-space($cmd),' ')">
+      <xsl:text>}</xsl:text>
+    </xsl:for-each>
   </xsl:template>
 </xsl:stylesheet>
