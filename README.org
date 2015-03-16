@@ -1,0 +1,5 @@
+* Stylesheets for TEI
+
+Attempting to hack the stylesheets so they work with eledmac.
+
+For test files, see https://github.com/sarit/SARIT-corpus.
