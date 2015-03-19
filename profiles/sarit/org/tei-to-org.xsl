@@ -305,7 +305,8 @@ of this software, even if advised of the possibility of such damage.
   </xsl:template>
 
   <xsl:template match="tei:note">
-    <xsl:text>[fn:</xsl:text>
+    <!-- Putting in a zero width joiner since it won't work at beginning of line. -->
+    <xsl:text>&#8205;[fn:</xsl:text>
     <xsl:number level="any" count="tei:note"/>
     <xsl:text>]</xsl:text>
   </xsl:template>
