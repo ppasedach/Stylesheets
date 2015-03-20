@@ -12,15 +12,61 @@ coverage -->
 <xsl:variable name="inq">"</xsl:variable>
 <xsl:variable name="outq">\\"</xsl:variable>
 
+<xsl:template name="getTitle">
+  <xsl:param name="currentDoc"/>
+  <xsl:for-each select="$currentDoc//descendant::titleStmt/descendant::title">
+    <xsl:apply-templates/>
+    <xsl:if test="position() != last()">
+      <xsl:text> || </xsl:text>
+    </xsl:if>
+  </xsl:for-each>
+</xsl:template>
+
+<xsl:template name="getAuthor">
+  <xsl:param name="currentDoc"/>
+  <xsl:for-each select="$currentDoc//descendant::titleStmt/descendant::author">
+    <xsl:apply-templates/>
+    <xsl:if test="position() != last()">
+      <xsl:text> || </xsl:text>
+    </xsl:if>
+  </xsl:for-each>
+</xsl:template>
+
 <xsl:template match="/">
-  <xsl:apply-templates select="//TEI/text/body//p[not(ancestor::note)]" mode="pars"/>
-  <xsl:apply-templates select="//TEI/text/body//lg[not(ancestor::note)]" mode="linegroups"/>
-  <xsl:apply-templates select="//TEI/text/body//note" mode="notes"/>
+  <xsl:for-each select="//TEI/text/body">
+    <xsl:variable name="currentDoc">
+      <xsl:copy-of select="ancestor::TEI"/>
+    </xsl:variable>
+    <xsl:variable name="title">
+      <xsl:call-template name="getTitle">
+	<xsl:with-param name="currentDoc" select="$currentDoc"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="author">
+      <xsl:call-template name="getAuthor">
+	<xsl:with-param name="currentDoc" select="$currentDoc"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:apply-templates select=".//p[not(ancestor::note)]" mode="pars">
+      <xsl:with-param name="title"><xsl:value-of select="$title"/></xsl:with-param>
+      <xsl:with-param name="author"><xsl:value-of select="$author"/></xsl:with-param>
+    </xsl:apply-templates>
+    <xsl:apply-templates select=".//lg[not(ancestor::note)]" mode="linegroups">
+      <xsl:with-param name="title"><xsl:value-of select="$title"/></xsl:with-param>
+      <xsl:with-param name="author"><xsl:value-of select="$author"/></xsl:with-param>
+    </xsl:apply-templates>
+    <xsl:apply-templates select=".//note" mode="notes">
+      <xsl:with-param name="title"><xsl:value-of select="$title"/></xsl:with-param>
+      <xsl:with-param name="author"><xsl:value-of select="$author"/></xsl:with-param>
+    </xsl:apply-templates>
+  </xsl:for-each>
 </xsl:template>
 
 
 <xsl:template name="makeJson">
   <xsl:param name="context"/>
+  <xsl:param name="title" />
+  <xsl:param name="author" />
   <xsl:text>{ "index" : { "_index": "saritindex", "_type": "element" }}</xsl:text>
   <xsl:call-template name="newline"/>
   <xsl:text>{  "tag" : "</xsl:text>
@@ -29,6 +75,10 @@ coverage -->
   <xsl:value-of select="saxon:path()"/>
   <xsl:text>", "text" : "</xsl:text>
   <xsl:apply-templates />
+  <xsl:text>", "title" : "</xsl:text>
+  <xsl:value-of  select="$title"/>
+  <xsl:text>", "author" : "</xsl:text>
+  <xsl:value-of  select="$author"/>
   <xsl:text>"}</xsl:text>
   <xsl:call-template name="newline"/>
 </xsl:template>
@@ -38,7 +88,16 @@ coverage -->
 </xsl:template>
 
 <xsl:template match="p" mode="pars">
-  <xsl:call-template name="makeJson" />
+  <xsl:param name="title"/>
+  <xsl:param name="author"/>
+  <xsl:call-template name="makeJson">
+    <xsl:with-param name="title">
+      <xsl:value-of select="$title"/>
+    </xsl:with-param>
+    <xsl:with-param name="author">
+      <xsl:value-of select="$author"/>
+    </xsl:with-param>
+  </xsl:call-template>
 </xsl:template>
 
 <xsl:template match="lg">
@@ -46,17 +105,37 @@ coverage -->
 </xsl:template>
 
 <xsl:template match="lg" mode="linegroups">
-  <xsl:call-template name="makeJson"/>
+  <xsl:param name="title"/>
+  <xsl:param name="author"/>
+  <xsl:call-template name="makeJson">
+    <xsl:with-param name="title">
+      <xsl:value-of select="$title"/>
+    </xsl:with-param>
+    <xsl:with-param name="author">
+      <xsl:value-of select="$author"/>
+    </xsl:with-param>
+  </xsl:call-template>
 </xsl:template>
 
 <xsl:template match="note" />
 
 <xsl:template match="note" mode="notes">
-  <xsl:call-template name="makeJson"/>
+  <xsl:param name="title"/>
+  <xsl:param name="author"/>
+<xsl:call-template name="makeJson">
+    <xsl:with-param name="title">
+      <xsl:value-of select="$title"/>
+    </xsl:with-param>
+    <xsl:with-param name="author">
+      <xsl:value-of select="$author"/>
+    </xsl:with-param>
+  </xsl:call-template>
 </xsl:template>
 
+
+
 <xsl:template match="text()">
-  <xsl:value-of select="replace(replace(normalize-space(.),'\\','\\\\'),$inq,$outq)"/>
+  <xsl:value-of select="replace(replace(replace(normalize-space(.),'\\','\\\\'), '&#10;', ' '),$inq,$outq)"/>
 </xsl:template>
 
 <xsl:template name="newline">
