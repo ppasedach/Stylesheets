@@ -16,7 +16,7 @@ If you're happy with the output, run this:
 
 #+BEGIN_SRC sh
   split -l 50000 corpus.js /tmp/corpus-split
-  for i in `ls corpus-split-a*` 
+  for i in `ls /tmp/corpus-split*` 
   do 
       curl -XPOST 'localhost:9200/_bulk?pretty' \
            --data-binary @$i  >> /tmp/results_corpus.js
