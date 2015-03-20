@@ -1,6 +1,8 @@
 <xsl:stylesheet
     xpath-default-namespace="http://www.tei-c.org/ns/1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:fn="http://www.w3.org/2005/xpath-functions"
+    xmlns:saxon="http://saxon.sf.net/"
     version="2.0"
     >
 <!-- cf http://www.bramstein.com/projects/xsltjson/ for better
@@ -9,31 +11,50 @@ coverage -->
 <xsl:output method="text" encoding="utf-8" />
 <xsl:variable name="inq">"</xsl:variable>
 <xsl:variable name="outq">\\"</xsl:variable>
-<xsl:template match="/">
-<xsl:text>{"TEI": [</xsl:text>
-  <xsl:for-each select="TEI/text/body/*">
-    <xsl:text>{  "</xsl:text>
-    <xsl:value-of select="local-name()"/>
-    <xsl:value-of select="position()"/>
-  <xsl:text>" : [ &#10; </xsl:text>
-  <xsl:for-each select="*">
-    <xsl:text> [ </xsl:text>
-    <xsl:for-each select="*">
-      <xsl:text>"</xsl:text>
-      <xsl:apply-templates/>
-      <xsl:text>"</xsl:text>
-      <xsl:if test="not(position() = last())">,</xsl:if>
-    </xsl:for-each>
-    <xsl:text> ] </xsl:text>
-    <xsl:if test="not(position() = last())">,</xsl:if>
-  </xsl:for-each>
-  <xsl:text>]&#10;}</xsl:text>
-  <xsl:if test="not(position() = last())">,</xsl:if>
-  </xsl:for-each>
-<xsl:text>
-] }
-</xsl:text>
 
+<xsl:template match="/">
+  <xsl:text>{"TEI": [</xsl:text>
+  <xsl:text>{"pars" : [</xsl:text>
+  <xsl:apply-templates select="TEI/text/body//p[not(ancestor::note)]" mode="pars"/>
+  <xsl:text>]},</xsl:text>
+  <xsl:text>{ "linegroups" : [</xsl:text>
+  <xsl:apply-templates select="TEI/text/body//lg[not(ancestor::note)]" mode="linegroups"/>
+  <xsl:text>]},</xsl:text>
+  <xsl:text>{ "notes" : [</xsl:text>
+  <xsl:apply-templates select="TEI/text/body//note" mode="notes"/>
+  <xsl:text>]}</xsl:text>
+  <xsl:text>]}</xsl:text>
+</xsl:template>
+
+
+<xsl:template name="makeJson">
+  <xsl:param name="context"/>
+  <xsl:text>{  "tag" : "</xsl:text>
+  <xsl:value-of select="local-name()"/>
+  <xsl:text>", "path" : "</xsl:text>
+  <xsl:value-of select="saxon:path()"/>
+  <xsl:text>", "text" : "</xsl:text>
+  <xsl:apply-templates />
+  <xsl:text>"}</xsl:text>
+    <xsl:if test="not(position() = last())">,
+    </xsl:if>
+</xsl:template>
+
+<xsl:template match="p" />
+
+<xsl:template match="p" mode="pars">
+  <xsl:call-template name="makeJson"/>
+</xsl:template>
+
+<xsl:template match="lg"/>
+<xsl:template match="lg" mode="linegroups">
+  <xsl:call-template name="makeJson"/>
+</xsl:template>
+
+<xsl:template match="note" />
+
+<xsl:template match="note" mode="notes">
+  <xsl:call-template name="makeJson"/>
 </xsl:template>
 
 <xsl:template match="text()">
