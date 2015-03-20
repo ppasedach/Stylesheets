@@ -11,6 +11,9 @@ coverage -->
 <xsl:output method="text" encoding="utf-8" />
 <xsl:variable name="inq">"</xsl:variable>
 <xsl:variable name="outq">\\"</xsl:variable>
+<xsl:variable name="esIndexName">saritindex</xsl:variable>
+<xsl:variable name="esTypeName">element</xsl:variable>
+
 
 <xsl:template name="getTitle">
   <xsl:param name="currentDoc"/>
@@ -67,7 +70,11 @@ coverage -->
   <xsl:param name="context"/>
   <xsl:param name="title" />
   <xsl:param name="author" />
-  <xsl:text>{ "index" : { "_index": "saritindex", "_type": "element" }}</xsl:text>
+  <xsl:text>{ "index" : { "_index": "</xsl:text>
+  <xsl:value-of select="$esIndexName"/>
+  <xsl:text>", "_type": "</xsl:text>
+  <xsl:value-of select="$esTypeName"/>
+  <xsl:text>" }}</xsl:text>
   <xsl:call-template name="newline"/>
   <xsl:text>{  "tag" : "</xsl:text>
   <xsl:value-of select="local-name()"/>
@@ -91,12 +98,8 @@ coverage -->
   <xsl:param name="title"/>
   <xsl:param name="author"/>
   <xsl:call-template name="makeJson">
-    <xsl:with-param name="title">
-      <xsl:value-of select="$title"/>
-    </xsl:with-param>
-    <xsl:with-param name="author">
-      <xsl:value-of select="$author"/>
-    </xsl:with-param>
+    <xsl:with-param name="title" select="$title"/>
+    <xsl:with-param name="author" select="$author" />
   </xsl:call-template>
 </xsl:template>
 
@@ -108,12 +111,8 @@ coverage -->
   <xsl:param name="title"/>
   <xsl:param name="author"/>
   <xsl:call-template name="makeJson">
-    <xsl:with-param name="title">
-      <xsl:value-of select="$title"/>
-    </xsl:with-param>
-    <xsl:with-param name="author">
-      <xsl:value-of select="$author"/>
-    </xsl:with-param>
+    <xsl:with-param name="title" select="$title"/>
+    <xsl:with-param name="author" select="$author"/>
   </xsl:call-template>
 </xsl:template>
 

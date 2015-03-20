@@ -1,0 +1,24 @@
+#+TITLE: TEI to JSON for Elastic search
+
+This is a simple stylesheet for converting TEI (or teiCorpus) into a
+JSON format that you can feed to [[http://www.elastic.co/][ElasticSearch]].
+
+To generate the JSON file, use something like this:
+
+#+BEGIN_SRC sh
+  saxonb-xslt -ext:on \
+              -xsl:./sarit/jsonElastic/teitojson.xsl \
+              -s:/tmp/corpus.xml \
+              -o:corpus.js
+#+END_SRC
+
+If you're happy with the output, run this:
+
+#+BEGIN_SRC sh
+  split -l 50000 corpus.js /tmp/corpus-split
+  for i in `ls corpus-split-a*` 
+  do 
+      curl -XPOST 'localhost:9200/_bulk?pretty' \
+           --data-binary @$i  >> /tmp/results_corpus.js
+  done
+#+END_SRC
