@@ -40,6 +40,9 @@ coverage -->
     <xsl:variable name="currentDoc">
       <xsl:copy-of select="ancestor::TEI"/>
     </xsl:variable>
+    <xsl:variable name="systemId">
+      <xsl:copy-of select="saxon:systemId()"/>
+    </xsl:variable>
     <xsl:variable name="title">
       <xsl:call-template name="getTitle">
 	<xsl:with-param name="currentDoc" select="$currentDoc"/>
@@ -53,14 +56,17 @@ coverage -->
     <xsl:apply-templates select=".//p[not(ancestor::note)]" mode="pars">
       <xsl:with-param name="title"><xsl:value-of select="$title"/></xsl:with-param>
       <xsl:with-param name="author"><xsl:value-of select="$author"/></xsl:with-param>
+      <xsl:with-param name="systemId"><xsl:value-of select="$systemId"/></xsl:with-param>
     </xsl:apply-templates>
     <xsl:apply-templates select=".//lg[not(ancestor::note)]" mode="linegroups">
       <xsl:with-param name="title"><xsl:value-of select="$title"/></xsl:with-param>
       <xsl:with-param name="author"><xsl:value-of select="$author"/></xsl:with-param>
+      <xsl:with-param name="systemId"><xsl:value-of select="$systemId"/></xsl:with-param>
     </xsl:apply-templates>
     <xsl:apply-templates select=".//note" mode="notes">
       <xsl:with-param name="title"><xsl:value-of select="$title"/></xsl:with-param>
       <xsl:with-param name="author"><xsl:value-of select="$author"/></xsl:with-param>
+      <xsl:with-param name="systemId"><xsl:value-of select="$systemId"/></xsl:with-param>
     </xsl:apply-templates>
   </xsl:for-each>
 </xsl:template>
@@ -70,6 +76,8 @@ coverage -->
   <xsl:param name="context"/>
   <xsl:param name="title" />
   <xsl:param name="author" />
+  <xsl:param name="systemId" />
+  <xsl:param name="lang"/>
   <xsl:text>{ "index" : { "_index": "</xsl:text>
   <xsl:value-of select="$esIndexName"/>
   <xsl:text>", "_type": "</xsl:text>
@@ -80,6 +88,12 @@ coverage -->
   <xsl:value-of select="local-name()"/>
   <xsl:text>", "path" : "</xsl:text>
   <xsl:value-of select="saxon:path()"/>
+  <xsl:text>", "lnum" : "</xsl:text>
+  <xsl:value-of select="saxon:line-number()"/>
+  <xsl:text>", "sysId" : "</xsl:text>
+  <xsl:value-of select="$systemId"/>
+  <xsl:text>", "lang" : "</xsl:text>
+  <xsl:value-of select="$lang"/>
   <xsl:text>", "text" : "</xsl:text>
   <xsl:apply-templates />
   <xsl:text>", "title" : "</xsl:text>
@@ -97,9 +111,12 @@ coverage -->
 <xsl:template match="p" mode="pars">
   <xsl:param name="title"/>
   <xsl:param name="author"/>
+  <xsl:param name="systemId"/>
   <xsl:call-template name="makeJson">
     <xsl:with-param name="title" select="$title"/>
     <xsl:with-param name="author" select="$author" />
+    <xsl:with-param name="systemId" select="$systemId"/>
+    <xsl:with-param name="lang" select="./ancestor-or-self::*[@xml:lang][1]/@xml:lang"/>
   </xsl:call-template>
 </xsl:template>
 
@@ -110,9 +127,12 @@ coverage -->
 <xsl:template match="lg" mode="linegroups">
   <xsl:param name="title"/>
   <xsl:param name="author"/>
+  <xsl:param name="systemId"/>
   <xsl:call-template name="makeJson">
     <xsl:with-param name="title" select="$title"/>
     <xsl:with-param name="author" select="$author"/>
+    <xsl:with-param name="systemId" select="$systemId"/>
+    <xsl:with-param name="lang" select="./ancestor-or-self::*[@xml:lang][1]/@xml:lang"/>
   </xsl:call-template>
 </xsl:template>
 
@@ -121,13 +141,12 @@ coverage -->
 <xsl:template match="note" mode="notes">
   <xsl:param name="title"/>
   <xsl:param name="author"/>
-<xsl:call-template name="makeJson">
-    <xsl:with-param name="title">
-      <xsl:value-of select="$title"/>
-    </xsl:with-param>
-    <xsl:with-param name="author">
-      <xsl:value-of select="$author"/>
-    </xsl:with-param>
+  <xsl:param name="systemId"/>
+  <xsl:call-template name="makeJson">
+    <xsl:with-param name="title" select="$title"/>
+    <xsl:with-param name="author" select="editor"/>
+    <xsl:with-param name="systemId" select="$systemId"/>
+    <xsl:with-param name="lang" select="./ancestor-or-self::*[@xml:lang][1]/@xml:lang"/>
   </xsl:call-template>
 </xsl:template>
 
