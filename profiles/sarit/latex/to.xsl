@@ -118,11 +118,11 @@ capable of dealing with UTF-8 directly.
   \usepackage{xltxtra}
   \usepackage{polyglossia}
   \setdefaultlanguage</xsl:text>
-        <xsl:value-of select="$defaultlanguageoptions"/>
-        <xsl:text>{</xsl:text>
-        <xsl:value-of select="$defaultlanguage"/>
-        <xsl:text>}</xsl:text>
-        <xsl:text>
+  <xsl:value-of select="$defaultlanguageoptions"/>
+  <xsl:text>{</xsl:text>
+  <xsl:value-of select="$defaultlanguage"/>
+  <xsl:text>}</xsl:text>
+  <xsl:text>
   % english should be available, notes and stuff
   \setotherlanguage{english}
   \setotherlanguage[numerals=arabic]{tibetan}
@@ -179,11 +179,28 @@ capable of dealing with UTF-8 directly.
   </xsl:text>
         <xsl:if test="not($defaultfontfeatures='')">
     \defaultfontfeatures{<xsl:value-of select="$defaultfontfeatures"/>}
-  </xsl:if>
-        <xsl:if test="not(latinFont='')">
-    \setmainfont{<xsl:value-of select="$latinFont"/>}
-  </xsl:if>
-        <xsl:if test="not($sansFont='')">
+	</xsl:if>
+	<xsl:text>\setmainfont{</xsl:text>
+	<xsl:choose>
+	  <xsl:when test="$defaultlanguage='tibetan'">
+	    <xsl:value-of select="$boFont"/>
+	  </xsl:when>
+	  <xsl:when test="$defaultlanguage='sanskrit'">
+	    <xsl:value-of select="$devanagariFont"/>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <xsl:choose>
+		<xsl:when test="not(latinFont='')">
+		  <xsl:value-of select="$latinFont"/>
+		</xsl:when>
+		<xsl:otherwise>
+		  <xsl:text>Computer Modern</xsl:text>
+		</xsl:otherwise>
+	    </xsl:choose>
+	  </xsl:otherwise>
+	</xsl:choose>
+	<xsl:text>}</xsl:text>
+	<xsl:if test="not($sansFont='')">
     \setsansfont{<xsl:value-of select="$sansFont"/>}
   </xsl:if>
         <xsl:text>
@@ -483,6 +500,7 @@ capable of dealing with UTF-8 directly.
        </xsl:if><xsl:choose><xsl:when test="$documentclass='memoir'">
 	   % pagestyles
 	   \pagestyle{ruled}
+	   \makeoddhead{ruled}{{\small <xsl:value-of select="tei:generateSimpleTitle(.)"/>}}{}{}
 	   \makeoddfoot{ruled}{{\tiny \textit{Draft: \today}}}{\thepage}{}
 	   \makeevenfoot{ruled}{}{\thepage}{{\tiny \textit{Draft: \today}}}
 	   
