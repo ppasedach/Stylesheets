@@ -1982,7 +1982,9 @@ the beginning of the document</desc>
     <xsl:text>
 
        % new div opening: depth here is </xsl:text>
-    <xsl:value-of select="$depth"/>
+       <xsl:value-of select="$depth"/>
+       <xsl:text>
+       </xsl:text>
 
       <xsl:if test="$depth = 0">
 	<xsl:text>
@@ -2020,10 +2022,9 @@ the beginning of the document</desc>
   <xsl:template match="tei:trailer">
     <xsl:text>
 
-     \begin{center}</xsl:text>
+     \stanza </xsl:text>
     <xsl:apply-templates/>
-    <xsl:text>
-	\end{center}
+    <xsl:text>\&amp;
 
       </xsl:text>
   </xsl:template>
