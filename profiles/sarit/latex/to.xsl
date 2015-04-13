@@ -1077,15 +1077,18 @@ the beginning of the document</desc>
           <xsl:value-of select="concat('% image:', tei:resolveURI(.,@facs),'&#10;')"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:text>•\textsuperscript{\normalfont\tiny [</xsl:text>
+          <xsl:text>\textsuperscript{\normalfont\tiny [</xsl:text>
           <xsl:choose>
+	    <xsl:when test="@n and @ed">
+	      <xsl:text>\cite[</xsl:text>
+	      <xsl:value-of select="@n"/>
+	      <xsl:text>]{</xsl:text>
+	      <xsl:value-of select="@ed"/>
+	      <xsl:text>}</xsl:text>
+	    </xsl:when>
             <xsl:when test="@n">
               <xsl:text>p. </xsl:text>
               <xsl:value-of select="@n"/>
-              <xsl:if test="@ed">
-                <xsl:text> in </xsl:text>
-                <xsl:value-of select="@ed"/>
-              </xsl:if>
             </xsl:when>
             <xsl:otherwise>
               <xsl:text>pb</xsl:text>
