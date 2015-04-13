@@ -1973,53 +1973,41 @@ the beginning of the document</desc>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>Process the tei:div elements</desc>
-  </doc>
-  <xsl:template match="tei:div|tei:div1|tei:div2|tei:div3|tei:div4|tei:div5">
+</doc>
+
+<xsl:template match="tei:div|tei:div1|tei:div2|tei:div3|tei:div4|tei:div5">
     <xsl:variable name="depth">
       <xsl:value-of select="count(ancestor::tei:div|tei:div1|tei:div2|tei:div3|tei:div4|tei:div5)"/>
     </xsl:variable>
-    <xsl:variable name="resetLedmacNumbering">
-      <xsl:choose>
-        <xsl:when test="$depth = $ledmacNumberDepth and (tei:head or (child::tei:p or child::tei:lg))">true</xsl:when>
-        <xsl:when test="$depth &lt; $ledmacNumberDepth and (child::tei:p or child::tei:lg)">true</xsl:when>
-        <xsl:otherwise>false</xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-    <xsl:if test="$resetLedmacNumbering='false' and $depth &gt; $ledmacNumberDepth">
-      <xsl:text>
-	 
-	 \pausenumbering
-
-       </xsl:text>
-    </xsl:if>
-    <xsl:apply-templates select="tei:head"/>
     <xsl:text>
 
        % new div opening: depth here is </xsl:text>
     <xsl:value-of select="$depth"/>
-    <xsl:text>
-       
-       </xsl:text>
-    <xsl:choose>
-      <xsl:when test="$resetLedmacNumbering='true'">
-        <xsl:text>
-	     
-	     \begingroup
-	     \beginnumbering% beginning numbering from div
-	     \autopar
-	     
-	   </xsl:text>
-      </xsl:when>
-      <xsl:when test="$resetLedmacNumbering='false' and $depth &gt; $ledmacNumberDepth">
-        <xsl:text>
-	     
-	     \resumenumbering
-	     
-	   </xsl:text>
-      </xsl:when>
-    </xsl:choose>
+
+      <xsl:if test="$depth = 0">
+	<xsl:text>
+	  
+	  \begingroup
+	  \beginnumbering% beginning numbering from div
+	  \autopar
+	  
+	</xsl:text>
+      </xsl:if>
+
+
+      <xsl:if test="tei:head">
+	<xsl:text>
+	  \pausenumbering
+	</xsl:text>
+	<xsl:apply-templates select="tei:head"/>
+	<xsl:text>
+	  \resumenumbering
+	</xsl:text>
+      </xsl:if>
+
     <xsl:apply-templates select="child::*[not(self::tei:head)]"/>
-    <xsl:if test="$resetLedmacNumbering='true'">
+    
+    <xsl:if test="$depth = 0">
       <xsl:text>
 
 	 \endnumbering% ending numbering from div
@@ -2028,6 +2016,7 @@ the beginning of the document</desc>
        </xsl:text>
     </xsl:if>
   </xsl:template>
+  
   <xsl:template match="tei:trailer">
     <xsl:text>
 
