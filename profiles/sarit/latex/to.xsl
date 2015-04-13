@@ -1077,7 +1077,7 @@ the beginning of the document</desc>
           <xsl:value-of select="concat('% image:', tei:resolveURI(.,@facs),'&#10;')"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:text>\textsuperscript{\normalfont\tiny [</xsl:text>
+          <xsl:text>\leavevmode\textsuperscript{\normalfont\tiny [</xsl:text>
           <xsl:choose>
 	    <xsl:when test="@n and @ed">
 	      <xsl:text>\cite[</xsl:text>
