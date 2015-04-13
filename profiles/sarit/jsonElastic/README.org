@@ -6,19 +6,25 @@ JSON format that you can feed to [[http://www.elastic.co/][ElasticSearch]].
 To generate the JSON file, use something like this:
 
 #+BEGIN_SRC sh
-  saxonb-xslt -ext:on \
+  saxonb-xslt -l -ext:on \
               -xsl:./sarit/jsonElastic/teitojson.xsl \
               -s:/tmp/corpus.xml \
               -o:corpus.js
 #+END_SRC
 
+The `-l' option is needed for linenumbers, see http://saxon.sourceforge.net/saxon6.5.3/extensions.html#linenumber.
+
 If you're happy with the output, run this:
 
 #+BEGIN_SRC sh
-  split -l 50000 corpus.js /tmp/corpus-split
+  split -l 4000 corpus.js /tmp/corpus-split
   for i in `ls /tmp/corpus-split*` 
   do 
       curl -XPOST 'localhost:9200/_bulk?pretty' \
            --data-binary @$i  >> /tmp/results_corpus.js
   done
 #+END_SRC
+
+You might want to adapt the number on which to split to your setup. It
+should just be an even number, so that there's always an index and
+data section.
