@@ -800,12 +800,12 @@ capable of dealing with UTF-8 directly.
         <xsl:choose>
           <xsl:when test="@n">
             <xsl:text>\flagstanza{\tiny\textenglish{</xsl:text>
-            <xsl:value-of select="concat('...', substring(tei:escapeChars(@n,.), (string-length(@n) - 6)))"/>
+            <xsl:value-of select="tei:escapeChars(concat('...', substring(@n, (string-length(@n) - 6))),.)"/>
             <xsl:text>}}</xsl:text>
           </xsl:when>
           <xsl:when test="@xml:id">
             <xsl:text>\flagstanza{\tiny\textenglish{</xsl:text>
-            <xsl:value-of select="concat('...', substring(tei:escapeChars(@xml:id,.), (string-length(@xml:id) - 5)))"/>
+            <xsl:value-of select="tei:escapeChars(concat('...', substring(@xml:id, (string-length(@xml:id) - 5))),.)"/>
             <xsl:text>}}</xsl:text>
           </xsl:when>
         </xsl:choose>
@@ -1929,12 +1929,7 @@ the beginning of the document</desc>
               <xsl:when test="$depth=1">chapter</xsl:when>
               <xsl:when test="$depth=2">section</xsl:when>
               <xsl:when test="$depth=3">subsection</xsl:when>
-              <xsl:when test="$depth=4">subsubsection</xsl:when>
-              <xsl:when test="$depth=5">paragraph</xsl:when>
-              <xsl:when test="$depth &gt;= 6">subparagraph</xsl:when>
-              <xsl:when test="$depth &gt; 6">
-                <xsl:message>This is deeply nested! Going for subpara.</xsl:message>
-              </xsl:when>
+              <xsl:when test="$depth &gt; 3">subsubsection</xsl:when>
               <xsl:when test="parent::tei:div[@type]">
                 <xsl:value-of select="parent::tei:div/@type"/>
               </xsl:when>
@@ -1953,7 +1948,7 @@ the beginning of the document</desc>
           </xsl:otherwise>
         </xsl:choose>
         <xsl:choose>
-          <xsl:when test="parent::tei:body or ancestor::tei:floatingText or         parent::tei:div/@rend='nonumber'          or (ancestor::tei:back and $numberBackHeadings='')         or (not($numberHeadings='true') and ancestor::tei:body)         or (ancestor::tei:front and  $numberFrontHeadings='')">*</xsl:when>
+          <xsl:when test="parent::tei:body or ancestor::tei:floatingText or         parent::tei:div/@rend='nonumber'          or (ancestor::tei:back and $numberBackHeadings='')         or (not($numberHeadings='true') and ancestor::tei:body)         or (ancestor::tei:front and  $numberFrontHeadings='') or $depth &gt; 3">*</xsl:when>
           <xsl:otherwise>[{<xsl:value-of select="tei:escapeChars(.,.)"/>}]</xsl:otherwise>
         </xsl:choose>
         <xsl:text>{</xsl:text>
