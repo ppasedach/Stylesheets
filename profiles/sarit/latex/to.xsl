@@ -1079,11 +1079,18 @@ the beginning of the document</desc>
         <xsl:otherwise>
           <xsl:text>\leavevmode\textsuperscript{\normalfont\tiny [</xsl:text>
           <xsl:choose>
-	    <xsl:when test="@n and @ed">
+	    <xsl:when test="@n and (@ed or @edRef)">
 	      <xsl:text>\cite[</xsl:text>
 	      <xsl:value-of select="@n"/>
 	      <xsl:text>]{</xsl:text>
-	      <xsl:value-of select="@ed"/>
+	      <xsl:choose>
+		<xsl:when test="@edRef">
+		  <xsl:value-of select="@edRef"/>
+		</xsl:when>
+		<xsl:otherwise>
+		  <xsl:value-of select="@ed"/>
+		</xsl:otherwise>
+	      </xsl:choose>
 	      <xsl:text>}</xsl:text>
 	    </xsl:when>
             <xsl:when test="@n">
