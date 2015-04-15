@@ -59,7 +59,7 @@ of this software, even if advised of the possibility of such damage.
   <xsl:param name="standalone">false</xsl:param>
   <xsl:param name="userpackage"/>
   <xsl:param name="biblatex">true</xsl:param>
-  <xsl:param name="bibliography"/>
+  <xsl:param name="bibliography">sarit.bib</xsl:param>
   <xsl:param name="usetitling">true</xsl:param>
   <xsl:param name="leftside" as="xs:boolean">false</xsl:param>
   <xsl:param name="rightside" as="xs:boolean">false</xsl:param>
@@ -474,6 +474,7 @@ capable of dealing with UTF-8 directly.
 	 \renewcommand*{\marginfont}{\itshape\footnotesize}
 	 \setlength\marginparwidth{.75in}
 	 \usepackage{graphicx}
+	 \usepackage{csquotes}
        </xsl:text><xsl:if test="key('ENDNOTES',1)">
 	 \usepackage{endnotes}
 	 <xsl:choose><xsl:when test="key('FOOTNOTES',1)">
@@ -483,10 +484,16 @@ capable of dealing with UTF-8 directly.
 	   </xsl:otherwise></xsl:choose>
        </xsl:if><xsl:text>
 	 \def\Gin@extensions{.pdf,.png,.jpg,.mps,.tif}
-       </xsl:text><xsl:if test="$biblatex='true'">
-	 \usepackage[backend=biber]{biblatex}
+	 </xsl:text><xsl:if test="$biblatex='true'">
+	 \usepackage[backend=biber,citestyle=authoryear,bibstyle=authoryear]{biblatex}
+	 \renewcommand*{\citesetup}{%
+	 \rmlatinfont
+	 \biburlsetup
+	 \frenchspacing}
+	 \DeclareFieldFormat{postnote}{:#1}
+	 \renewcommand{\postnotedelim}{}
        </xsl:if><xsl:if test="$bibliography != ''">
-	 \bibliography{<xsl:value-of select="$bibliography"/>}
+	 \addbibresource{<xsl:value-of select="$bibliography"/>}
        </xsl:if><xsl:if test="$debuglatex='true'">
 	 \setcounter{errorcontextlines}{400}
        </xsl:if><xsl:if test="$showteiheader='true'">
@@ -696,9 +703,9 @@ capable of dealing with UTF-8 directly.
     </xsl:if>
     <xsl:copy-of select="$readings"/>
     <xsl:if test="@type">
-      <xsl:text>  [</xsl:text>
+      <xsl:text>  {\rmlatinfont [</xsl:text>
       <xsl:value-of select="@type"/>
-      <xsl:text>]</xsl:text>
+      <xsl:text>]}</xsl:text>
     </xsl:if>
     <xsl:text>}}</xsl:text>
   </xsl:template>
@@ -1077,7 +1084,7 @@ the beginning of the document</desc>
           <xsl:value-of select="concat('% image:', tei:resolveURI(.,@facs),'&#10;')"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:text>\leavevmode\textsuperscript{\normalfont\tiny [</xsl:text>
+          <xsl:text>\leavevmode\textsuperscript{\rmlatinfont\tiny [</xsl:text>
           <xsl:choose>
 	    <xsl:when test="@n and (@ed or @edRef)">
 	      <xsl:text>\cite[</xsl:text>
