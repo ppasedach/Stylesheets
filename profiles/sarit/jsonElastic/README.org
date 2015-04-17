@@ -3,18 +3,35 @@
 This is a simple stylesheet for converting TEI (or teiCorpus) into a
 JSON format that you can feed to [[http://www.elastic.co/][ElasticSearch]].
 
-To generate the JSON file, use something like this:
+To generate the JSON file, use something like this (assuming you
+collected everything in a file file:/tmp/corpus.xml):
 
 #+BEGIN_SRC sh
   saxonb-xslt -l -ext:on \
-              -xsl:./sarit/jsonElastic/teitojson.xsl \
+              -xsl:/PATH/TO/TEI-XSL/profiles/sarit/jsonElastic/teitojson.xsl \
               -s:/tmp/corpus.xml \
-              -o:corpus.js
+              -o:corpus.js \
+              revision=`sha256sum /tmp/corpus.xml | head -c 64`
 #+END_SRC
 
 The `-l' option is needed for linenumbers, see http://saxon.sourceforge.net/saxon6.5.3/extensions.html#linenumber.
 
-If you're happy with the output, run this:
+If you are using git for reversion control, you can use the revision
+number instead of a checksum. Before converting your file to json,
+make sure you have no uncommitted changes! You could run something
+like this:
+
+#+BEGIN_SRC sh
+    git diff-files --quiet && \
+    saxonb-xslt -l -ext:on \
+                -xsl:$pathToTEIxsl/profiles/sarit/jsonElastic/teitojson.xsl \
+                -s:/tmp/corpus.xml \
+                -o:/tmp/corpus.js \
+                revision=`git rev-parse --verify --short HEAD`
+#+END_SRC
+
+If you're happy with the output, run this, assuming you have
+ElasticSearch running on your computer on port 9200:
 
 #+BEGIN_SRC sh
   split -l 4000 corpus.js /tmp/corpus-split
