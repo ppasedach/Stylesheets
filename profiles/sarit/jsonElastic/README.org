@@ -31,7 +31,8 @@ like this:
 #+END_SRC
 
 If you're happy with the output, run this, assuming you have
-ElasticSearch running on your computer on port 9200:
+ElasticSearch running on your computer on port 9200 (splitting might
+not be necessary):
 
 #+BEGIN_SRC sh
   split -l 4000 corpus.js /tmp/corpus-split

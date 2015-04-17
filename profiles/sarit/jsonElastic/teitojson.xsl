@@ -18,6 +18,19 @@ coverage -->
   <desc>Set the revision number of the set of files you're indexing.</desc>
 </doc>
 <xsl:param name="revision">UNKNOWN</xsl:param>
+<doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+  <desc>Whether to produce nested objects or not. If you decide on
+  true, this stylesheet will try to create nested documents
+  (http://www.elastic.co/guide/en/elasticsearch/guide/current/nested-objects.html),
+  in the following way:
+
+  TEI/text/body ==> lg-s,p-s,note-s.
+
+  You have to make sure you have set up the elasticsearch server to
+  map this correctly.
+  </desc>
+</doc>
+<xsl:param name="nested">false</xsl:param>
 
 
 <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
@@ -71,20 +84,41 @@ coverage -->
 	<xsl:with-param name="currentDoc" select="$currentDoc"/>
       </xsl:call-template>
     </xsl:variable>
+    <xsl:variable name="textId">
+      <xsl:value-of select="count(ancestor::TEI/preceding-sibling::TEI)"/>
+    </xsl:variable>
+    <xsl:variable name="xmlId">
+      <xsl:value-of select="ancestor::TEI/@xml:id"/>
+    </xsl:variable>
+    <xsl:if test="$nested='true'">
+      <xsl:call-template name="makeJson">
+	<xsl:with-param name="title" select="$title"/>
+	<xsl:with-param name="author" select="$author" />
+	<xsl:with-param name="systemId" select="$systemId"/>
+	<xsl:with-param name="lang" select="./ancestor-or-self::*[@xml:lang][1]/@xml:lang"/>
+	<xsl:with-param name="textId" select="$textId"/>
+	<xsl:with-param name="xmlId" select="$xmlId"/>
+	<xsl:with-param name="typeName">text</xsl:with-param>
+	<xsl:with-param name="ignoreText">true</xsl:with-param>
+      </xsl:call-template>
+    </xsl:if>
     <xsl:apply-templates select=".//p[not(ancestor::note)]" mode="pars">
       <xsl:with-param name="title"><xsl:value-of select="$title"/></xsl:with-param>
       <xsl:with-param name="author"><xsl:value-of select="$author"/></xsl:with-param>
       <xsl:with-param name="systemId"><xsl:value-of select="$systemId"/></xsl:with-param>
+      <xsl:with-param name="textId"><xsl:value-of select="$textId"/></xsl:with-param>
     </xsl:apply-templates>
     <xsl:apply-templates select=".//lg[not(ancestor::note)]" mode="linegroups">
       <xsl:with-param name="title"><xsl:value-of select="$title"/></xsl:with-param>
       <xsl:with-param name="author"><xsl:value-of select="$author"/></xsl:with-param>
       <xsl:with-param name="systemId"><xsl:value-of select="$systemId"/></xsl:with-param>
+      <xsl:with-param name="textId"><xsl:value-of select="$textId"/></xsl:with-param>
     </xsl:apply-templates>
     <xsl:apply-templates select=".//note" mode="notes">
       <xsl:with-param name="title"><xsl:value-of select="$title"/></xsl:with-param>
       <xsl:with-param name="author"><xsl:value-of select="$author"/></xsl:with-param>
       <xsl:with-param name="systemId"><xsl:value-of select="$systemId"/></xsl:with-param>
+      <xsl:with-param name="textId"><xsl:value-of select="$textId"/></xsl:with-param>
     </xsl:apply-templates>
   </xsl:for-each>
 </xsl:template>
@@ -98,16 +132,31 @@ coverage -->
   <xsl:param name="author" />
   <xsl:param name="systemId" />
   <xsl:param name="lang"/>
+  <xsl:param name="xmlId"/>
+  <xsl:param name="textId"/>
+  <xsl:param name="typeName"/>
+  <xsl:param name="parent"/>
+  <xsl:param name="ignoreText">false</xsl:param>
   <xsl:text>{ "index" : { "_index": "</xsl:text>
   <xsl:value-of select="$esIndexName"/>
   <xsl:text>", "_type": "</xsl:text>
-  <xsl:value-of select="$esTypeName"/>
+  <xsl:value-of select="$typeName"/>
+  <xsl:if test="$textId!=''">
+    <xsl:text>", "_id": "</xsl:text>
+    <xsl:value-of select="$textId"/>
+  </xsl:if>
+  <xsl:if test="$parent!=''">
+    <xsl:text>", "_parent": "</xsl:text>
+    <xsl:value-of select="$parent"/>
+  </xsl:if>
   <xsl:text>" }}</xsl:text>
   <xsl:call-template name="newline"/>
   <xsl:text>{  "tag" : "</xsl:text>
   <xsl:value-of select="local-name()"/>
   <xsl:text>", "revision" :"</xsl:text>
   <xsl:value-of select="$revision"/>
+  <xsl:text>", "xmlId" : "</xsl:text>
+  <xsl:value-of select="$xmlId"/>
   <xsl:text>", "path" : "</xsl:text>
   <xsl:value-of select="saxon:path()"/>
   <xsl:text>", "lnum" : "</xsl:text>
@@ -116,12 +165,18 @@ coverage -->
   <xsl:value-of select="$systemId"/>
   <xsl:text>", "lang" : "</xsl:text>
   <xsl:value-of select="$lang"/>
-  <xsl:text>", "text" : "</xsl:text>
-  <xsl:apply-templates />
-  <xsl:text>", "title" : "</xsl:text>
-  <xsl:value-of  select="$title"/>
-  <xsl:text>", "author" : "</xsl:text>
-  <xsl:value-of  select="$author"/>
+  <xsl:if test="$ignoreText!='true'">
+    <xsl:text>", "text" : "</xsl:text>
+    <xsl:apply-templates />
+  </xsl:if>
+  <xsl:if test="$title!=''">
+    <xsl:text>", "title" : "</xsl:text>
+    <xsl:value-of  select="$title"/>
+  </xsl:if>
+  <xsl:if test="$author!=''">
+    <xsl:text>", "author" : "</xsl:text>
+    <xsl:value-of  select="$author"/>
+  </xsl:if>
   <xsl:text>"}</xsl:text>
   <xsl:call-template name="newline"/>
 </xsl:template>
@@ -134,11 +189,31 @@ coverage -->
   <xsl:param name="title"/>
   <xsl:param name="author"/>
   <xsl:param name="systemId"/>
+  <xsl:param name="textId"/>
   <xsl:call-template name="makeJson">
-    <xsl:with-param name="title" select="$title"/>
-    <xsl:with-param name="author" select="$author" />
+    <xsl:with-param name="title">
+      <xsl:if test="$nested!='true'">
+	<xsl:value-of select="$title" />
+      </xsl:if>
+    </xsl:with-param>
+    <xsl:with-param name="author">
+      <xsl:if test="$nested!='true'">
+      <xsl:value-of select="$author" />
+      </xsl:if>
+    </xsl:with-param>
     <xsl:with-param name="systemId" select="$systemId"/>
     <xsl:with-param name="lang" select="./ancestor-or-self::*[@xml:lang][1]/@xml:lang"/>
+    <xsl:with-param name="typeName" select="$esTypeName"/>
+    <xsl:with-param name="parent">
+      <xsl:if test="$nested='true'">
+	<xsl:value-of select="$textId"/>
+      </xsl:if>
+    </xsl:with-param>
+    <xsl:with-param name="xmlId">
+      <xsl:if test="@xml:id">
+	<xsl:value-of select="@xml:id"/>
+      </xsl:if>
+    </xsl:with-param>
   </xsl:call-template>
 </xsl:template>
 
@@ -150,11 +225,31 @@ coverage -->
   <xsl:param name="title"/>
   <xsl:param name="author"/>
   <xsl:param name="systemId"/>
+  <xsl:param name="textId"/>
   <xsl:call-template name="makeJson">
-    <xsl:with-param name="title" select="$title"/>
-    <xsl:with-param name="author" select="$author"/>
+    <xsl:with-param name="title">
+      <xsl:if test="$nested!='true'">
+	<xsl:value-of select="$title" />
+      </xsl:if>
+    </xsl:with-param>
+    <xsl:with-param name="author">
+      <xsl:if test="$nested!='true'">
+	<xsl:value-of select="$author" />
+      </xsl:if>
+    </xsl:with-param>
     <xsl:with-param name="systemId" select="$systemId"/>
     <xsl:with-param name="lang" select="./ancestor-or-self::*[@xml:lang][1]/@xml:lang"/>
+    <xsl:with-param name="typeName" select="$esTypeName"/>
+    <xsl:with-param name="parent">
+      <xsl:if test="$nested='true'">
+	<xsl:value-of select="$textId"/>
+      </xsl:if>
+    </xsl:with-param>
+    <xsl:with-param name="xmlId">
+      <xsl:if test="@xml:id">
+	<xsl:value-of select="@xml:id"/>
+      </xsl:if>
+    </xsl:with-param>
   </xsl:call-template>
 </xsl:template>
 
@@ -164,14 +259,33 @@ coverage -->
   <xsl:param name="title"/>
   <xsl:param name="author"/>
   <xsl:param name="systemId"/>
+  <xsl:param name="textId"/>
   <xsl:call-template name="makeJson">
-    <xsl:with-param name="title" select="$title"/>
-    <xsl:with-param name="author" select="editor"/>
+    <xsl:with-param name="title">
+      <xsl:if test="$nested!='true'">
+	<xsl:value-of select="$title" />
+      </xsl:if>
+    </xsl:with-param>
+    <xsl:with-param name="author">
+      <xsl:if test="$nested!='true'">
+	<xsl:text>Editorial</xsl:text>
+      </xsl:if>
+    </xsl:with-param>
     <xsl:with-param name="systemId" select="$systemId"/>
     <xsl:with-param name="lang" select="./ancestor-or-self::*[@xml:lang][1]/@xml:lang"/>
+    <xsl:with-param name="typeName" select="$esTypeName"/>
+    <xsl:with-param name="parent">
+      <xsl:if test="$nested='true'">
+	<xsl:value-of select="$textId"/>
+      </xsl:if>
+    </xsl:with-param>
+    <xsl:with-param name="xmlId">
+      <xsl:if test="@xml:id">
+	<xsl:value-of select="@xml:id"/>
+      </xsl:if>
+    </xsl:with-param>
   </xsl:call-template>
 </xsl:template>
-
 
 <xsl:template match="text()">
   <xsl:value-of select="replace(replace(replace(normalize-space(.),'\\','\\\\'), '&#10;', ' '),$inq,$outq)"/>
