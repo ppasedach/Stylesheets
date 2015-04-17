@@ -13,8 +13,13 @@ coverage -->
 <xsl:variable name="outq">\\"</xsl:variable>
 <xsl:variable name="esIndexName">saritindex</xsl:variable>
 <xsl:variable name="esTypeName">element</xsl:variable>
-
-
+<doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+  <desc>Set the revision number of the set of files you're indexing.</desc>
+</doc>
+<xsl:variable name="revision">UNKNOWN</xsl:variable>
+<doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+  <desc>Produce a simple title.</desc>
+</doc>
 <xsl:template name="getTitle">
   <xsl:param name="currentDoc"/>
   <xsl:for-each select="$currentDoc//descendant::titleStmt/descendant::title">
@@ -25,6 +30,9 @@ coverage -->
   </xsl:for-each>
 </xsl:template>
 
+<doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+  <desc>Produce a simple author statement.</desc>
+</doc>
 <xsl:template name="getAuthor">
   <xsl:param name="currentDoc"/>
   <xsl:for-each select="$currentDoc//descendant::titleStmt/descendant::author">
@@ -35,6 +43,13 @@ coverage -->
   </xsl:for-each>
 </xsl:template>
 
+<doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+  <desc>The document is processed here. The main idea is to iterate
+  over the elements in the body, collecting 1) the filename, 2) the
+  title, 3) the author, and 4) some content: currently all paragraphs,
+  lg-s, and notes.
+  </desc>
+</doc>
 <xsl:template match="/">
   <xsl:for-each select="//TEI/text/body">
     <xsl:variable name="currentDoc">
@@ -71,7 +86,9 @@ coverage -->
   </xsl:for-each>
 </xsl:template>
 
-
+<doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+  <desc>Produce some json output that suits elasticSearch's bulk feed methods.</desc>
+</doc>
 <xsl:template name="makeJson">
   <xsl:param name="context"/>
   <xsl:param name="title" />
@@ -149,7 +166,6 @@ coverage -->
     <xsl:with-param name="lang" select="./ancestor-or-self::*[@xml:lang][1]/@xml:lang"/>
   </xsl:call-template>
 </xsl:template>
-
 
 
 <xsl:template match="text()">
