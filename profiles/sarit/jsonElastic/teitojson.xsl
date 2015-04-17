@@ -9,14 +9,17 @@
 coverage -->
 <xsl:strip-space elements="*"/>
 <xsl:output method="text" encoding="utf-8" />
-<xsl:variable name="inq">"</xsl:variable>
-<xsl:variable name="outq">\\"</xsl:variable>
-<xsl:variable name="esIndexName">saritindex</xsl:variable>
-<xsl:variable name="esTypeName">element</xsl:variable>
+
+<xsl:param name="inq">"</xsl:param>
+<xsl:param name="outq">\\"</xsl:param>
+<xsl:param name="esIndexName">saritindex</xsl:param>
+<xsl:param name="esTypeName">element</xsl:param>
 <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
   <desc>Set the revision number of the set of files you're indexing.</desc>
 </doc>
-<xsl:variable name="revision">UNKNOWN</xsl:variable>
+<xsl:param name="revision">UNKNOWN</xsl:param>
+
+
 <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
   <desc>Produce a simple title.</desc>
 </doc>
@@ -103,6 +106,8 @@ coverage -->
   <xsl:call-template name="newline"/>
   <xsl:text>{  "tag" : "</xsl:text>
   <xsl:value-of select="local-name()"/>
+  <xsl:text>", "revision" :"</xsl:text>
+  <xsl:value-of select="$revision"/>
   <xsl:text>", "path" : "</xsl:text>
   <xsl:value-of select="saxon:path()"/>
   <xsl:text>", "lnum" : "</xsl:text>
