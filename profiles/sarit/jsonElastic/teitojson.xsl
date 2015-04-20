@@ -84,21 +84,37 @@ coverage -->
 	<xsl:with-param name="currentDoc" select="$currentDoc"/>
       </xsl:call-template>
     </xsl:variable>
-    <xsl:variable name="textId">
-      <xsl:value-of select="count(ancestor::TEI/preceding-sibling::TEI)"/>
-    </xsl:variable>
     <xsl:variable name="xmlId">
       <xsl:value-of select="ancestor::TEI/@xml:id"/>
     </xsl:variable>
+    <xsl:variable name="workId">
+      <xsl:choose>
+	<xsl:when test="$xmlId!='' and $revision!=''">
+	  <xsl:value-of select="$revision"/>
+	  <xsl:text>:</xsl:text>
+	  <xsl:value-of select="$xmlId"/>
+	</xsl:when>
+	<xsl:when test="$revision!=''">
+	  <xsl:value-of select="$revision"/>
+	  <xsl:text>__workId__</xsl:text>
+	  <xsl:value-of select="count(ancestor::TEI/preceding-sibling::TEI)"/>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:text>badId__</xsl:text>
+	  <xsl:value-of select="count(ancestor::TEI/preceding-sibling::TEI)"/>
+	</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
     <xsl:if test="$nested='true'">
       <xsl:call-template name="makeJson">
 	<xsl:with-param name="title" select="$title"/>
 	<xsl:with-param name="author" select="$author" />
 	<xsl:with-param name="systemId" select="$systemId"/>
 	<xsl:with-param name="lang" select="./ancestor-or-self::*[@xml:lang][1]/@xml:lang"/>
-	<xsl:with-param name="textId" select="$textId"/>
+	<xsl:with-param name="workId" select="$workId"/>
 	<xsl:with-param name="xmlId" select="$xmlId"/>
-	<xsl:with-param name="typeName">text</xsl:with-param>
+	<xsl:with-param name="typeName">work</xsl:with-param>
 	<xsl:with-param name="ignoreText">true</xsl:with-param>
       </xsl:call-template>
     </xsl:if>
@@ -106,19 +122,19 @@ coverage -->
       <xsl:with-param name="title"><xsl:value-of select="$title"/></xsl:with-param>
       <xsl:with-param name="author"><xsl:value-of select="$author"/></xsl:with-param>
       <xsl:with-param name="systemId"><xsl:value-of select="$systemId"/></xsl:with-param>
-      <xsl:with-param name="textId"><xsl:value-of select="$textId"/></xsl:with-param>
+      <xsl:with-param name="workId"><xsl:value-of select="$workId"/></xsl:with-param>
     </xsl:apply-templates>
     <xsl:apply-templates select=".//lg[not(ancestor::note)]" mode="linegroups">
       <xsl:with-param name="title"><xsl:value-of select="$title"/></xsl:with-param>
       <xsl:with-param name="author"><xsl:value-of select="$author"/></xsl:with-param>
       <xsl:with-param name="systemId"><xsl:value-of select="$systemId"/></xsl:with-param>
-      <xsl:with-param name="textId"><xsl:value-of select="$textId"/></xsl:with-param>
+      <xsl:with-param name="workId"><xsl:value-of select="$workId"/></xsl:with-param>
     </xsl:apply-templates>
     <xsl:apply-templates select=".//note" mode="notes">
       <xsl:with-param name="title"><xsl:value-of select="$title"/></xsl:with-param>
       <xsl:with-param name="author"><xsl:value-of select="$author"/></xsl:with-param>
       <xsl:with-param name="systemId"><xsl:value-of select="$systemId"/></xsl:with-param>
-      <xsl:with-param name="textId"><xsl:value-of select="$textId"/></xsl:with-param>
+      <xsl:with-param name="workId"><xsl:value-of select="$workId"/></xsl:with-param>
     </xsl:apply-templates>
   </xsl:for-each>
 </xsl:template>
@@ -133,7 +149,7 @@ coverage -->
   <xsl:param name="systemId" />
   <xsl:param name="lang"/>
   <xsl:param name="xmlId"/>
-  <xsl:param name="textId"/>
+  <xsl:param name="workId"/>
   <xsl:param name="typeName"/>
   <xsl:param name="parent"/>
   <xsl:param name="ignoreText">false</xsl:param>
@@ -141,12 +157,12 @@ coverage -->
   <xsl:value-of select="$esIndexName"/>
   <xsl:text>", "_type": "</xsl:text>
   <xsl:value-of select="$typeName"/>
-  <xsl:if test="$textId!=''">
+  <xsl:if test="$workId!=''">
     <xsl:text>", "_id": "</xsl:text>
-    <xsl:value-of select="$textId"/>
+    <xsl:value-of select="$workId"/>
   </xsl:if>
   <xsl:if test="$parent!=''">
-    <xsl:text>", "_parent": "</xsl:text>
+    <xsl:text>", "parent": "</xsl:text>
     <xsl:value-of select="$parent"/>
   </xsl:if>
   <xsl:text>" }}</xsl:text>
@@ -189,7 +205,7 @@ coverage -->
   <xsl:param name="title"/>
   <xsl:param name="author"/>
   <xsl:param name="systemId"/>
-  <xsl:param name="textId"/>
+  <xsl:param name="workId"/>
   <xsl:call-template name="makeJson">
     <xsl:with-param name="title">
       <xsl:if test="$nested!='true'">
@@ -206,7 +222,7 @@ coverage -->
     <xsl:with-param name="typeName" select="$esTypeName"/>
     <xsl:with-param name="parent">
       <xsl:if test="$nested='true'">
-	<xsl:value-of select="$textId"/>
+	<xsl:value-of select="$workId"/>
       </xsl:if>
     </xsl:with-param>
     <xsl:with-param name="xmlId">
@@ -225,7 +241,7 @@ coverage -->
   <xsl:param name="title"/>
   <xsl:param name="author"/>
   <xsl:param name="systemId"/>
-  <xsl:param name="textId"/>
+  <xsl:param name="workId"/>
   <xsl:call-template name="makeJson">
     <xsl:with-param name="title">
       <xsl:if test="$nested!='true'">
@@ -242,7 +258,7 @@ coverage -->
     <xsl:with-param name="typeName" select="$esTypeName"/>
     <xsl:with-param name="parent">
       <xsl:if test="$nested='true'">
-	<xsl:value-of select="$textId"/>
+	<xsl:value-of select="$workId"/>
       </xsl:if>
     </xsl:with-param>
     <xsl:with-param name="xmlId">
@@ -259,7 +275,7 @@ coverage -->
   <xsl:param name="title"/>
   <xsl:param name="author"/>
   <xsl:param name="systemId"/>
-  <xsl:param name="textId"/>
+  <xsl:param name="workId"/>
   <xsl:call-template name="makeJson">
     <xsl:with-param name="title">
       <xsl:if test="$nested!='true'">
@@ -276,7 +292,7 @@ coverage -->
     <xsl:with-param name="typeName" select="$esTypeName"/>
     <xsl:with-param name="parent">
       <xsl:if test="$nested='true'">
-	<xsl:value-of select="$textId"/>
+	<xsl:value-of select="$workId"/>
       </xsl:if>
     </xsl:with-param>
     <xsl:with-param name="xmlId">

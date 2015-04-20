@@ -885,6 +885,13 @@ the beginning of the document</desc>
 	 \end{landscape}
        </xsl:text>
     </xsl:if>
+    <xsl:text>
+      \clearpage
+      \begin{english}
+      \printshorthands
+      \printbibliography
+      \end{english}
+    </xsl:text>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>If verseNumbering is requested,
@@ -1383,7 +1390,7 @@ the beginning of the document</desc>
         <xsl:when test="@xml:lang='bo'">
           <xsl:text>\begin{tibetan}</xsl:text>
         </xsl:when>
-        <xsl:when test="@xml:lang='sa'">
+        <xsl:when test="@xml:lang='sa' or @xml:lang='sa-Deva' or @xml:lang='sa-Latn'">
           <xsl:text>\begin{sanskrit}</xsl:text>
         </xsl:when>
         <xsl:otherwise>
@@ -1883,6 +1890,7 @@ the beginning of the document</desc>
     <desc>Process element quote</desc>
   </doc>
   <xsl:template match="tei:quote">
+    <xsl:call-template name="startLanguage"/>
     <xsl:choose>
       <xsl:when test="parent::tei:cit">
         <xsl:apply-templates/>
@@ -1903,6 +1911,7 @@ the beginning of the document</desc>
         <xsl:call-template name="makeQuote"/>
       </xsl:otherwise>
     </xsl:choose>
+    <xsl:call-template name="endLanguage"/>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>Process element head</desc>
@@ -2264,6 +2273,18 @@ the beginning of the document</desc>
               <xsl:with-param name="style">ptr</xsl:with-param>
             </xsl:call-template>
           </xsl:when>
+	  <!-- hack for wrong markup; should become bibl elements -->
+	  <xsl:when test="@target and @type='bibl'">
+	    <xsl:text>\cite</xsl:text>
+	    <xsl:if test="@corresp">
+	      <xsl:text>[</xsl:text>
+	      <xsl:value-of select="@corresp"/>
+	      <xsl:text>]</xsl:text>
+	    </xsl:if>
+	    <xsl:text>{</xsl:text>
+	    <xsl:value-of select="@target"/>
+	    <xsl:text>}</xsl:text>
+	  </xsl:when>
           <xsl:otherwise>
             <xsl:for-each select="tokenize(normalize-space(@target),' ')">
               <xsl:variable name="a" select="."/>
@@ -2401,5 +2422,5 @@ the beginning of the document</desc>
     <xsl:for-each select="tokenize(normalize-space($cmd),' ')">
       <xsl:text>}</xsl:text>
     </xsl:for-each>
-  </xsl:template>
+  </xsl:template>    
 </xsl:stylesheet>
