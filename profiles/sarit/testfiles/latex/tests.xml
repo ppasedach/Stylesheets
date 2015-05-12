@@ -49,7 +49,7 @@
     </fileDesc>
     <!-- header for corpus -->
   </teiHeader>
-  <text xml:id="parTest" xml:lang="sa-Deva">
+  <text xml:id="parTest" xml:lang="sa-Latn">
     <body>
       <xi:include href="parTest.xml"/>
       <xi:include href="lgTest.xml"/>
@@ -58,6 +58,10 @@
       <xi:include href="pbEdRefTest.xml"/>
       <xi:include href="pbEdTest.xml"/>
       <xi:include href="pbMixedTest.xml"/>
+      <xi:include href="headlineTest.xml"/>
+      <xi:include href="labelHeadTest.xml"/>
+      <xi:include href="locRefAppTest.xml"/>
+      <xi:include href="parallelSegAppTest.xml"/>      
     </body>
   </text>
 </TEI>

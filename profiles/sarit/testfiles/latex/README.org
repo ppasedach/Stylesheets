@@ -22,7 +22,9 @@ that file again.
 #+BEGIN_SRC bash
 xmllint --format --encode UTF-8  --xinclude tests.xml  > /tmp/tests.xml
 cd /tmp
-jing 
+jing -c /path/to/tei_all.rnc tests.xml
 saxonb-xslt -ext:on -xsl:/home/beta/webstuff/tei_stylesheets/profiles/sarit/latex/to.xsl -s:tests.xml -o:tests.tex
+xelatex -shell-escape   tests
+biber tests
 xelatex -shell-escape   tests
 #+END_SRC

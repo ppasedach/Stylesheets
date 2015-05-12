@@ -141,7 +141,7 @@ capable of dealing with UTF-8 directly.
   \def\textChinese{\fontspec{HAN NOM A}}
   \def\textKorean{\fontspec{Baekmuk Gulim} }
   % make sure English font is there
-  \newfontfamily\englishfont{</xsl:text>
+  \newfontfamily\englishfont[Mapping=tex-text]{</xsl:text>
   <xsl:value-of select="$romanFont"/>
   <xsl:text>}</xsl:text>
   <xsl:text>
@@ -191,7 +191,7 @@ capable of dealing with UTF-8 directly.
 	  <xsl:when test="$defaultlanguage='tibetan'">
 	    <xsl:value-of select="$boFont"/>
 	  </xsl:when>
-	  <xsl:when test="$defaultlanguage='sanskrit'">
+	  <xsl:when test="$defaultlanguage='sanskrit' and $defaultEncoding='devanagari'">
 	    <xsl:value-of select="$devanagariFont"/>
 	  </xsl:when>
 	  <xsl:otherwise>
@@ -514,9 +514,9 @@ capable of dealing with UTF-8 directly.
        </xsl:if><xsl:choose><xsl:when test="$documentclass='memoir'">
 	   % pagestyles
 	   \pagestyle{ruled}
-	   \makeoddhead{ruled}{{\small <xsl:value-of select="tei:generateSimpleTitle(.)"/>}}{}{}
-	   \makeoddfoot{ruled}{{\tiny \textit{Draft: \today}}}{\thepage}{}
-	   \makeevenfoot{ruled}{}{\thepage}{{\tiny \textit{Draft: \today}}}
+	   <!-- \makeoddhead{ruled}{{\small\rmlatinfont <xsl:value-of select="tei:generateSimpleTitle(.)"/>}}{}{} -->
+	   \makeoddfoot{ruled}{{\tiny\rmlatinfont \textit{Compiled: \today}}}{}{\rmlatinfont\thepage}
+	   \makeevenfoot{ruled}{\rmlatinfont\thepage}{}{{\tiny\rmlatinfont \textit{Compiled: \today}}}
 	   
 	 </xsl:when><xsl:otherwise>
 	   \pagestyle{fancy} 
@@ -524,7 +524,6 @@ capable of dealing with UTF-8 directly.
 	 \usepackage{eledmac,eledpar}
 	 <xsl:call-template name="ledmacOptions"/>
        </xsl:if>
-       \usepackage{biblatex}
        \usepackage[pdftitle={<xsl:sequence select="tei:generateSimpleTitle(.)"/>},
        pdfauthor={<xsl:sequence select="replace(string-join(/tei:TEI/tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:publisher,''),';','')"/>}]{hyperref}
        \hyperbaseurl{<xsl:value-of select="$baseURL"/>}
@@ -632,7 +631,6 @@ capable of dealing with UTF-8 directly.
     </xsl:for-each>
     <xsl:text>}
      % \setstanzapenalties{1,5000,10500}
-     \renewcommand{\notenumfont}{\bfseries}
      \lineation{page}
      % \linenummargin{inner}
      \linenumberstyle{arabic}
@@ -692,7 +690,8 @@ capable of dealing with UTF-8 directly.
       </xsl:otherwise>
     </xsl:choose>
     <xsl:text>}{</xsl:text>
-    <xsl:if test="$endpoint">
+    <xsl:choose>
+      <xsl:when test="$endpoint">
       <xsl:text>\lemma{</xsl:text>
       <xsl:value-of select="$lemma"/>
       <xsl:text>}</xsl:text>
@@ -701,16 +700,27 @@ capable of dealing with UTF-8 directly.
       <xsl:text>}{</xsl:text>
       <xsl:value-of select="$to"/>
       <xsl:text>}</xsl:text>
-    </xsl:if>
+      </xsl:when>
+      <xsl:when test="$lemma=''">
+	<xsl:text>\lemma{---}</xsl:text>
+      </xsl:when>
+    </xsl:choose>
     <xsl:text>\Afootnote{</xsl:text>
     <xsl:if test="@xml:id">
       <xsl:text>\label{</xsl:text>
       <xsl:value-of select="@xml:id"/>
       <xsl:text>}</xsl:text>
     </xsl:if>
+    <xsl:message>Lemma has witnesses: <xsl:value-of select="$lemmawitness"/></xsl:message>
+    <xsl:if test="$lemmawitness">
+      <xsl:call-template  name="makeCiteFromWit">
+	<xsl:with-param name="witnesses" select="$lemmawitness" />
+      </xsl:call-template>
+      <xsl:text>; </xsl:text>
+    </xsl:if>
     <xsl:copy-of select="$readings"/>
     <xsl:if test="@type">
-      <xsl:text>  {\rmlatinfont [</xsl:text>
+      <xsl:text>  {\rmlatinfont [App type: </xsl:text>
       <xsl:value-of select="@type"/>
       <xsl:text>]}</xsl:text>
     </xsl:if>
@@ -730,12 +740,12 @@ capable of dealing with UTF-8 directly.
             <xsl:value-of select="$lem"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="tei:rdg[1]"/>
+            <xsl:text></xsl:text>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:with-param>
       <xsl:with-param name="lemmawitness">
-        <xsl:value-of select="@wit"/>
+        <xsl:value-of select="tei:lem/@wit"/>
       </xsl:with-param>
       <xsl:with-param name="readings">
         <xsl:for-each select="tei:rdg">
@@ -761,9 +771,9 @@ capable of dealing with UTF-8 directly.
           <xsl:if test="@xml:lang">
             <xsl:text>}</xsl:text>
           </xsl:if>
-          <xsl:text> \parencite{</xsl:text>
-          <xsl:value-of select="translate(substring(@wit,2),' #',', ')"/>
-          <xsl:text>}</xsl:text>
+	  <xsl:call-template name="makeCiteFromWit">
+	    <xsl:with-param name="witnesses" select="@wit"/>
+	  </xsl:call-template>
           <xsl:if test="following-sibling::tei:rdg">; </xsl:if>
         </xsl:for-each>
         <xsl:for-each select="tei:note">
@@ -1394,6 +1404,16 @@ the beginning of the document</desc>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:param>
+  <xsl:param name="defaultEncoding">
+    <xsl:choose>
+      <xsl:when test="contains(.//tei:text/@xml:lang, 'Deva')">
+        <xsl:text>devanagari</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:text>latin</xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:param>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
     <desc>
       <p>Options of default language of document that get passed to setdefaultlanguage</p>
@@ -1414,9 +1434,9 @@ the beginning of the document</desc>
         <xsl:when test="@xml:lang='bo'">
           <xsl:text>\begin{tibetan}</xsl:text>
         </xsl:when>
-        <xsl:when test="@xml:lang='sa' or @xml:lang='sa-Deva' or @xml:lang='sa-Latn'">
+        <xsl:when test="starts-with(@xml:lang,'sa')">
           <xsl:text>\begin{sanskrit}</xsl:text>
-        </xsl:when>
+	</xsl:when>
         <xsl:otherwise>
           <xsl:text>\begin{english}</xsl:text>
         </xsl:otherwise>
@@ -1429,9 +1449,9 @@ the beginning of the document</desc>
         <xsl:when test="@xml:lang='bo'">
           <xsl:text>\end{tibetan}</xsl:text>
         </xsl:when>
-        <xsl:when test="@xml:lang='sa'">
+        <xsl:when test="starts-with(@xml:lang,'sa')">
           <xsl:text>\end{sanskrit}</xsl:text>
-        </xsl:when>
+	</xsl:when>
         <xsl:otherwise>
           <xsl:text>\end{english}</xsl:text>
         </xsl:otherwise>
@@ -2038,8 +2058,9 @@ the beginning of the document</desc>
     <xsl:variable name="depth">
       <xsl:value-of select="count(ancestor::tei:div|tei:div1|tei:div2|tei:div3|tei:div4|tei:div5)"/>
     </xsl:variable>
+    <xsl:call-template name="startLanguage"/>
     <xsl:choose>
-      <xsl:when test="$ledmac=true">
+      <xsl:when test="$ledmac='true'">
 	<xsl:text>
 	  
 	% new div opening: depth here is </xsl:text>
@@ -2083,6 +2104,7 @@ the beginning of the document</desc>
 	<xsl:apply-templates/>
       </xsl:otherwise>
     </xsl:choose>
+    <xsl:call-template name="endLanguage"/>
     </xsl:template>
   
   <xsl:template match="tei:trailer">
@@ -2267,11 +2289,11 @@ the beginning of the document</desc>
       </xsl:when>
       <xsl:when test="$style='head'">
 	<xsl:text>
-
+	  \begin{center}
 	\textbf{[[</xsl:text>
 	<xsl:apply-templates/>
 	<xsl:text>]]}
-
+	\end{center}
 	</xsl:text>
       </xsl:when>
       <xsl:otherwise>
@@ -2475,5 +2497,26 @@ the beginning of the document</desc>
     <xsl:for-each select="tokenize(normalize-space($cmd),' ')">
       <xsl:text>}</xsl:text>
     </xsl:for-each>
-  </xsl:template>    
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>Parse @wit attribute into one or more cite commands.</desc>
+  </doc>
+  <xsl:template name="makeCiteFromWit">
+    <xsl:param name="witnesses"/>
+    <xsl:for-each select="tokenize(normalize-space($witnesses), ' ')">
+      <xsl:variable name="witID" select="substring-before(replace(.,'^#', ''), '#')"/>
+      <xsl:variable name="witPath" select="replace(substring-after(.,$witID), '^#', '')"/>
+      <xsl:text> \cite</xsl:text>
+      <xsl:if test="$witPath">
+	<xsl:text>[</xsl:text>
+	<xsl:value-of select="$witPath"/>
+	<xsl:text>]</xsl:text>
+      </xsl:if>
+      <xsl:text>{</xsl:text>
+      <xsl:value-of select="$witID"/>
+      <xsl:text>}</xsl:text>
+    </xsl:for-each>
+  </xsl:template>
 </xsl:stylesheet>
+
