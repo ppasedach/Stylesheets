@@ -1,0 +1,12 @@
+<div type="testUnit">
+    <div>
+      <head xml:lang="en">page break tests with ed attributes</head>
+      <div n="iv.0">
+	<pb ed="pvv-sankrtyayana-book" n="413"/>
+	<p>स्वार्थानुमानं<lb ed="MA" n="7" rend="sup"/> व्याख्याय परार्थानुमानं व्याख्यातुमाह (।)</p>
+	<pb ed="MA" n="81b" rend="margin"/>
+	<lb ed="pvv-sankrtyayana-book"/><p>तत्र परार्थानुमानं<note xml:id="pvv.413-2b"><p>२ [तत्रैव]---परार्थमनुमानं तु ।</p></note> स्वदृष्टार्थप्रकाशनमित्याचार्यीयलक्षणं । स्वेन<note xml:id="pvv.413-3b"><p>३ वादिप्रतिवादिभ्यामिति प्रकरणात् ।</p></note>  <lb ed="s"/>दृष्टः स्वदृष्टः । स्वदृष्टश्चासावर्थश्चेति त्रिरूपो हेतुः । तस्य प्रकाशनम्वचनं <lb ed="s"/>अनुमानहेतुत्वादित्यर्थः ।</p>
+      </div>
+    </div>
+</div>
+

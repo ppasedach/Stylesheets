@@ -1,0 +1,14 @@
+The file file:./sarit.bib contains the current intermediate for
+SARIT's bibliography. The aim is of course to get everything we need
+from the TEI files themselves. There is, however, currently no
+simple/dependable mechanism that can do this. 
+
+At the moment, therefore, we have decided to live with a hand-crafted
+bibliography file. The only requirement is that the keys correspond to
+the xml:id-s of the various bibliographic items in the SARIT corpus
+(e.g., bibl, biblStruct, msDesc).
+
+The name `sarit.bib' is defined in SARIT's latex conversion
+stylesheet, but no path. In order for this to work, you have to put
+the file on your path, or simply symlink or copy it into the directory
+you're running latex from.

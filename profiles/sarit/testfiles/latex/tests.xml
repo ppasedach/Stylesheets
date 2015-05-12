@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:id="tsp-SARIT" xmlns="http://www.tei-c.org/ns/1.0" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <!-- provisory TEI xml:id -->
+  <teiHeader xml:lang="en">
+    <fileDesc>
+      <titleStmt>
+	<title>SARIT Test file header</title>
+	<respStmt>
+	  <name>SARIT: Search and Retrieval of Indic Texts</name>
+	  <resp></resp>
+	</respStmt>
+      </titleStmt>
+      <publicationStmt>
+	<authority>Patrick McAllister</authority>
+        <publisher>SARIT: Search and Retrieval of Indic Texts</publisher>
+        <idno>2014-10-14</idno>
+        <availability status="restricted">
+          <p>Copyright Notice</p>
+          <p>Copyright 2014 SARIT</p>                        
+          <p>
+	    This file (<ref target="./">saritcorpus.xml</ref>), and the files it includes unless specified otherwise in the respective headers of those files, are
+            <ref target="http://creativecommons.org/licenses/by-sa/3.0/" type="licence">distributed by <ref target="http://sarit.indology.info" type="url">SARIT</ref> under a Creative Commons Attribution-ShareAlike 3.0
+            Unported License. </ref>
+          </p>
+          <p>Under this licence, you are free <list>
+          <item>to Share — to copy, distribute and transmit the work</item>
+          <item>to Remix — to adapt the work </item>
+          </list></p>
+          <p>Under the following conditions:</p>
+          <p>
+            <list>
+              <item>Attribution — You must attribute the work in the manner specified
+              by the author or licensor (but not in any way that suggests that
+              they endorse you or your use of the work).</item>
+              <item>Share Alike — If you alter, transform, or build upon this work,
+              you may distribute the resulting work only under the same or similar
+              license to this one.</item>
+            </list>
+          </p>
+          <p>More information and fuller details of this license are given on the Creative
+          Commons website.</p>
+          <p>SARIT assumes no responsibility for unauthorised use that infringes the
+          rights of any copyright owners, known or unknown.</p>
+        </availability>
+      </publicationStmt>
+      <sourceDesc>
+	<p>This file was born digitally, please see <ref target="https://github.com/paddymcall/Stylesheets/">https://github.com/paddymcall/Stylesheets/</ref> for its history.</p>
+      </sourceDesc>
+    </fileDesc>
+    <!-- header for corpus -->
+  </teiHeader>
+  <text xml:id="parTest" xml:lang="sa-Deva">
+    <body>
+      <xi:include href="parTest.xml"/>
+      <xi:include href="lgTest.xml"/>
+      <xi:include href="quoteTest.xml"/>
+      <xi:include href="headTest.xml"/>
+      <xi:include href="pbEdRefTest.xml"/>
+      <xi:include href="pbEdTest.xml"/>
+      <xi:include href="pbMixedTest.xml"/>
+    </body>
+  </text>
+</TEI>

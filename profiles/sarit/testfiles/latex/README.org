@@ -1,0 +1,28 @@
+#+TITLE: Testfiles for SARIT's xml ---> latex (---> pdf) conversion
+
+
+* Files
+
+1) file:./tests.xml: main test file; xinclude the tests below 
+2) file:./parTest.xml: paragraph tests
+3) file:./lgTest.xml: line group tests
+4) ...: various other test files
+
+The idea is to add *many* of these short test files: their results
+should be tracked, so we can see when a change to the XML-->LaTeX
+conversion process affects these tests. 
+
+In general, we should try to add many similar, but slightly different,
+test files, rather than one big one. After a test case has been added
+and the output has been checked to be correct, one should not edit
+that file again.
+
+* Running tests
+
+#+BEGIN_SRC bash
+xmllint --format --encode UTF-8  --xinclude tests.xml  > /tmp/tests.xml
+cd /tmp
+jing 
+saxonb-xslt -ext:on -xsl:/home/beta/webstuff/tei_stylesheets/profiles/sarit/latex/to.xsl -s:tests.xml -o:tests.tex
+xelatex -shell-escape   tests
+#+END_SRC
