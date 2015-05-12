@@ -28,3 +28,22 @@ xelatex -shell-escape   tests
 biber tests
 xelatex -shell-escape   tests
 #+END_SRC
+
+Comments:
+
+1) It won't make sense to combine all tests into one file. Put
+   comments around the ones you don't want in file:./tests.xml. Please
+   don't delete the references.
+2) jing: http://www.thaiopensource.com/relaxng/jing.html. On Debian,
+   you can currently install it with `apt-get install jing'. But you
+   can use any validator, of course.
+3) saxonb-xslt is included in the libsaxonb-java package under Debian
+   (https://packages.debian.org/wheezy/libsaxonb-java). Remember you
+   can set the param-s mentioned at the top of
+   file:../../latex/to.xsl. The most important one is probably
+   ledmac=true or false, switching eledmac on or off.
+4) xelatex needs the `-shell-escape' option, because of minted.
+5) Please use TeXLive 2014, and possibly a more recent version of
+   eledmac, from here https://github.com/maieul/ledmac/.
+6) For the biblatex/biber things to work, please see the instructions
+   in file:../../latex/bib/README.org.
