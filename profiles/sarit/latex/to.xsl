@@ -2505,10 +2505,45 @@ the beginning of the document</desc>
   <xsl:template name="makeCiteFromWit">
     <xsl:param name="witnesses"/>
     <xsl:for-each select="tokenize(normalize-space($witnesses), ' ')">
-      <xsl:variable name="witID" select="substring-before(replace(.,'^#', ''), '#')"/>
-      <xsl:variable name="witPath" select="replace(substring-after(.,$witID), '^#', '')"/>
+      <xsl:message>Parsing witness: <xsl:value-of select="."/>.</xsl:message>
+      <xsl:variable name="witID">
+	<xsl:choose>
+	  <xsl:when test="matches(., '^#')">
+	    <xsl:message>internal reference, making absolute.</xsl:message>
+	    <xsl:choose>
+	      <xsl:when test="matches(replace(.,'^#', ''), '#')">
+		<xsl:value-of select="substring-before(replace(.,'^#', ''), '#')"/>
+	      </xsl:when>
+	      <xsl:otherwise>
+		<xsl:value-of select="replace(.,'^#', '')"/>
+	      </xsl:otherwise>
+	    </xsl:choose>
+	  </xsl:when>
+	  <xsl:when test="matches(., '#')">
+	    <xsl:message>absolute reference.</xsl:message>
+	    <xsl:value-of select="substring-before(., '#')"/>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <xsl:value-of select="."/>
+	  </xsl:otherwise>
+	</xsl:choose>
+      </xsl:variable>
+      <xsl:message>witID: <xsl:value-of select="$witID"/></xsl:message>
+      <xsl:variable name="witPath">
+	<xsl:choose>
+	  <xsl:when test="matches(., '^#')">
+	    <xsl:value-of select="substring-after(.,$witID)"/>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <xsl:if  test="matches(., '#')">
+	      <xsl:value-of select="substring-after(., '#')"/>
+	    </xsl:if>
+	  </xsl:otherwise>
+	</xsl:choose>
+      </xsl:variable>
+      <xsl:message>witPath: <xsl:value-of select="$witPath"/></xsl:message>
       <xsl:text> \cite</xsl:text>
-      <xsl:if test="$witPath">
+      <xsl:if test="$witPath!=''">
 	<xsl:text>[</xsl:text>
 	<xsl:value-of select="$witPath"/>
 	<xsl:text>]</xsl:text>

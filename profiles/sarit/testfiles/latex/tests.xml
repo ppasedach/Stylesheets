@@ -59,9 +59,10 @@
       <xi:include href="pbEdTest.xml"/>
       <xi:include href="pbMixedTest.xml"/>
       <xi:include href="headlineTest.xml"/>
-      <xi:include href="labelHeadTest.xml"/>
+      <!-- <xi:include href="labelHeadTest.xml"/> -->
       <xi:include href="locRefAppTest.xml"/>
-      <xi:include href="parallelSegAppTest.xml"/>      
+      <xi:include href="parallelSegAppTest.xml"/>
+      <xi:include href="mixedWitApp.xml"/>
     </body>
   </text>
 </TEI>
