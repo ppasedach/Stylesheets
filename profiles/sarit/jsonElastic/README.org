@@ -3,31 +3,42 @@
 This is a simple stylesheet for converting TEI (or teiCorpus) into a
 JSON format that you can feed to [[http://www.elastic.co/][ElasticSearch]].
 
-To generate the JSON file, use something like this (assuming you
-collected everything in a file file:/tmp/corpus.xml):
+It is meant to work on the [[https://github.com/sarit/SARIT-corpus][SARIT corpus]], which you can generate like
+this (assuming you're in the same directory as the file
+saritcorpus.xml):
+
+#+BEGIN_SRC sh
+  xmllint --encode UTF-8  --xinclude saritcorpus.xml  > /tmp/saritcorpus.xml \
+      && \
+      jing -c schemas/tei_all.rnc /tmp/saritcorpus.xml
+#+END_SRC
+
+Next, to generate the JSON file, use something like this. It's a good
+idea to use git's revision number as the revision identifier, but
+presupposes you have git installed and have no uncommitted changes.
+You could run something like this:
+
+#+BEGIN_SRC sh
+      git diff-files --quiet \
+          && \
+          saxonb-xslt -l -ext:on \
+                      -xsl:$pathToTEIxsl/profiles/sarit/jsonElastic/teitojson.xsl \
+                      -s:/tmp/saritcorpus.xml \
+                      -o:/tmp/saritcorpus.js \
+                      revision=`git rev-parse --verify --short HEAD`
+#+END_SRC
+
+The `-l' option is needed for linenumbers, see
+http://saxon.sourceforge.net/saxon6.5.3/extensions.html#linenumber.
+
+Simpler, without git:
 
 #+BEGIN_SRC sh
   saxonb-xslt -l -ext:on \
               -xsl:/PATH/TO/TEI-XSL/profiles/sarit/jsonElastic/teitojson.xsl \
-              -s:/tmp/corpus.xml \
+              -s:/tmp/saritcorpus.xml \
               -o:corpus.js \
-              revision=`sha256sum /tmp/corpus.xml | head -c 64`
-#+END_SRC
-
-The `-l' option is needed for linenumbers, see http://saxon.sourceforge.net/saxon6.5.3/extensions.html#linenumber.
-
-If you are using git for reversion control, you can use the revision
-number instead of a checksum. Before converting your file to json,
-make sure you have no uncommitted changes! You could run something
-like this:
-
-#+BEGIN_SRC sh
-    git diff-files --quiet && \
-    saxonb-xslt -l -ext:on \
-                -xsl:$pathToTEIxsl/profiles/sarit/jsonElastic/teitojson.xsl \
-                -s:/tmp/corpus.xml \
-                -o:/tmp/corpus.js \
-                revision=`git rev-parse --verify --short HEAD`
+              revision=`sha256sum /tmp/saritcorpus.xml | head -c 64`
 #+END_SRC
 
 If you're happy with the output, run this, assuming you have
@@ -35,8 +46,8 @@ ElasticSearch running on your computer on port 9200 (splitting might
 not be necessary):
 
 #+BEGIN_SRC sh
-  split -l 4000 corpus.js /tmp/corpus-split
-  for i in `ls /tmp/corpus-split*` 
+  split -l 4000 /tmp/saritcorpus.js /tmp/saritcorpus-split
+  for i in `ls /tmp/saritcorpus-split*` 
   do 
       curl -XPOST 'localhost:9200/_bulk?pretty' \
            --data-binary @$i  >> /tmp/results_corpus.js
@@ -45,4 +56,6 @@ not be necessary):
 
 You might want to adapt the number on which to split to your setup. It
 should just be an even number, so that there's always an index and
-data section.
+data section. 
+
+This has worked at least once with elasticsearch 1.6 :-)
