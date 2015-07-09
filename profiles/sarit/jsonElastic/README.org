@@ -31,6 +31,8 @@ You could run something like this:
 The `-l' option is needed for linenumbers, see
 http://saxon.sourceforge.net/saxon6.5.3/extensions.html#linenumber.
 
+Replace ~$pathToTEIxsl~ with the local file path to the repository.
+
 Simpler, without git:
 
 #+BEGIN_SRC sh
