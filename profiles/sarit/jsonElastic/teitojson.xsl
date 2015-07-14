@@ -9,6 +9,12 @@
 coverage -->
 <xsl:strip-space elements="*"/>
 <xsl:output method="text" encoding="utf-8" />
+<xsl:output name="xmlSrc" method="xml" indent="no" omit-xml-declaration="yes" encoding="utf-8" use-character-maps="escapeInXML" />
+<xsl:character-map name="escapeInXML">
+  <xsl:output-character character="&#10;" string="&lt;lb /&gt;"/>
+  <xsl:output-character character="\" string="\\"/>
+</xsl:character-map>
+
 
 <xsl:param name="inq">"</xsl:param>
 <xsl:param name="outq">\\"</xsl:param>
@@ -193,6 +199,8 @@ coverage -->
     <xsl:text>", "author" : "</xsl:text>
     <xsl:value-of  select="$author"/>
   </xsl:if>
+  <xsl:text>", "xmlSrc" : "</xsl:text>
+  <xsl:value-of select="replace(saxon:serialize(., 'xmlSrc'), '&#x22;', '\\&#x22;')"/>
   <xsl:text>"}</xsl:text>
   <xsl:call-template name="newline"/>
 </xsl:template>
