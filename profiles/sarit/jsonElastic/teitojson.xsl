@@ -38,6 +38,7 @@ coverage -->
 </doc>
 <xsl:param name="nested">false</xsl:param>
 
+<xsl:param name="includeXMLSrc">false</xsl:param>
 
 <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
   <desc>Produce a simple title.</desc>
@@ -199,9 +200,10 @@ coverage -->
     <xsl:text>", "author" : "</xsl:text>
     <xsl:value-of  select="$author"/>
   </xsl:if>
-  <xsl:text>", "xmlSrc" : "</xsl:text>
-  <xsl:value-of select="replace(saxon:serialize(., 'xmlSrc'), '&#x22;', '\\&#x22;')"/>
-  <xsl:text>"}</xsl:text>
+  <xsl:if  test="$includeXMLSrc='true'">
+    <xsl:text>", "xmlSrc" : "</xsl:text>
+    <xsl:value-of select="replace(saxon:serialize(., 'xmlSrc'), '&#x22;', '\\&#x22;')"/>
+  </xsl:if>
   <xsl:call-template name="newline"/>
 </xsl:template>
 
