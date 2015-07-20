@@ -40,7 +40,7 @@ Simpler, without git:
 
 #+BEGIN_SRC sh
   saxonb-xslt -l -ext:on \
-              -xsl:/PATH/TO/TEI-XSL/profiles/sarit/jsonElastic/teitojson.xsl \
+              -xsl:$pathToTEIxsl/profiles/sarit/jsonElastic/teitojson.xsl \
               -s:/tmp/saritcorpus.xml \
               -o:corpus.js \
               revision=`sha256sum /tmp/saritcorpus.xml | head -c 64`
