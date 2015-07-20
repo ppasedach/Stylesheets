@@ -204,6 +204,7 @@ coverage -->
     <xsl:text>", "xmlSrc" : "</xsl:text>
     <xsl:value-of select="replace(saxon:serialize(., 'xmlSrc'), '&#x22;', '\\&#x22;')"/>
   </xsl:if>
+  <xsl:text>"}</xsl:text>
   <xsl:call-template name="newline"/>
 </xsl:template>
 
