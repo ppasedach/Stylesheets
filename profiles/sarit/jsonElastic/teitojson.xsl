@@ -67,12 +67,29 @@ coverage -->
   </desc>
 </doc>
 <xsl:template match="/">
+  <xsl:variable name="baseURL">
+    <xsl:choose>
+      <xsl:when test="/teiCorpus/@xml:base">
+	<xsl:value-of select="/teiCorpus/@xml:base"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:copy-of select="saxon:systemId()"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
   <xsl:for-each select="//TEI/text/body">
     <xsl:variable name="currentDoc">
       <xsl:copy-of select="ancestor::TEI"/>
     </xsl:variable>
     <xsl:variable name="systemId">
-      <xsl:copy-of select="saxon:systemId()"/>
+      <xsl:choose>
+	<xsl:when test="ancestor::TEI/@xml:base">
+	  <xsl:value-of select="ancestor::TEI/@xml:base"/>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:copy-of select="saxon:systemId()"/>
+	</xsl:otherwise>
+      </xsl:choose>
     </xsl:variable>
     <xsl:variable name="title">
       <xsl:call-template name="getTitle">
@@ -111,6 +128,7 @@ coverage -->
 	<xsl:with-param name="title" select="$title"/>
 	<xsl:with-param name="author" select="$author" />
 	<xsl:with-param name="systemId" select="$systemId"/>
+	<xsl:with-param name="baseURL" select="$baseURL"/>
 	<xsl:with-param name="lang" select="./ancestor-or-self::*[@xml:lang][1]/@xml:lang"/>
 	<xsl:with-param name="workId" select="$workId"/>
 	<xsl:with-param name="xmlId" select="$xmlId"/>
@@ -122,18 +140,21 @@ coverage -->
       <xsl:with-param name="title"><xsl:value-of select="$title"/></xsl:with-param>
       <xsl:with-param name="author"><xsl:value-of select="$author"/></xsl:with-param>
       <xsl:with-param name="systemId"><xsl:value-of select="$systemId"/></xsl:with-param>
+      <xsl:with-param name="baseURL"><xsl:value-of select="$baseURL"/></xsl:with-param>
       <xsl:with-param name="workId"><xsl:value-of select="$workId"/></xsl:with-param>
     </xsl:apply-templates>
     <xsl:apply-templates select=".//lg[not(ancestor::note)]" mode="linegroups">
       <xsl:with-param name="title"><xsl:value-of select="$title"/></xsl:with-param>
       <xsl:with-param name="author"><xsl:value-of select="$author"/></xsl:with-param>
       <xsl:with-param name="systemId"><xsl:value-of select="$systemId"/></xsl:with-param>
+      <xsl:with-param name="baseURL"><xsl:value-of select="$baseURL"/></xsl:with-param>
       <xsl:with-param name="workId"><xsl:value-of select="$workId"/></xsl:with-param>
     </xsl:apply-templates>
     <xsl:apply-templates select=".//note" mode="notes">
       <xsl:with-param name="title"><xsl:value-of select="$title"/></xsl:with-param>
       <xsl:with-param name="author"><xsl:value-of select="$author"/></xsl:with-param>
       <xsl:with-param name="systemId"><xsl:value-of select="$systemId"/></xsl:with-param>
+      <xsl:with-param name="baseURL"><xsl:value-of select="$baseURL"/></xsl:with-param>
       <xsl:with-param name="workId"><xsl:value-of select="$workId"/></xsl:with-param>
     </xsl:apply-templates>
   </xsl:for-each>
@@ -147,6 +168,7 @@ coverage -->
   <xsl:param name="title" />
   <xsl:param name="author" />
   <xsl:param name="systemId" />
+  <xsl:param name="baseURL" />
   <xsl:param name="lang"/>
   <xsl:param name="xmlId"/>
   <xsl:param name="workId"/>
@@ -181,6 +203,8 @@ coverage -->
   <xsl:value-of select="$systemId"/>
   <xsl:text>", "lang" : "</xsl:text>
   <xsl:value-of select="$lang"/>
+  <xsl:text>", "baseURL" : "</xsl:text>
+  <xsl:value-of select="$baseURL"/>
   <xsl:if test="$ignoreText!='true'">
     <xsl:text>", "text" : "</xsl:text>
     <xsl:apply-templates />
@@ -205,6 +229,7 @@ coverage -->
   <xsl:param name="title"/>
   <xsl:param name="author"/>
   <xsl:param name="systemId"/>
+  <xsl:param name="baseURL"/>
   <xsl:param name="workId"/>
   <xsl:call-template name="makeJson">
     <xsl:with-param name="title">
@@ -218,6 +243,7 @@ coverage -->
       </xsl:if>
     </xsl:with-param>
     <xsl:with-param name="systemId" select="$systemId"/>
+    <xsl:with-param name="baseURL" select="$baseURL"/>
     <xsl:with-param name="lang" select="./ancestor-or-self::*[@xml:lang][1]/@xml:lang"/>
     <xsl:with-param name="typeName" select="$esTypeName"/>
     <xsl:with-param name="parent">
@@ -241,6 +267,7 @@ coverage -->
   <xsl:param name="title"/>
   <xsl:param name="author"/>
   <xsl:param name="systemId"/>
+  <xsl:param name="baseURL"/>
   <xsl:param name="workId"/>
   <xsl:call-template name="makeJson">
     <xsl:with-param name="title">
@@ -254,6 +281,7 @@ coverage -->
       </xsl:if>
     </xsl:with-param>
     <xsl:with-param name="systemId" select="$systemId"/>
+    <xsl:with-param name="baseURL" select="$baseURL"/>
     <xsl:with-param name="lang" select="./ancestor-or-self::*[@xml:lang][1]/@xml:lang"/>
     <xsl:with-param name="typeName" select="$esTypeName"/>
     <xsl:with-param name="parent">
@@ -275,6 +303,7 @@ coverage -->
   <xsl:param name="title"/>
   <xsl:param name="author"/>
   <xsl:param name="systemId"/>
+  <xsl:param name="baseURL"/>
   <xsl:param name="workId"/>
   <xsl:call-template name="makeJson">
     <xsl:with-param name="title">
@@ -288,6 +317,7 @@ coverage -->
       </xsl:if>
     </xsl:with-param>
     <xsl:with-param name="systemId" select="$systemId"/>
+    <xsl:with-param name="baseURL" select="$baseURL"/>
     <xsl:with-param name="lang" select="./ancestor-or-self::*[@xml:lang][1]/@xml:lang"/>
     <xsl:with-param name="typeName" select="$esTypeName"/>
     <xsl:with-param name="parent">
