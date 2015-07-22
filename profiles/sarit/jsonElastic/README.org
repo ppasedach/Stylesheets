@@ -25,7 +25,7 @@ like this:
                       -xsl:$pathToTEIxsl/profiles/sarit/jsonElastic/teitojson.xsl \
                       -s:/tmp/saritcorpus.xml \
                       -o:/tmp/saritcorpus.js \
-                      revision=`git rev-parse --verify --short HEAD`
+                      revision=`git rev-parse --verify HEAD`
 #+END_SRC
 
 The `-l' option is needed for linenumbers, see

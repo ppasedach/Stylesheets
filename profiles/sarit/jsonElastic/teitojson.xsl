@@ -3,6 +3,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:fn="http://www.w3.org/2005/xpath-functions"
     xmlns:saxon="http://saxon.sf.net/"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
     version="2.0"
     >
 <!-- cf http://www.bramstein.com/projects/xsltjson/ for better
@@ -74,6 +75,7 @@ coverage -->
   </desc>
 </doc>
 <xsl:template match="/">
+  <xsl:message>Starting to process <xsl:value-of select="local-name()"/> on line <xsl:value-of select="saxon:line-number()"/></xsl:message>
   <xsl:variable name="baseURL">
     <xsl:choose>
       <xsl:when test="/teiCorpus/@xml:base">
@@ -85,6 +87,8 @@ coverage -->
     </xsl:choose>
   </xsl:variable>
   <xsl:for-each select="//TEI/text/body">
+    <xsl:variable name="currentTEIstartline" select="saxon:line-number(ancestor::TEI)" as="xs:integer"/>
+    <xsl:message>New TEI doc starting at <xsl:value-of select="$currentTEIstartline"/></xsl:message>
     <xsl:variable name="currentDoc">
       <xsl:copy-of select="ancestor::TEI"/>
     </xsl:variable>
@@ -95,6 +99,16 @@ coverage -->
 	</xsl:when>
 	<xsl:otherwise>
 	  <xsl:copy-of select="saxon:systemId()"/>
+	</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="relativeLnum" as="xs:boolean">
+      <xsl:choose>
+	<xsl:when test="ancestor::TEI/@xml:base">
+	  <xsl:value-of select="true()"/>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:value-of select="false()"/>
 	</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
@@ -149,6 +163,8 @@ coverage -->
       <xsl:with-param name="systemId"><xsl:value-of select="$systemId"/></xsl:with-param>
       <xsl:with-param name="baseURL"><xsl:value-of select="$baseURL"/></xsl:with-param>
       <xsl:with-param name="workId"><xsl:value-of select="$workId"/></xsl:with-param>
+      <xsl:with-param name="currentTEIstartline"><xsl:value-of select="$currentTEIstartline"/></xsl:with-param>
+      <xsl:with-param name="relativeLnum" select="$relativeLnum"/>
     </xsl:apply-templates>
     <xsl:apply-templates select=".//lg[not(ancestor::note)]" mode="linegroups">
       <xsl:with-param name="title"><xsl:value-of select="$title"/></xsl:with-param>
@@ -156,6 +172,8 @@ coverage -->
       <xsl:with-param name="systemId"><xsl:value-of select="$systemId"/></xsl:with-param>
       <xsl:with-param name="baseURL"><xsl:value-of select="$baseURL"/></xsl:with-param>
       <xsl:with-param name="workId"><xsl:value-of select="$workId"/></xsl:with-param>
+      <xsl:with-param name="currentTEIstartline"><xsl:value-of select="$currentTEIstartline"/></xsl:with-param>
+      <xsl:with-param name="relativeLnum" select="$relativeLnum"/>
     </xsl:apply-templates>
     <xsl:apply-templates select=".//note" mode="notes">
       <xsl:with-param name="title"><xsl:value-of select="$title"/></xsl:with-param>
@@ -163,6 +181,8 @@ coverage -->
       <xsl:with-param name="systemId"><xsl:value-of select="$systemId"/></xsl:with-param>
       <xsl:with-param name="baseURL"><xsl:value-of select="$baseURL"/></xsl:with-param>
       <xsl:with-param name="workId"><xsl:value-of select="$workId"/></xsl:with-param>
+<xsl:with-param name="currentTEIstartline"><xsl:value-of select="$currentTEIstartline"/></xsl:with-param>
+      <xsl:with-param name="relativeLnum" select="$relativeLnum"/>
     </xsl:apply-templates>
   </xsl:for-each>
 </xsl:template>
@@ -176,6 +196,8 @@ coverage -->
   <xsl:param name="author" />
   <xsl:param name="systemId" />
   <xsl:param name="baseURL" />
+  <xsl:param name="currentTEIstartline"/>
+  <xsl:param name="relativeLnum" />
   <xsl:param name="lang"/>
   <xsl:param name="xmlId"/>
   <xsl:param name="workId"/>
@@ -205,6 +227,25 @@ coverage -->
   <xsl:text>", "path" : "</xsl:text>
   <xsl:value-of select="saxon:path()"/>
   <xsl:text>", "lnum" : "</xsl:text>
+  <!-- pretty much trial and error, here. -->
+  <!-- <xsl:message> -->
+  <!--   Line number: <xsl:value-of select="saxon:line-number()"/> -->
+  <!--   Current TEI start: <xsl:value-of select="$currentTEIstartline"/> -->
+  <!--   TEI doc number: <xsl:value-of select="count(ancestor::TEI/preceding-sibling::TEI) + 1"/> -->
+  <!--   Variance: <xsl:value-of select="(count(ancestor::TEI/preceding-sibling::TEI) + 1) * 2"/> -->
+  <!--   Text: <xsl:apply-templates/> -->
+  <!--   Upshot: <xsl:value-of select="saxon:line-number() - $currentTEIstartline + count(ancestor::TEI/preceding-sibling::TEI)"/> -->
+  <!-- I think the main idea is that saxon:line-number() starts from 0, and the xinclude removes the xml declarations. -->
+  <!-- </xsl:message> -->
+  <xsl:choose>
+    <xsl:when test="$relativeLnum">
+      <xsl:value-of select="saxon:line-number() - $currentTEIstartline + 2"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="saxon:line-number()"/>
+    </xsl:otherwise>
+  </xsl:choose>
+  <xsl:text>", "absLnum" : "</xsl:text>
   <xsl:value-of select="saxon:line-number()"/>
   <xsl:text>", "sysId" : "</xsl:text>
   <xsl:value-of select="$systemId"/>
@@ -242,6 +283,8 @@ coverage -->
   <xsl:param name="systemId"/>
   <xsl:param name="baseURL"/>
   <xsl:param name="workId"/>
+  <xsl:param name="currentTEIstartline"/>
+  <xsl:param name="relativeLnum"/>
   <xsl:call-template name="makeJson">
     <xsl:with-param name="title">
       <xsl:if test="$nested!='true'">
@@ -267,6 +310,8 @@ coverage -->
 	<xsl:value-of select="@xml:id"/>
       </xsl:if>
     </xsl:with-param>
+    <xsl:with-param name="currentTEIstartline" select="$currentTEIstartline"/>
+    <xsl:with-param name="relativeLnum" select="$relativeLnum"/>
   </xsl:call-template>
 </xsl:template>
 
@@ -279,6 +324,8 @@ coverage -->
   <xsl:param name="author"/>
   <xsl:param name="systemId"/>
   <xsl:param name="baseURL"/>
+  <xsl:param name="currentTEIstartline"/>
+  <xsl:param name="relativeLnum"/>
   <xsl:param name="workId"/>
   <xsl:call-template name="makeJson">
     <xsl:with-param name="title">
@@ -305,6 +352,8 @@ coverage -->
 	<xsl:value-of select="@xml:id"/>
       </xsl:if>
     </xsl:with-param>
+    <xsl:with-param name="currentTEIstartline" select="$currentTEIstartline"/>
+    <xsl:with-param name="relativeLnum" select="$relativeLnum"/>
   </xsl:call-template>
 </xsl:template>
 
@@ -315,6 +364,8 @@ coverage -->
   <xsl:param name="author"/>
   <xsl:param name="systemId"/>
   <xsl:param name="baseURL"/>
+  <xsl:param name="currentTEIstartline"/>
+  <xsl:param name="relativeLnum"/>
   <xsl:param name="workId"/>
   <xsl:call-template name="makeJson">
     <xsl:with-param name="title">
@@ -341,6 +392,8 @@ coverage -->
 	<xsl:value-of select="@xml:id"/>
       </xsl:if>
     </xsl:with-param>
+    <xsl:with-param name="currentTEIstartline" select="$currentTEIstartline"/>
+    <xsl:with-param name="relativeLnum" select="$relativeLnum"/>
   </xsl:call-template>
 </xsl:template>
 
