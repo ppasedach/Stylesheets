@@ -13,10 +13,10 @@ saritcorpus.xml):
       jing -c schemas/tei_all.rnc /tmp/saritcorpus.xml
 #+END_SRC
 
-Next, to generate the JSON file, use something like this. It's a good
-idea to use git's revision number as the revision identifier, but
-presupposes you have git installed and have no uncommitted changes.
-You could run something like this:
+Next, generate the JSON file: it's a good idea to use git's revision
+number as the revision identifier, but presupposes you have git
+installed and have no uncommitted changes.  You could run something
+like this:
 
 #+BEGIN_SRC sh
       git diff-files --quiet \
@@ -31,6 +31,9 @@ You could run something like this:
 The `-l' option is needed for linenumbers, see
 http://saxon.sourceforge.net/saxon6.5.3/extensions.html#linenumber.
 
+If you append ~includeXMLSrc=true~, the xml src of the indexed text
+should also be included (but not *exactly* as in the saritcorpus file).
+
 Replace ~$pathToTEIxsl~ with the local file path to the repository.
 
 Simpler, without git:
@@ -42,6 +45,7 @@ Simpler, without git:
               -o:corpus.js \
               revision=`sha256sum /tmp/saritcorpus.xml | head -c 64`
 #+END_SRC
+
 
 If you're happy with the output, run this, assuming you have
 ElasticSearch running on your computer on port 9200 (splitting might
