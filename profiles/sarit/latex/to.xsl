@@ -66,6 +66,8 @@ of this software, even if advised of the possibility of such damage.
   <xsl:param name="showLineBreaks" as="xs:boolean">false</xsl:param>
   <xsl:param name="showPageBreaks" as="xs:boolean">true</xsl:param>
   <xsl:param name="pagebreakStyle"/>
+  <doc>Specify the line spacing. Valid values: 1.5, 2.</doc>
+  <xsl:param name="lineSpacing" as="xs:decimal"/>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
     <desc>At which level to restart the numbering</desc>
   </doc>
@@ -234,6 +236,19 @@ capable of dealing with UTF-8 directly.
     </xsl:choose>
     <xsl:choose>
       <xsl:when test="$documentclass='memoir'">
+	<xsl:message>Line spacing: <xsl:value-of select="$lineSpacing"/></xsl:message>
+	<xsl:choose>
+	  <xsl:when test="$lineSpacing=1.5">
+	    <xsl:text>
+	      \OnehalfSpacing
+	    </xsl:text>
+	  </xsl:when>
+	  <xsl:when test="$lineSpacing=2">
+	    <xsl:text>
+	      \DoubleSpacing
+	    </xsl:text>
+	  </xsl:when>
+	</xsl:choose>
         <xsl:text>
 	    % numbering depth
 	    \maxtocdepth{section}
@@ -1133,7 +1148,6 @@ the beginning of the document</desc>
 	      <xsl:value-of select="replace(@ed, '^#', '')"/>
 	    </xsl:when>
             <xsl:when test="@n">
-              <xsl:text>pb </xsl:text>
               <xsl:value-of select="@n"/>
             </xsl:when>
             <xsl:otherwise>
