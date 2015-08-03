@@ -146,7 +146,7 @@ of this software, even if advised of the possibility of such damage.
                </xsl:attribute>
                <xsl:comment>
                   <xsl:text>&#10;Schema generated from ODD source </xsl:text>
-                  <xsl:call-template name="whatsTheDate"/>
+                  <xsl:sequence select="tei:whatsTheDate()"/>
                   <xsl:text>. </xsl:text>
 		  <xsl:value-of
 		      select="(/tei:TEI/tei:text/tei:front/tei:titlePage/tei:docDate,'.')"
@@ -176,7 +176,7 @@ of this software, even if advised of the possibility of such damage.
 	     <xsl:message>start importing moduleRef components</xsl:message>
 	   </xsl:if>
 	   <xsl:apply-templates mode="tangle" select="tei:moduleRef"/>
-	   <xsl:for-each select="tei:macroSpec">
+	   <xsl:for-each select="tei:macroSpec|tei:dataSpec">
 	     <xsl:apply-templates mode="tangle" select="."/>
 	   </xsl:for-each>
 	   <xsl:apply-templates mode="tangle" select="tei:elementSpec|tei:classSpec"/>
@@ -238,7 +238,7 @@ of this software, even if advised of the possibility of such damage.
                               datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
                         <xsl:comment>
                            <xsl:text>Schema generated </xsl:text>
-                           <xsl:call-template name="whatsTheDate"/>
+                           <xsl:sequence select="tei:whatsTheDate()"/>
                            <xsl:call-template name="makeTEIVersion"/>
 			   <xsl:call-template name="copyright"/>
                            <xsl:sequence select="tei:makeDescription(.,true())"/>

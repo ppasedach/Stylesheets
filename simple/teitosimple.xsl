@@ -120,7 +120,21 @@
     </xsl:variable>
 
     <xsl:template match="/">
-      <xsl:apply-templates/>
+	<xsl:apply-templates/>
+    </xsl:template>
+
+    <xsl:template match="TEI">
+      <xsl:copy>
+	<xsl:attribute name="rendition">tei:teisimple</xsl:attribute>
+        <xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()"/>
+      </xsl:copy>
+    </xsl:template>
+
+    <xsl:template match="text">
+      <xsl:copy>
+	  <xsl:apply-templates/>
+      </xsl:copy>
+
     </xsl:template>
 
     <!-- merge into name, keep attributes and add @type with translated name of original elements -->
