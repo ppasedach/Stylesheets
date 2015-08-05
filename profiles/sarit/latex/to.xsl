@@ -46,7 +46,7 @@ of this software, even if advised of the possibility of such damage.
   <xsl:param name="debuglatex">true</xsl:param>
   <xsl:param name="documentclass">memoir</xsl:param>
   <xsl:param name="homeURL">http://sarit.indology.info</xsl:param>
-  <xsl:param name="ledmac">true</xsl:param>
+  <xsl:param name="ledmac">false</xsl:param>
   <xsl:param name="printtoc">true</xsl:param>
   <xsl:param name="reencode">false</xsl:param>
   <xsl:param name="defaultfontfeatures">Scale=MatchLowercase,Mapping=tex-text</xsl:param>
@@ -55,7 +55,7 @@ of this software, even if advised of the possibility of such damage.
   <xsl:param name="devanagariFont">Chandas</xsl:param>
   <xsl:param name="boFont">Tibetan Machine Uni</xsl:param>
   <xsl:param name="sansFont">TeX Gyre Bonum</xsl:param>
-  <xsl:param name="showteiheader">true</xsl:param>
+  <xsl:param name="showteiheader">false</xsl:param>
   <xsl:param name="standalone">false</xsl:param>
   <xsl:param name="userpackage"/>
   <xsl:param name="biblatex">true</xsl:param>
@@ -67,7 +67,7 @@ of this software, even if advised of the possibility of such damage.
   <xsl:param name="showPageBreaks" as="xs:boolean">true</xsl:param>
   <xsl:param name="pagebreakStyle"/>
   <doc>Specify the line spacing. Valid values: 1.5, 2.</doc>
-  <xsl:param name="lineSpacing" as="xs:decimal"/>
+  <xsl:param name="lineSpacing" as="xs:decimal">1.5</xsl:param>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
     <desc>At which level to restart the numbering</desc>
   </doc>
@@ -117,6 +117,7 @@ capable of dealing with UTF-8 directly.
 </xsl:when>
       <xsl:otherwise>
         <xsl:text>
+  \reserveinserts{28}
   \usepackage{euler}
   \usepackage{xltxtra}
   \usepackage{polyglossia}
