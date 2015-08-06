@@ -55,7 +55,7 @@ of this software, even if advised of the possibility of such damage.
   <xsl:param name="devanagariFont">Chandas</xsl:param>
   <xsl:param name="boFont">Tibetan Machine Uni</xsl:param>
   <xsl:param name="sansFont">TeX Gyre Bonum</xsl:param>
-  <xsl:param name="showteiheader">false</xsl:param>
+  <xsl:param name="showteiheader">true</xsl:param>
   <xsl:param name="standalone">false</xsl:param>
   <xsl:param name="userpackage"/>
   <xsl:param name="biblatex">true</xsl:param>
@@ -117,6 +117,7 @@ capable of dealing with UTF-8 directly.
 </xsl:when>
       <xsl:otherwise>
         <xsl:text>
+  \usepackage{etex}
   \reserveinserts{28}
   \usepackage{euler}
   \usepackage{xltxtra}
