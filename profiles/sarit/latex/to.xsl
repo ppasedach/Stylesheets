@@ -46,7 +46,7 @@ of this software, even if advised of the possibility of such damage.
   <xsl:param name="debuglatex">true</xsl:param>
   <xsl:param name="documentclass">memoir</xsl:param>
   <xsl:param name="homeURL">http://sarit.indology.info</xsl:param>
-  <xsl:param name="ledmac">false</xsl:param>
+  <xsl:param name="ledmac">true</xsl:param>
   <xsl:param name="printtoc">true</xsl:param>
   <xsl:param name="reencode">false</xsl:param>
   <xsl:param name="defaultfontfeatures">Scale=MatchLowercase,Mapping=tex-text</xsl:param>
@@ -917,7 +917,7 @@ the beginning of the document</desc>
       <xsl:text>
 	 \chapter{The TEI Header}
 	 \begin{landscape}
-	 \begin{minted}[fontfamily=rmfamily,fontsize=\footnotesize]{xml}
+	 \begin{minted}[fontfamily=rmfamily,fontsize=\footnotesize,breaklines]{xml}
        </xsl:text>
       <xsl:copy-of select="saxon:serialize(tei:teiHeader, 'xmlstring')"/>
       <xsl:text>

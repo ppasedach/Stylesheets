@@ -52,23 +52,24 @@
   <text xml:id="parTest" xml:lang="sa-Deva">
     <body>
       <!-- <xi:include href="parTest.xml"/> -->
-       <xi:include href="lgTest.xml"/> 
-      <!-- <xi:include href="quoteTest.xml"/> -->
+      <!-- <xi:include href="twoLang.xml"/> -->
+      <!-- <xi:include href="lgTest.xml"/> -->
+      <!-- <xi:include href="quoteTest.xml"/>-->
       <!-- <xi:include href="headTest.xml"/> -->
-      <!-- <xi:include href="pbEdRefTest.xml"/> -->
-      <!-- <xi:include href="pbEdTest.xml"/> -->
-      <!-- <xi:include href="pbMixedTest.xml"/> -->
-      <!-- <xi:include href="headlineTest.xml"> -->
-      <!-- <xi:include href="labelHeadTest.xml"/> -->
-      <!-- <xi:include href="locRefAppTest.xml"/> -->
-      <!-- <xi:include href="parallelSegAppTest.xml"/> -->
-      <!-- <xi:include href="mixedWitApp.xml"/> -->
-      <!-- <xi:include href="doubleEndPointAppTest.xml"/> -->
+      <!-- <xi:include href="pbEdRefTest.xml"/>-->
+      <!-- <xi:include href="pbEdTest.xml"/>-->
+      <!-- <xi:include href="pbMixedTest.xml"/>-->
+      <!-- <xi:include href="headlineTest.xml"/>-->
+      <xi:include href="labelHeadTest.xml"/>
+      <!-- <xi:include href="locRefAppTest.xml"/>-->
+      <!-- <xi:include href="parallelSegAppTest.xml"/>-->
+      <!-- <xi:include href="mixedWitApp.xml"/>-->
+      <!-- <xi:include href="doubleEndPointAppTest.xml"/>-->
     </body>
-    <back>
-      <div>
+     <!-- <back> -->
+      <!-- <div> -->
 	<!-- <xi:include href="doubleEndPointAppTestApparatus.xml"/> -->
-      </div>
-    </back>
+      <!-- </div> -->
+    <!-- </back> -->
   </text>
 </TEI>
