@@ -514,9 +514,11 @@ capable of dealing with UTF-8 directly.
 	 \renewcommand{\bibfont}{\rmlatinfont}
 	 \DeclareFieldFormat{postnote}{:#1}
 	 \renewcommand{\postnotedelim}{}
-       </xsl:if><xsl:if test="$bibliography != ''">
+       </xsl:if>
+       <xsl:if test="$bibliography != ''">
 	 \addbibresource{<xsl:value-of select="$bibliography"/>}
-       </xsl:if><xsl:if test="$debuglatex='true'">
+       </xsl:if>
+       <xsl:if test="$debuglatex='true'">
 	 \setcounter{errorcontextlines}{400}
        </xsl:if><xsl:if test="$showteiheader='true'">
 	 \usepackage{lscape}
@@ -2514,13 +2516,15 @@ the beginning of the document</desc>
   </xsl:template>
 
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-    <desc>Parse @wit attribute into one or more cite commands.</desc>
+    <desc>Parse @wit attribute into one or more cite commands.
+    This function tries to get at the `#xyz' part of each URI in @wit, and uses that as a citekey (since we're translating to TeX, the keys are looked for in all bibs anyway, so there's no need to preserve the path to the bib).
+    </desc>
   </doc>
   <xsl:template name="makeCiteFromWit">
     <xsl:param name="witnesses"/>
     <xsl:for-each select="tokenize(normalize-space($witnesses), ' ')">
       <xsl:message>Parsing witness: <xsl:value-of select="."/>.</xsl:message>
-      <xsl:variable name="witID">
+      <xsl:variable name="witPath">
 	<xsl:choose>
 	  <xsl:when test="matches(., '^#')">
 	    <xsl:message>internal reference, making absolute.</xsl:message>
@@ -2542,11 +2546,11 @@ the beginning of the document</desc>
 	  </xsl:otherwise>
 	</xsl:choose>
       </xsl:variable>
-      <xsl:message>witID: <xsl:value-of select="$witID"/></xsl:message>
-      <xsl:variable name="witPath">
+      <xsl:message>witPath: <xsl:value-of select="$witPath"/></xsl:message>
+      <xsl:variable name="witID">
 	<xsl:choose>
 	  <xsl:when test="matches(., '^#')">
-	    <xsl:value-of select="substring-after(.,$witID)"/>
+	    <xsl:value-of select="substring-after(.,$witPath)"/>
 	  </xsl:when>
 	  <xsl:otherwise>
 	    <xsl:if  test="matches(., '#')">
@@ -2555,13 +2559,8 @@ the beginning of the document</desc>
 	  </xsl:otherwise>
 	</xsl:choose>
       </xsl:variable>
-      <xsl:message>witPath: <xsl:value-of select="$witPath"/></xsl:message>
+      <xsl:message>witID: <xsl:value-of select="$witID"/></xsl:message>
       <xsl:text> \cite</xsl:text>
-      <xsl:if test="$witPath!=''">
-	<xsl:text>[</xsl:text>
-	<xsl:value-of select="$witPath"/>
-	<xsl:text>]</xsl:text>
-      </xsl:if>
       <xsl:text>{</xsl:text>
       <xsl:value-of select="$witID"/>
       <xsl:text>}</xsl:text>
