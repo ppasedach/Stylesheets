@@ -1144,9 +1144,8 @@ the beginning of the document</desc>
 	      <xsl:text>}</xsl:text>
 	    </xsl:when>
 	    <xsl:when test="@n and @ed">
-	      <xsl:text>pb </xsl:text>
 	      <xsl:value-of select="@n"/>
-	      <xsl:text> in </xsl:text>
+	      <xsl:text>/</xsl:text>
 	      <xsl:value-of select="replace(@ed, '^#', '')"/>
 	    </xsl:when>
             <xsl:when test="@n">
@@ -2617,6 +2616,16 @@ the beginning of the document</desc>
       <xsl:message>bibID: <xsl:value-of select="$bibID"/></xsl:message>
       <xsl:value-of select="$bibID"/>
     </xsl:for-each>
+  </xsl:template>
+
+  <xsl:template match="tei:span">
+    <xsl:call-template name="makeSpan"/>
+  </xsl:template>
+  
+  <xsl:template name="makeSpan">
+    <xsl:call-template name="startLanguage"/>
+    <xsl:apply-templates/>
+    <xsl:call-template name="endLanguage"/>
   </xsl:template>
 </xsl:stylesheet>
 
