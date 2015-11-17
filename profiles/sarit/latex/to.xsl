@@ -516,9 +516,11 @@ capable of dealing with UTF-8 directly.
 	 \renewcommand{\bibfont}{\rmlatinfont}
 	 \DeclareFieldFormat{postnote}{:#1}
 	 \renewcommand{\postnotedelim}{}
-       </xsl:if><xsl:if test="$bibliography != ''">
+       </xsl:if>
+       <xsl:if test="$bibliography != ''">
 	 \addbibresource{<xsl:value-of select="$bibliography"/>}
-       </xsl:if><xsl:if test="$debuglatex='true'">
+       </xsl:if>
+       <xsl:if test="$debuglatex='true'">
 	 \setcounter{errorcontextlines}{400}
        </xsl:if><xsl:if test="$showteiheader='true'">
 	 \usepackage{lscape}
@@ -1144,9 +1146,8 @@ the beginning of the document</desc>
 	      <xsl:text>}</xsl:text>
 	    </xsl:when>
 	    <xsl:when test="@n and @ed">
-	      <xsl:text>pb </xsl:text>
 	      <xsl:value-of select="@n"/>
-	      <xsl:text> in </xsl:text>
+	      <xsl:text>/</xsl:text>
 	      <xsl:value-of select="replace(@ed, '^#', '')"/>
 	    </xsl:when>
             <xsl:when test="@n">
@@ -2373,7 +2374,10 @@ the beginning of the document</desc>
 	      <xsl:text>]</xsl:text>
 	    </xsl:if>
 	    <xsl:text>{</xsl:text>
-	    <xsl:value-of select="@target"/>
+	    <xsl:value-of/>
+	    <xsl:call-template name="URIsToBibRefs">
+	      <xsl:with-param name="targets" select="@target"/>
+	    </xsl:call-template>
 	    <xsl:text>}</xsl:text>
 	  </xsl:when>
           <xsl:otherwise>
@@ -2516,13 +2520,15 @@ the beginning of the document</desc>
   </xsl:template>
 
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-    <desc>Parse @wit attribute into one or more cite commands.</desc>
+    <desc>Parse @wit attribute into one or more cite commands.
+    This function tries to get at the `#xyz' part of each URI in @wit, and uses that as a citekey (since we're translating to TeX, the keys are looked for in all bibs anyway, so there's no need to preserve the path to the bib).
+    </desc>
   </doc>
   <xsl:template name="makeCiteFromWit">
     <xsl:param name="witnesses"/>
     <xsl:for-each select="tokenize(normalize-space($witnesses), ' ')">
       <xsl:message>Parsing witness: <xsl:value-of select="."/>.</xsl:message>
-      <xsl:variable name="witID">
+      <xsl:variable name="witPath">
 	<xsl:choose>
 	  <xsl:when test="matches(., '^#')">
 	    <xsl:message>internal reference, making absolute.</xsl:message>
@@ -2544,11 +2550,11 @@ the beginning of the document</desc>
 	  </xsl:otherwise>
 	</xsl:choose>
       </xsl:variable>
-      <xsl:message>witID: <xsl:value-of select="$witID"/></xsl:message>
-      <xsl:variable name="witPath">
+      <xsl:message>witPath: <xsl:value-of select="$witPath"/></xsl:message>
+      <xsl:variable name="witID">
 	<xsl:choose>
 	  <xsl:when test="matches(., '^#')">
-	    <xsl:value-of select="substring-after(.,$witID)"/>
+	    <xsl:value-of select="substring-after(.,$witPath)"/>
 	  </xsl:when>
 	  <xsl:otherwise>
 	    <xsl:if  test="matches(., '#')">
@@ -2557,17 +2563,71 @@ the beginning of the document</desc>
 	  </xsl:otherwise>
 	</xsl:choose>
       </xsl:variable>
-      <xsl:message>witPath: <xsl:value-of select="$witPath"/></xsl:message>
+      <xsl:message>witID: <xsl:value-of select="$witID"/></xsl:message>
       <xsl:text> \cite</xsl:text>
-      <xsl:if test="$witPath!=''">
-	<xsl:text>[</xsl:text>
-	<xsl:value-of select="$witPath"/>
-	<xsl:text>]</xsl:text>
-      </xsl:if>
       <xsl:text>{</xsl:text>
       <xsl:value-of select="$witID"/>
       <xsl:text>}</xsl:text>
     </xsl:for-each>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>Tries to get the part that \cite commands can use from the URI target.
+    E.g., bib://some/path/to/bibfile.bib#abc123 ---> abc123.
+    </desc>
+  </doc>
+  <xsl:template name="URIsToBibRefs">
+    <xsl:param name="targets" />
+    <xsl:for-each select="tokenize(normalize-space($targets), ' ')">
+      <xsl:message>Parsing target: <xsl:value-of select="."/>.</xsl:message>
+      <xsl:variable name="bibPath">
+	<xsl:choose>
+	  <xsl:when test="matches(., '^#')">
+	    <xsl:message>internal reference, making absolute.</xsl:message>
+	    <xsl:choose>
+	      <xsl:when test="matches(replace(.,'^#', ''), '#')">
+		<xsl:value-of select="substring-before(replace(.,'^#', ''), '#')"/>
+	      </xsl:when>
+	      <xsl:otherwise>
+		<xsl:value-of select="replace(.,'^#', '')"/>
+	      </xsl:otherwise>
+	    </xsl:choose>
+	  </xsl:when>
+	  <xsl:when test="matches(., '#')">
+	    <xsl:message>absolute reference.</xsl:message>
+	    <xsl:value-of select="substring-before(., '#')"/>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <xsl:value-of select="."/>
+	  </xsl:otherwise>
+	</xsl:choose>
+      </xsl:variable>
+      <xsl:message>bibPath: <xsl:value-of select="$bibPath"/></xsl:message>
+      <xsl:variable name="bibID">
+	<xsl:choose>
+	  <xsl:when test="matches(., '^#')">
+	    <xsl:value-of select="substring-after(.,$bibPath)"/>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <xsl:if  test="matches(., '#')">
+	      <xsl:value-of select="substring-after(., '#')"/>
+	    </xsl:if>
+	  </xsl:otherwise>
+	</xsl:choose>
+      </xsl:variable>
+      <xsl:message>bibID: <xsl:value-of select="$bibID"/></xsl:message>
+      <xsl:value-of select="$bibID"/>
+    </xsl:for-each>
+  </xsl:template>
+
+  <xsl:template match="tei:span">
+    <xsl:call-template name="makeSpan"/>
+  </xsl:template>
+  
+  <xsl:template name="makeSpan">
+    <xsl:call-template name="startLanguage"/>
+    <xsl:apply-templates/>
+    <xsl:call-template name="endLanguage"/>
   </xsl:template>
 </xsl:stylesheet>
 
