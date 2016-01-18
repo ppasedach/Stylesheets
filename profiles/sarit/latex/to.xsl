@@ -67,7 +67,7 @@ of this software, even if advised of the possibility of such damage.
   <xsl:param name="showPageBreaks" as="xs:boolean">true</xsl:param>
   <xsl:param name="pagebreakStyle"/>
   <doc>Specify the line spacing. Valid values: 1.5, 2.</doc>
-  <xsl:param name="lineSpacing" as="xs:decimal"/>
+  <xsl:param name="lineSpacing" as="xs:decimal">1</xsl:param>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
     <desc>At which level to restart the numbering</desc>
   </doc>
