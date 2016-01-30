@@ -53,12 +53,19 @@ of this software, even if advised of the possibility of such damage.
   <xsl:param name="romanFont">TeX Gyre Schola</xsl:param>
   <xsl:param name="latinFont">TeX Gyre Pagella</xsl:param>
   <xsl:param name="devanagariFont">Chandas</xsl:param>
+  <xsl:param name="devanagariFontScale">1.2</xsl:param>
   <xsl:param name="boFont">Tibetan Machine Uni</xsl:param>
+  <xsl:param name="boFontScale">1.2</xsl:param>
   <xsl:param name="sansFont">TeX Gyre Bonum</xsl:param>
   <xsl:param name="showteiheader">true</xsl:param>
   <xsl:param name="standalone">false</xsl:param>
   <xsl:param name="userpackage"/>
   <xsl:param name="biblatex">true</xsl:param>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
+    <p>This bibliography value is only used when no other bibliography
+    can be found. Currently searches for, and prefers,
+    //listBibl[@corresp] values.</p>
+  </doc>
   <xsl:param name="bibliography">sarit.bib</xsl:param>
   <xsl:param name="usetitling">true</xsl:param>
   <xsl:param name="leftside" as="xs:boolean">false</xsl:param>
@@ -147,11 +154,16 @@ capable of dealing with UTF-8 directly.
   <xsl:value-of select="$romanFont"/>
   <xsl:text>}</xsl:text>
   <xsl:text>
-  % set up a devanagari font
+    % set up a devanagari font
   \newfontfamily\devanagarifont</xsl:text>
         <xsl:choose>
           <xsl:when test="//tei:text[@xml:lang='sa'] or //tei:text[@xml:lang='sa-Deva'] or //tei:body[@xml:lang='sa'] or //tei:body[@xml:lang='sa-Deva']">
-            <xsl:text>[Script=Devanagari]{</xsl:text>
+            <xsl:text>[Script=Devanagari</xsl:text>
+	    <xsl:if test="not($devanagariFontScale='')">
+	      <xsl:text>,Scale=</xsl:text>
+	      <xsl:value-of select="$devanagariFontScale" />
+	    </xsl:if>
+	    <xsl:text>]{</xsl:text>
             <xsl:value-of select="$devanagariFont"/>
           </xsl:when>
           <xsl:otherwise>
@@ -180,7 +192,12 @@ capable of dealing with UTF-8 directly.
           </xsl:otherwise>
         </xsl:choose>
         <xsl:text>}
-  \newfontfamily\tibetanfont[Script=Tibetan,Scale=1.3]{</xsl:text>
+	\newfontfamily\tibetanfont[Script=Tibetan</xsl:text>
+	<xsl:if test="not($boFontScale='')">
+	  <xsl:text>,Scale=</xsl:text>
+	  <xsl:value-of select="$boFontScale"/>
+	</xsl:if>
+	<xsl:text>]{</xsl:text>
         <xsl:value-of select="$boFont"/>
         <xsl:text>}
   \newcommand\bo\tibetanfont
@@ -337,15 +354,15 @@ capable of dealing with UTF-8 directly.
 	  \endgroup
 	  \end{english}}
 	  \newcommand{\gap}[1]{}
-	  \newcommand{\corr}[1]{#1$^{x}$}
-	  \newcommand{\sic}[1]{#1$^{!}$}
+	  \newcommand{\corr}[1]{($^{x}$#1)}
+	  \newcommand{\sic}[1]{($^{!}$#1)}
 	  \newcommand{\reg}[1]{#1}
 	  \newcommand{\orig}[1]{#1}
 	  \newcommand{\abbr}[1]{#1}
 	  \newcommand{\expan}[1]{#1}
-	  \newcommand{\unclear}[1]{(#1$^{?}$)}
-	  \newcommand{\add}[1]{(#1$^{+}$)}
-	  \newcommand{\deletion}[1]{(#1$^{-}$)}
+	  \newcommand{\unclear}[1]{($^{?}$#1)}
+	  \newcommand{\add}[1]{($^{+}$#1)}
+	  \newcommand{\deletion}[1]{($^{-}$#1)}
 	  \newcommand{\pratIka}[1]{\textcolor{cyan}{#1}}
 	  \newcommand{\name}[1]{#1}
 	  \newcommand{\persName}[1]{#1}
@@ -505,8 +522,32 @@ capable of dealing with UTF-8 directly.
 	   </xsl:otherwise></xsl:choose>
        </xsl:if><xsl:text>
 	 \def\Gin@extensions{.pdf,.png,.jpg,.mps,.tif}
-	 </xsl:text><xsl:if test="$biblatex='true'">
+       </xsl:text>
+       <xsl:if test="$biblatex='true'">
+	 <xsl:text>%% biblatex stuff start
 	 \usepackage[backend=biber,citestyle=authoryear,bibstyle=authoryear]{biblatex}
+	 </xsl:text>
+	 <xsl:choose>
+	   <xsl:when test="//tei:listBibl[@corresp]">
+	     <xsl:for-each select="//tei:listBibl[@corresp]">
+	       <xsl:text>
+		 \addbibresource{</xsl:text>
+		 <xsl:value-of select="substring-after(resolve-uri(@corresp, base-uri()), 'file:')"/>
+	       <xsl:text>}</xsl:text>
+	     </xsl:for-each>
+	   </xsl:when>
+	   <xsl:otherwise>
+	     <xsl:choose>
+	     <xsl:when test="$bibliography != ''">
+	       \addbibresource{<xsl:value-of select="$bibliography"/>}
+	     </xsl:when>
+	     <xsl:otherwise>
+	       <xsl:message>No bibliographies found!</xsl:message>
+	     </xsl:otherwise>
+	     </xsl:choose>
+	   </xsl:otherwise>
+	 </xsl:choose>
+	 <xsl:text>
 	 \renewcommand*{\citesetup}{%
 	 \rmlatinfont
 	 \biburlsetup
@@ -514,9 +555,8 @@ capable of dealing with UTF-8 directly.
 	 \renewcommand{\bibfont}{\rmlatinfont}
 	 \DeclareFieldFormat{postnote}{:#1}
 	 \renewcommand{\postnotedelim}{}
-       </xsl:if>
-       <xsl:if test="$bibliography != ''">
-	 \addbibresource{<xsl:value-of select="$bibliography"/>}
+	 %% biblatex stuff end
+	 </xsl:text>
        </xsl:if>
        <xsl:if test="$debuglatex='true'">
 	 \setcounter{errorcontextlines}{400}
