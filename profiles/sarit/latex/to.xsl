@@ -66,8 +66,8 @@ of this software, even if advised of the possibility of such damage.
   <xsl:param name="showLineBreaks" as="xs:boolean">false</xsl:param>
   <xsl:param name="showPageBreaks" as="xs:boolean">true</xsl:param>
   <xsl:param name="pagebreakStyle"/>
-  <doc>Specify the line spacing. Valid values: 1.5, 2.</doc>
-  <xsl:param name="lineSpacing" as="xs:decimal"/>
+  <doc>Specify the line spacing. Valid values: 1, 1.5, 2.</doc>
+  <xsl:param name="lineSpacing" as="xs:decimal">1</xsl:param>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
     <desc>At which level to restart the numbering</desc>
   </doc>
@@ -733,7 +733,6 @@ capable of dealing with UTF-8 directly.
       <xsl:call-template  name="makeCiteFromWit">
 	<xsl:with-param name="witnesses" select="$lemmawitness" />
       </xsl:call-template>
-      <xsl:text>; </xsl:text>
     </xsl:if>
     <xsl:copy-of select="$readings"/>
     <xsl:if test="@type">
@@ -2073,6 +2072,16 @@ the beginning of the document</desc>
     <xsl:variable name="depth">
       <xsl:value-of select="count(ancestor::tei:div|tei:div1|tei:div2|tei:div3|tei:div4|tei:div5)"/>
     </xsl:variable>
+    <xsl:if test="not(child::head) and @xml:id">
+      <xsl:text>\label{</xsl:text>
+      <xsl:value-of select="@xml:id"/>
+      <xsl:text>}</xsl:text>
+      <xsl:if test="$ledmac='true'">
+	<xsl:text>\edlabel{</xsl:text>
+	<xsl:value-of select="@xml:id"/>
+	<xsl:text>}</xsl:text>
+      </xsl:if>
+    </xsl:if>
     <xsl:call-template name="startLanguage"/>
     <xsl:choose>
       <xsl:when test="$ledmac='true'">
