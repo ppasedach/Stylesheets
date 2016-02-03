@@ -45,6 +45,10 @@ of this software, even if advised of the possibility of such damage.
   <xsl:param name="useHeaderFrontMatter">true</xsl:param>
   <xsl:param name="debuglatex">true</xsl:param>
   <xsl:param name="documentclass">memoir</xsl:param>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout" type="string">
+    <desc>Optional parameters for documentclass</desc>
+  </doc>
+  <xsl:param name="classParameters">article</xsl:param>
   <xsl:param name="homeURL">http://sarit.indology.info</xsl:param>
   <xsl:param name="ledmac">true</xsl:param>
   <xsl:param name="printtoc">true</xsl:param>
@@ -568,14 +572,17 @@ capable of dealing with UTF-8 directly.
 	     \usepackage{times}
 	   </xsl:text></xsl:when></xsl:choose><xsl:if test="$userpackage != 'false' and not($userpackage='')">
 	 \usepackage{<xsl:value-of select="$userpackage"/>}
-       </xsl:if><xsl:choose><xsl:when test="$documentclass='memoir'">
+       </xsl:if>
+       <xsl:choose>
+	 <xsl:when test="$documentclass='memoir'">
 	   % pagestyles
 	   \pagestyle{ruled}
 	   <!-- \makeoddhead{ruled}{{\small\rmlatinfont <xsl:value-of select="tei:generateSimpleTitle(.)"/>}}{}{} -->
 	   \makeoddfoot{ruled}{{\tiny\rmlatinfont \textit{Compiled: \today}}}{}{\rmlatinfont\thepage}
 	   \makeevenfoot{ruled}{\rmlatinfont\thepage}{}{{\tiny\rmlatinfont \textit{Compiled: \today}}}
 	   
-	 </xsl:when><xsl:otherwise>
+	 </xsl:when>
+	 <xsl:otherwise>
 	   \pagestyle{fancy} 
 	 </xsl:otherwise></xsl:choose><xsl:if test="$ledmac='true'">
 	 \usepackage{eledmac,eledpar}
@@ -2413,7 +2420,7 @@ the beginning of the document</desc>
             </xsl:call-template>
           </xsl:when>
 	  <!-- hack for wrong markup; should become bibl elements -->
-	  <xsl:when test="@target and @type='bibl'">
+	  <xsl:when test="@target and contains(@type, 'bib')">
 	    <xsl:text>\cite</xsl:text>
 	    <xsl:if test="@corresp">
 	      <xsl:text>[</xsl:text>
