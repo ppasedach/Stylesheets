@@ -2683,5 +2683,19 @@ the beginning of the document</desc>
     <xsl:apply-templates/>
     <xsl:call-template name="endLanguage"/>
   </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+      <desc>Start the frontmatter.</desc>
+   </doc>
+  <xsl:template match="tei:front">
+    <xsl:if test="not(preceding::tei:front)">
+      <xsl:text>\frontmatter </xsl:text>
+      <xsl:call-template name="startLanguage"/>
+    </xsl:if>
+    <xsl:apply-templates/>
+    <xsl:if test="not(preceding::tei:front)">
+      <xsl:call-template name="endLanguage"/>
+    </xsl:if>
+  </xsl:template>
 </xsl:stylesheet>
 
