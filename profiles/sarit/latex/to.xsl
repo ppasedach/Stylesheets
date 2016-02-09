@@ -2732,5 +2732,30 @@ the beginning of the document</desc>
     <xsl:apply-templates/>
     <xsl:call-template name="endLanguage"/>
   </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>Process element label</desc>
+  </doc>
+  <xsl:template match="tei:label">
+    <xsl:choose>
+      <xsl:when test="@type='head'">
+	<xsl:text>
+
+	  \begin{center}
+	  {\bfseries
+	</xsl:text>
+	<xsl:apply-templates/>
+	<xsl:text>}
+	\end{center}
+	
+	</xsl:text>
+      </xsl:when>
+    <xsl:otherwise>
+      <xsl:call-template name="makeInline">
+	<xsl:with-param name="style" select="@type"/>
+      </xsl:call-template>
+    </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
 </xsl:stylesheet>
 
