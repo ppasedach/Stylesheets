@@ -2131,7 +2131,7 @@ the beginning of the document</desc>
     </xsl:if>
     <xsl:call-template name="startLanguage"/>
     <xsl:choose>
-      <xsl:when test="$ledmac='true'">
+      <xsl:when test="$ledmac='true' and ancestor::tei:body">
 	<xsl:text>
 	  
 	% new div opening: depth here is </xsl:text>
@@ -2147,6 +2147,11 @@ the beginning of the document</desc>
 	    \autopar
 	    
 	  </xsl:text>
+	  <xsl:if test="matches(text()[1]/normalize-space(), '^ *$')">
+	    <xsl:text>
+	      \indent % cheating the automatic paragraph counting
+	    </xsl:text>
+	  </xsl:if>
 	</xsl:if>
 	
 	
@@ -2163,6 +2168,11 @@ the beginning of the document</desc>
 	<xsl:apply-templates select="child::*[not(self::tei:head)]"/>
 	
 	<xsl:if test="$depth = 0">
+	  <xsl:if test="matches(text()[1]/normalize-space(), '^ *$')">
+	    <xsl:text>
+	      \indent % cheating the automatic paragraph counting (again)
+	    </xsl:text>
+	  </xsl:if>
 	  <xsl:text>
 	    
 	    \endnumbering% ending numbering from div
@@ -2706,13 +2716,21 @@ the beginning of the document</desc>
    </doc>
   <xsl:template match="tei:front">
     <xsl:if test="not(preceding::tei:front)">
-      <xsl:text>\frontmatter </xsl:text>
+      <xsl:text>
+	\frontmatter
+      </xsl:text>
       <xsl:call-template name="startLanguage"/>
     </xsl:if>
     <xsl:apply-templates/>
     <xsl:if test="not(preceding::tei:front)">
       <xsl:call-template name="endLanguage"/>
     </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="tei:epigraph">
+    <xsl:call-template name="startLanguage"/>
+    <xsl:apply-templates/>
+    <xsl:call-template name="endLanguage"/>
   </xsl:template>
 </xsl:stylesheet>
 
