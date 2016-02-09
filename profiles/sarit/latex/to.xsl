@@ -585,7 +585,7 @@ capable of dealing with UTF-8 directly.
 	 <xsl:otherwise>
 	   \pagestyle{fancy} 
 	 </xsl:otherwise></xsl:choose><xsl:if test="$ledmac='true'">
-	 \usepackage{eledmac,eledpar}
+	 \usepackage{reledmac}
 	 <xsl:call-template name="ledmacOptions"/>
        </xsl:if>
        \usepackage[pdftitle={<xsl:sequence select="tei:generateSimpleTitle(.)"/>},
@@ -699,7 +699,7 @@ capable of dealing with UTF-8 directly.
      % \linenummargin{inner}
      \linenumberstyle{arabic}
      \addtolength{\skip\Afootins}{1.5mm}
-     \renewcommand{\notenumfont}{\bfseries\footnotesize}
+     \Xnotenumfont{\bfseries\footnotesize}
      \sidenotemargin{outer}
      \linenummargin{inner}
        </xsl:text>
@@ -2178,14 +2178,31 @@ the beginning of the document</desc>
     <xsl:call-template name="endLanguage"/>
     </xsl:template>
   
-  <xsl:template match="tei:trailer">
-    <xsl:text>
-
-     \stanza </xsl:text>
-    <xsl:apply-templates/>
-    <xsl:text>\&amp;
-
-      </xsl:text>
+    <xsl:template match="tei:trailer">
+      <xsl:choose>
+	<xsl:when test="$ledmac='true'">
+	  <xsl:message>Trailer in ledmac mode</xsl:message>
+	  <xsl:text>
+	    
+	  \stanza </xsl:text>
+	  <xsl:apply-templates/>
+	  <xsl:text>\&amp;
+	  
+	  </xsl:text>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:message>Trailer without ledmac</xsl:message>
+	  <xsl:text>
+	    
+	    \begin{center}
+	  </xsl:text>
+	  <xsl:apply-templates/>
+	  <xsl:text>
+	    \end{center}
+	    
+	  </xsl:text>
+	</xsl:otherwise>
+      </xsl:choose>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>
