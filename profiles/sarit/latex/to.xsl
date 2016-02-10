@@ -2741,14 +2741,18 @@ the beginning of the document</desc>
       <xsl:when test="@type='head'">
 	<xsl:text>
 
-	  \begin{center}
+	  \begin{center}%% label @type='head'
 	  {\bfseries
 	</xsl:text>
 	<xsl:apply-templates/>
 	<xsl:text>}
 	\end{center}
-	
 	</xsl:text>
+	<xsl:if test="$ledmac='true'">
+	  <xsl:text>
+	    \autopar
+	  </xsl:text>
+	</xsl:if>
       </xsl:when>
     <xsl:otherwise>
       <xsl:call-template name="makeInline">
