@@ -144,6 +144,7 @@ capable of dealing with UTF-8 directly.
   \catcode`〕=\active \def〕{{]}}% translate 〕CLOSING TORTOISE SHELL BRACKET
   \catcode`❴=\active \def❴{\{}
   \catcode`❵=\active \def❵{\}}
+  \catcode`·=\active \def·{$\bullet$}% Middle dot not in fonts
   %% show a lot of tolerance
   \tolerance=9000
   \def\textJapanese{\fontspec{Kochi Mincho}}
