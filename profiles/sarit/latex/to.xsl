@@ -82,7 +82,9 @@ of this software, even if advised of the possibility of such damage.
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
     <desc>At which level to restart the numbering</desc>
   </doc>
-  <xsl:param name="ledmacNumberDepth">2</xsl:param>
+  <xsl:param name="ledmacNumberDepth">0</xsl:param>
+  <xsl:param  name="ledmac-firstlinenum">5</xsl:param>
+  <xsl:param  name="ledmac-linenumincrement">5</xsl:param>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
     <desc>An output format for saxon's serialize</desc>
   </doc>
@@ -585,7 +587,7 @@ capable of dealing with UTF-8 directly.
 	 <xsl:otherwise>
 	   \pagestyle{fancy} 
 	 </xsl:otherwise></xsl:choose><xsl:if test="$ledmac='true'">
-	 \usepackage{reledmac}
+	 \usepackage[noend,series={A}]{reledmac}
 	 <xsl:call-template name="ledmacOptions"/>
        </xsl:if>
        \usepackage[pdftitle={<xsl:sequence select="tei:generateSimpleTitle(.)"/>},
@@ -698,10 +700,17 @@ capable of dealing with UTF-8 directly.
      \lineation{page}
      % \linenummargin{inner}
      \linenumberstyle{arabic}
-     \addtolength{\skip\Afootins}{1.5mm}
-     \Xnotenumfont{\bfseries\footnotesize}
-     \sidenotemargin{outer}
-     \linenummargin{inner}
+     \firstlinenum{
+    </xsl:text>
+    <xsl:value-of select="$ledmac-firstlinenum"/>
+    <xsl:text>}
+    \linenumincrement{</xsl:text>
+    <xsl:value-of select="$ledmac-linenumincrement"/>
+    <xsl:text>}
+    \addtolength{\skip\Afootins}{1.5mm}
+    \Xnotenumfont{\bfseries\footnotesize}
+    \sidenotemargin{outer}
+    \linenummargin{inner}
        </xsl:text>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
@@ -875,6 +884,11 @@ capable of dealing with UTF-8 directly.
   <xsl:template match="tei:lg">
     <xsl:choose>
       <xsl:when test="$ledmac='true' and not(ancestor::tei:note)">
+	<xsl:if test="ancestor::tei:p">
+	  <xsl:text>
+	    \pend
+	  </xsl:text>
+	</xsl:if>
         <xsl:text>
 	    
 	    \stanza
@@ -908,7 +922,12 @@ capable of dealing with UTF-8 directly.
         <xsl:text>\&amp;
 
 
+	</xsl:text>
+	<xsl:if test="ancestor::tei:p">
+	  <xsl:text>
+	    \pstart
 	  </xsl:text>
+	</xsl:if>
       </xsl:when>
       <xsl:when test="ancestor::tei:note">
         <xsl:text>
@@ -1070,12 +1089,10 @@ the beginning of the document</desc>
           <xsl:when test="$rightside">
             <xsl:text>\begin{Rightside}</xsl:text>
           </xsl:when>
-          <xsl:otherwise>
-            <xsl:text>
-
-	  </xsl:text>
-          </xsl:otherwise>
         </xsl:choose>
+	<xsl:text>
+
+	  \pstart </xsl:text>
       </xsl:when>
       <xsl:when test="parent::tei:div or parent::tei:quote">
         <xsl:message>Par in simple mode</xsl:message>
@@ -1093,6 +1110,9 @@ the beginning of the document</desc>
     </xsl:if>
     <xsl:apply-templates/>
     <xsl:if test="$ledmac='true' and not(ancestor::tei:note or ancestor::tei:front or ancestor::tei:back)">
+      <xsl:text>
+	\pend
+      </xsl:text>
       <xsl:if test="$leftside">
         <xsl:text>\end{Leftside}
 	  \Pages
@@ -2053,14 +2073,11 @@ the beginning of the document</desc>
             <xsl:message>Processing head for memoir class.</xsl:message>
             <xsl:choose>
               <xsl:when test="parent::tei:div[@type='part']">part</xsl:when>
-              <xsl:when test="$depth=0">part</xsl:when>
-              <xsl:when test="$depth=1">chapter</xsl:when>
-              <xsl:when test="$depth=2">section</xsl:when>
-              <xsl:when test="$depth=3">subsection</xsl:when>
-              <xsl:when test="$depth &gt; 3">subsubsection</xsl:when>
-              <xsl:when test="parent::tei:div[@type]">
-                <xsl:value-of select="parent::tei:div/@type"/>
-              </xsl:when>
+              <xsl:when test="$depth=0">chapter</xsl:when>
+              <xsl:when test="$depth=1">section</xsl:when>
+              <xsl:when test="$depth=2">subsection</xsl:when>
+              <xsl:when test="$depth=3">subsubsection</xsl:when>
+              <xsl:when test="$depth &gt; 3">paragraph</xsl:when>
               <xsl:otherwise>section</xsl:otherwise>
             </xsl:choose>
           </xsl:when>
@@ -2139,40 +2156,23 @@ the beginning of the document</desc>
 	<xsl:text>
 	</xsl:text>
 	
-	<xsl:if test="$depth = 0">
+	<xsl:if test="$depth = $ledmacNumberDepth">
 	  <xsl:text>
 	    
 	    \begingroup
 	    \beginnumbering% beginning numbering from div depth=0
-	    \autopar
 	    
 	  </xsl:text>
-	  <xsl:if test="matches(text()[1]/normalize-space(), '^ *$')">
-	    <xsl:text>
-	      \indent % cheating the automatic paragraph counting
-	    </xsl:text>
-	  </xsl:if>
 	</xsl:if>
 	
 	
 	<xsl:if test="tei:head">
-	  <xsl:text>
-	    \pausenumbering
-	  </xsl:text>
 	  <xsl:apply-templates select="tei:head"/>
-	  <xsl:text>
-	    \resumenumbering
-	  </xsl:text>
 	</xsl:if>
 	
 	<xsl:apply-templates select="child::*[not(self::tei:head)]"/>
 	
-	<xsl:if test="$depth = 0">
-	  <xsl:if test="matches(text()[1]/normalize-space(), '^ *$')">
-	    <xsl:text>
-	      \indent % cheating the automatic paragraph counting (again)
-	    </xsl:text>
-	  </xsl:if>
+	<xsl:if test="$depth = $ledmacNumberDepth">
 	  <xsl:text>
 	    
 	    \endnumbering% ending numbering from div
@@ -2194,9 +2194,13 @@ the beginning of the document</desc>
 	  <xsl:message>Trailer in ledmac mode</xsl:message>
 	  <xsl:text>
 	    
-	  \stanza </xsl:text>
+	    \pstart
+	    \begin{center}
+	  </xsl:text>
 	  <xsl:apply-templates/>
-	  <xsl:text>\&amp;
+	  <xsl:text>
+	    \end{center}
+	    \pend
 	  
 	  </xsl:text>
 	</xsl:when>
@@ -2742,17 +2746,11 @@ the beginning of the document</desc>
 	<xsl:text>
 
 	  \begin{center}%% label @type='head'
-	  {\bfseries
-	</xsl:text>
+	\textbf{</xsl:text>
 	<xsl:apply-templates/>
 	<xsl:text>}
 	\end{center}
 	</xsl:text>
-	<xsl:if test="$ledmac='true'">
-	  <xsl:text>
-	    \autopar
-	  </xsl:text>
-	</xsl:if>
       </xsl:when>
     <xsl:otherwise>
       <xsl:call-template name="makeInline">
