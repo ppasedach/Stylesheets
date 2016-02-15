@@ -891,7 +891,7 @@ capable of dealing with UTF-8 directly.
 	</xsl:if>
         <xsl:text>
 	    
-	    \stanza
+	    \stanza[\smallbreak]
 </xsl:text>
         <xsl:if test="@xml:id">
           <xsl:text>\edlabel{</xsl:text>
@@ -919,7 +919,7 @@ capable of dealing with UTF-8 directly.
           </xsl:if>
         </xsl:for-each>
         <xsl:apply-templates select="tei:note"/>
-        <xsl:text>\&amp;
+        <xsl:text>\&amp;[\smallbreak]
 
 
 	</xsl:text>
