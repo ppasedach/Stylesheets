@@ -301,8 +301,8 @@ capable of dealing with UTF-8 directly.
           <xsl:text>}\\[0.167\textheight]</xsl:text>
         </xsl:if>
         <xsl:variable name="titlepretitle">
-          <!-- <xsl:sequence select="tei:generatePreTitle(/*)"/> -->
-          <xsl:text>No pretitle</xsl:text>
+          <xsl:sequence select="tei:generatePreTitleHeader(/*)"/>
+          <!-- <xsl:text>No pretitle</xsl:text> -->
         </xsl:variable>
         <xsl:if test="$titlepretitle != ''">
           <xsl:text>
@@ -319,16 +319,18 @@ capable of dealing with UTF-8 directly.
         </xsl:variable>
         <xsl:if test="$maintitle != ''">
           <xsl:text>
+	    % maintitle
 	    {\Huge </xsl:text>
           <xsl:value-of select="$maintitle"/>
           <!-- title 2 -->
           <xsl:text>}\\[\baselineskip]</xsl:text>
         </xsl:if>
         <xsl:variable name="titlesubtitle">
-          <xsl:sequence select="tei:generateSubTitle(/*)"/>
+          <xsl:sequence select="tei:generateSubTitleHeader(/*)"/>
         </xsl:variable>
         <xsl:if test="$titlesubtitle !=''">
           <xsl:text>
+	    % titlesubtitle
 	    {\small </xsl:text>
           <!-- subtitle -->
           <xsl:value-of select="$titlesubtitle"/>
@@ -656,12 +658,10 @@ capable of dealing with UTF-8 directly.
     <!-- <xsl:call-template name="latexOther"/> -->
     <xsl:text>
 \begin{document}
-</xsl:text>
-    <xsl:if test="not(tei:text/tei:front/tei:titlePage)">
-      <xsl:if test="$usetitling='true'">
+    </xsl:text>
+    <xsl:if test="$usetitling='true'">
         <xsl:call-template name="printTitleAndLogo"/>
       </xsl:if>
-    </xsl:if>
     <!-- certainly don't touch this line -->
     <xsl:text disable-output-escaping="yes">\let\tabcellsep&amp;</xsl:text>
     <xsl:call-template name="beginDocumentHook"/>
@@ -960,11 +960,11 @@ the beginning of the document</desc>
   <xsl:template name="beginDocumentHook">
     <xsl:if test="$printtoc='true'">
       <xsl:text>
-	 \cleardoublepage
-	 \tableofcontents
-	 % \listoffigures
-	 % \listoftables
-	 \cleardoublepage
+	\frontmatter
+	\tableofcontents
+	% \listoffigures
+	% \listoftables
+	\cleardoublepage
        </xsl:text>
     </xsl:if>
   </xsl:template>
@@ -2093,7 +2093,17 @@ the beginning of the document</desc>
           </xsl:otherwise>
         </xsl:choose>
         <xsl:choose>
-          <xsl:when test="parent::tei:body or ancestor::tei:floatingText or         parent::tei:div/@rend='nonumber'          or (ancestor::tei:back and $numberBackHeadings='')         or (not($numberHeadings='true') and ancestor::tei:body)         or (ancestor::tei:front and  $numberFrontHeadings='') or $depth &gt; 3">*</xsl:when>
+	  <!-- Decide if this is a starred version. -->
+	  <!-- For frontmatter in memoir class, ignore numberFrontHeadings, since memoir deals with that. -->
+          <xsl:when test="parent::tei:body or
+			  ancestor::tei:floatingText or
+			  parent::tei:div/@rend='nonumber' or
+			  (ancestor::tei:back and $numberBackHeadings='') or
+			  (not($numberHeadings='true') and ancestor::tei:body) or
+			  (ancestor::tei:front and ($numberFrontHeadings='' and not($documentclass='memoir'))) or
+			  $depth &gt; 3">
+	    <xsl:text>*</xsl:text>
+	  </xsl:when>
           <xsl:otherwise>[{<xsl:call-template name="makeHeadTOC"/>}]</xsl:otherwise>
         </xsl:choose>
         <xsl:text>{</xsl:text>
@@ -2523,7 +2533,13 @@ the beginning of the document</desc>
     </xsl:if>
   </xsl:template>
   <xsl:template match="tei:titlePage">
+    <xsl:text>
+      \chapter[Title Page]{Title Page}
+    </xsl:text>
     <xsl:apply-templates/>
+    <xsl:text>
+      \cleardoublepage
+    </xsl:text>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>Rendering rules, turning @rend into LaTeX commands</desc>
@@ -2719,16 +2735,9 @@ the beginning of the document</desc>
       <desc>Start the frontmatter.</desc>
    </doc>
   <xsl:template match="tei:front">
-    <xsl:if test="not(preceding::tei:front)">
-      <xsl:text>
-	\frontmatter
-      </xsl:text>
-      <xsl:call-template name="startLanguage"/>
-    </xsl:if>
+    <xsl:call-template name="startLanguage"/>
     <xsl:apply-templates/>
-    <xsl:if test="not(preceding::tei:front)">
-      <xsl:call-template name="endLanguage"/>
-    </xsl:if>
+    <xsl:call-template name="endLanguage"/>
   </xsl:template>
 
   <xsl:template match="tei:epigraph">
@@ -2759,5 +2768,27 @@ the beginning of the document</desc>
     </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>[common] Generate pretitle</desc>
+  </doc>
+  <xsl:function name="tei:generatePreTitleHeader">
+    <xsl:param name="context"/>
+    <xsl:for-each select="$context">
+      <xsl:for-each select="ancestor-or-self::tei:TEI|ancestor-or-self::tei:teiCorpus">
+            <xsl:apply-templates select="tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title[contains(@type, 'pre')]"/>
+          </xsl:for-each>
+    </xsl:for-each>
+  </xsl:function>
+    <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>[common] Generate subtitle </desc>
+  </doc>
+  <xsl:function name="tei:generateSubTitleHeader">
+    <xsl:param name="context"/>
+    <xsl:for-each select="$context">
+      <xsl:for-each select="ancestor-or-self::tei:TEI|ancestor-or-self::tei:teiCorpus">
+            <xsl:apply-templates select="tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title[contains(@type, 'sub')]"/>
+          </xsl:for-each>
+    </xsl:for-each>
+  </xsl:function>
 </xsl:stylesheet>
 
