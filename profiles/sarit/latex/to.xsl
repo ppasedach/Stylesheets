@@ -58,6 +58,7 @@ of this software, even if advised of the possibility of such damage.
   <xsl:param name="latinFont">TeX Gyre Pagella</xsl:param>
   <xsl:param name="devanagariFont">Chandas</xsl:param>
   <xsl:param name="devanagariFontScale">1.2</xsl:param>
+  <xsl:param name="devanagariNumerals">true</xsl:param>
   <xsl:param name="boFont">Tibetan Machine Uni</xsl:param>
   <xsl:param name="boFontScale">1.2</xsl:param>
   <xsl:param name="sansFont">TeX Gyre Bonum</xsl:param>
@@ -168,6 +169,9 @@ capable of dealing with UTF-8 directly.
 	    <xsl:if test="not($devanagariFontScale='')">
 	      <xsl:text>,Scale=</xsl:text>
 	      <xsl:value-of select="$devanagariFontScale" />
+	    </xsl:if>
+	    <xsl:if test="$devanagariNumerals">
+	      <xsl:text>,Mapping=devanagarinumerals</xsl:text>
 	    </xsl:if>
 	    <xsl:text>]{</xsl:text>
             <xsl:value-of select="$devanagariFont"/>
