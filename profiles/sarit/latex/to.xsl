@@ -42,6 +42,11 @@ of this software, even if advised of the possibility of such damage.
   </doc>
   <xsl:param name="publisher">SARIT</xsl:param>
   <xsl:param name="title">SARIT title</xsl:param>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout" type="string">
+    <desc>Revision for the current conversion, usually as specified by
+    a content versioning system.</desc>
+  </doc>
+  <xsl:param name="revision">HEAD</xsl:param>
   <xsl:param name="useHeaderFrontMatter">true</xsl:param>
   <xsl:param name="debuglatex">true</xsl:param>
   <xsl:param name="documentclass">memoir</xsl:param>
@@ -71,7 +76,7 @@ of this software, even if advised of the possibility of such damage.
     can be found. Currently searches for, and prefers,
     //listBibl[@corresp] values.</p>
   </doc>
-  <xsl:param name="bibliography">sarit.bib</xsl:param>
+  <xsl:param name="bibliography">https://raw.githubusercontent.com/paddymcall/Stylesheets/---revision-spec---/profiles/sarit/latex/bib/sarit.bib</xsl:param>
   <xsl:param name="usetitling">true</xsl:param>
   <xsl:param name="leftside" as="xs:boolean">false</xsl:param>
   <xsl:param name="rightside" as="xs:boolean">false</xsl:param>
@@ -550,9 +555,16 @@ capable of dealing with UTF-8 directly.
 	   </xsl:when>
 	   <xsl:otherwise>
 	     <xsl:choose>
-	     <xsl:when test="$bibliography != ''">
-	       \addbibresource{<xsl:value-of select="$bibliography"/>}
-	     </xsl:when>
+	       <xsl:when test="$bibliography != ''">
+		 <xsl:text>
+		 \addbibresource</xsl:text>
+		 <xsl:if test="not(substring-before($bibliography, '://') = '') or not(substring-before($bibliography, '://') = 'file')">
+		   <xsl:text>[location=remote]</xsl:text>
+		 </xsl:if>
+		 <xsl:text>{</xsl:text>
+		 <xsl:value-of select="replace($bibliography, '---revision-spec---', $revision)"/>
+		 <xsl:text>}</xsl:text>
+	       </xsl:when>
 	     <xsl:otherwise>
 	       <xsl:message>No bibliographies found!</xsl:message>
 	     </xsl:otherwise>
@@ -962,7 +974,7 @@ capable of dealing with UTF-8 directly.
 the beginning of the document</desc>
   </doc>
   <xsl:template name="beginDocumentHook">
-    <xsl:if test="$printtoc='true'">
+    <xsl:if test="$printtoc='true' and (/tei:TEI|/tei:teiCorpus/tei:TEI)/tei:text/tei:front">
       <xsl:text>
 	\frontmatter
 	\tableofcontents
