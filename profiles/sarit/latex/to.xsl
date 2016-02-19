@@ -347,7 +347,7 @@ capable of dealing with UTF-8 directly.
         </xsl:if>
         <xsl:variable name="titleeditor">
           <!-- the editor -->
-          <xsl:sequence select="tei:generateEditor(/*)"/>
+          <xsl:sequence select="string-join(tei:generateEditor(/*), ',')"/>
         </xsl:variable>
         <xsl:if test="$titleeditor != ''">
           <xsl:text>
@@ -2806,5 +2806,47 @@ the beginning of the document</desc>
           </xsl:for-each>
     </xsl:for-each>
   </xsl:function>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>[common] Find plausible main editor(s) name(s)</desc>
+  </doc>
+  <xsl:function name="tei:generateEditor"  as="node()*">
+    <xsl:param name="context"/>
+      <xsl:variable name="result">
+    <xsl:for-each select="$context">
+      <xsl:choose>
+        <xsl:when
+	    test="ancestor-or-self::tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:editor">
+          <xsl:apply-templates mode="editor" select="ancestor-or-self::tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:editor"/>
+	</xsl:when>
+        <xsl:when
+	    test="ancestor-or-self::tei:teiCorpus/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:author">
+          <xsl:apply-templates mode="editor" select="ancestor-or-self::tei:teiCorpus/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:editor"/>
+	</xsl:when>
+        <xsl:when
+	    test="ancestor-or-self::tei:TEI/tei:teiHeader/tei:revisionDesc/tei:change/tei:respStmt[tei:resp='editor']">
+          <xsl:apply-templates select="ancestor-or-self::tei:TEI/tei:teiHeader/tei:revisionDesc/tei:change/tei:respStmt[tei:resp='editor'][1]/tei:name"/>
+        </xsl:when>
+      </xsl:choose>
+    </xsl:for-each>
+  </xsl:variable>
+  <xsl:sequence select="$result"/>
+  </xsl:function>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+      <desc>Process element editor in "editor" mode"</desc>
+   </doc>
+  <xsl:template match="tei:editor" mode="editor">
+    <xsl:apply-templates select="*[not(self::tei:email or self::tei:affiliation)]|text()"/>
+    <xsl:choose>
+      <xsl:when test="count(following-sibling::tei:editor)=1">
+	<xsl:if test="count(preceding-sibling::tei:editor)&gt;1">
+	  <xsl:text>,</xsl:text>
+	</xsl:if>
+	<xsl:text> </xsl:text>
+	<xsl:sequence select="tei:i18n('and')"/>
+	<xsl:text> </xsl:text>
+      </xsl:when>
+      <xsl:when test="following-sibling::tei:editor">, </xsl:when>
+    </xsl:choose>
+  </xsl:template>
 </xsl:stylesheet>
 
