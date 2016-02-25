@@ -53,16 +53,17 @@ of this software, even if advised of the possibility of such damage.
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout" type="string">
     <desc>Optional parameters for documentclass</desc>
   </doc>
-  <xsl:param name="classParameters">article</xsl:param>
+  <xsl:param name="classParameters">article,12pt</xsl:param>
   <xsl:param name="homeURL">http://sarit.indology.info</xsl:param>
   <xsl:param name="ledmac">true</xsl:param>
   <xsl:param name="printtoc">true</xsl:param>
+  <xsl:param name="skipTocDiv">true</xsl:param>
   <xsl:param name="reencode">false</xsl:param>
   <xsl:param name="defaultfontfeatures">Scale=MatchLowercase,Mapping=tex-text</xsl:param>
   <xsl:param name="romanFont">TeX Gyre Schola</xsl:param>
   <xsl:param name="latinFont">TeX Gyre Pagella</xsl:param>
   <xsl:param name="devanagariFont">Chandas</xsl:param>
-  <xsl:param name="devanagariFontScale">1.2</xsl:param>
+  <xsl:param name="devanagariFontScale"></xsl:param>
   <xsl:param name="devanagariNumerals">true</xsl:param>
   <xsl:param name="boFont">Tibetan Machine Uni</xsl:param>
   <xsl:param name="boFontScale">1.2</xsl:param>
@@ -139,6 +140,9 @@ capable of dealing with UTF-8 directly.
   \usepackage{euler}
   \usepackage{xltxtra}
   \usepackage{polyglossia}
+  \PolyglossiaSetup{sanskrit}{
+  hyphenmins={2,3},% default is {1,3}
+  }
   \setdefaultlanguage</xsl:text>
   <xsl:value-of select="$defaultlanguageoptions"/>
   <xsl:text>{</xsl:text>
@@ -2025,7 +2029,9 @@ the beginning of the document</desc>
   <xsl:function name="tei:escapeChars" as="xs:string" override="yes">
     <xsl:param name="letters"/>
     <xsl:param name="context"/>
-    <xsl:value-of select="replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(translate($letters,'&#10;',' '),      '\\','\\textbackslash '),     '_','\\textunderscore '),     '\^','\\textasciicircum '),     '~','\\textasciitilde '),     '([\}\{%&amp;\$#])','\\$1'),     'ā','ā\\-'),     'ī','ī\\-'),     'ū','ū\\-'),     'ा','ा\\-'),     'ी','ी\\-'),     'ू','ू\\-'),     '\[', '〔'),     '\]', '〕')"/>
+    <xsl:value-of
+	select="replace(replace(replace(replace(replace(translate($letters,'&#10;',' '), '\\','\\textbackslash '), '_','\\textunderscore '),'\^','\\textasciicircum '), '~','\\textasciitilde '),
+	  '([\}\{%&amp;\$#])','\\$1')"/>
   </xsl:function>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>Process element quote</desc>
@@ -2159,6 +2165,7 @@ the beginning of the document</desc>
 </doc>
 
 <xsl:template match="tei:div|tei:div1|tei:div2|tei:div3|tei:div4|tei:div5">
+  <xsl:if test="not($skipTocDiv='true' and @type='toc')">
     <xsl:variable name="depth">
       <xsl:value-of select="count(ancestor::tei:div|tei:div1|tei:div2|tei:div3|tei:div4|tei:div5)"/>
     </xsl:variable>
@@ -2212,6 +2219,7 @@ the beginning of the document</desc>
       </xsl:otherwise>
     </xsl:choose>
     <xsl:call-template name="endLanguage"/>
+  </xsl:if>
     </xsl:template>
   
     <xsl:template match="tei:trailer">
