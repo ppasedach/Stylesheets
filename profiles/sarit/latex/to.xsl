@@ -68,6 +68,7 @@ of this software, even if advised of the possibility of such damage.
   <xsl:param name="boFont">Tibetan Machine Uni</xsl:param>
   <xsl:param name="boFontScale">1.2</xsl:param>
   <xsl:param name="sansFont">TeX Gyre Bonum</xsl:param>
+  <xsl:param name="lemmaColor">DodgerBlue3</xsl:param>
   <xsl:param name="showteiheader">true</xsl:param>
   <xsl:param name="standalone">false</xsl:param>
   <xsl:param name="userpackage"/>
@@ -506,7 +507,7 @@ capable of dealing with UTF-8 directly.
   </doc>
   <xsl:template name="latexPackages">
     <xsl:text>% running latexPackages template
-     \usepackage{xcolor}
+     \usepackage[x11names]{xcolor}
      \definecolor{shadecolor}{gray}{0.95}
      \usepackage{longtable}
      \usepackage{ctable}
@@ -612,7 +613,8 @@ capable of dealing with UTF-8 directly.
 	 \usepackage[noend,series={A}]{reledmac}
 	 <xsl:call-template name="ledmacOptions"/>
        </xsl:if>
-       \usepackage[pdftitle={<xsl:sequence select="tei:generateSimpleTitle(.)"/>},
+       \usepackage[destlabel=true,% use labels as destination names; ; see dvipdfmx.cfg, option 0x0010, if using xelatex
+       pdftitle={<xsl:sequence select="tei:generateSimpleTitle(.)"/>},
        pdfauthor={<xsl:sequence select="replace(string-join(/tei:TEI/tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:publisher,''),';','')"/>}]{hyperref}
        \hyperbaseurl{<xsl:value-of select="$baseURL"/>}
        \usepackage[english]{cleveref}% clashes with eledmac &lt; 1.10.1!
@@ -720,10 +722,9 @@ capable of dealing with UTF-8 directly.
      \lineation{page}
      % \linenummargin{inner}
      \linenumberstyle{arabic}
-     \firstlinenum{
-    </xsl:text>
-    <xsl:value-of select="$ledmac-firstlinenum"/>
-    <xsl:text>}
+     \firstlinenum{</xsl:text>
+     <xsl:value-of select="$ledmac-firstlinenum"/>
+     <xsl:text>}
     \linenumincrement{</xsl:text>
     <xsl:value-of select="$ledmac-linenumincrement"/>
     <xsl:text>}
@@ -1096,6 +1097,7 @@ the beginning of the document</desc>
   </doc>
   <xsl:template match="tei:p">
     <xsl:message>Processing a par</xsl:message>
+    <xsl:call-template name="startLanguage"/>
     <xsl:choose>
       <xsl:when test="parent::tei:note and not(preceding-sibling::tei:p)">
         <xsl:message>Processing a par: do nothing</xsl:message>
@@ -1129,6 +1131,7 @@ the beginning of the document</desc>
       <xsl:call-template name="numberParagraph"/>
     </xsl:if>
     <xsl:apply-templates/>
+    <xsl:call-template name="endLanguage"/>
     <xsl:if test="$ledmac='true' and not(ancestor::tei:note or ancestor::tei:front or ancestor::tei:back)">
       <xsl:text>
 	\pend
@@ -2052,7 +2055,19 @@ the beginning of the document</desc>
 	  </xsl:text>
       </xsl:when>
       <xsl:when test="$ledmac='true'">
+	<xsl:if test="@type='base-text' or @type='mula' or @type='mūla'">
+	  <xsl:text>
+	    \bigskip
+	    \begingroup
+	    \large
+	  </xsl:text>
+	</xsl:if>
         <xsl:apply-templates/>
+	<xsl:if test="@type='base-text' or @type='mula' or @type='mūla'">
+	  <xsl:text>
+	    \endgroup
+	  </xsl:text>
+	</xsl:if>
       </xsl:when>
       <xsl:otherwise>
         <xsl:call-template name="makeQuote"/>
@@ -2855,6 +2870,29 @@ the beginning of the document</desc>
       </xsl:when>
       <xsl:when test="following-sibling::tei:editor">, </xsl:when>
     </xsl:choose>
+  </xsl:template>
+    <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+      <desc>Process element q</desc>
+   </doc>
+   <xsl:template match="tei:q|tei:said">
+     <xsl:if test="@type='lemma'">
+       <xsl:text>{\color{</xsl:text>
+       <xsl:value-of select="$lemmaColor"/>
+       <xsl:text>}</xsl:text>
+     </xsl:if>
+     <xsl:choose>
+       <xsl:when test="not(tei:isInline(.))">
+	 <xsl:text>&#10;\begin{</xsl:text><xsl:value-of select="$quoteEnv"/><xsl:text>}</xsl:text>
+	 <xsl:apply-templates/>
+	 <xsl:text>\end{</xsl:text><xsl:value-of select="$quoteEnv"/><xsl:text>}&#10;</xsl:text>
+       </xsl:when>
+       <xsl:otherwise>
+	 <xsl:call-template name="makeQuote"/>
+       </xsl:otherwise>
+     </xsl:choose>
+     <xsl:if test="@type='lemma'">
+       <xsl:text>}</xsl:text>
+     </xsl:if>
   </xsl:template>
 </xsl:stylesheet>
 
