@@ -915,7 +915,10 @@ capable of dealing with UTF-8 directly.
 	    
 	    \stanza[\smallbreak]
 </xsl:text>
-        <xsl:if test="@xml:id">
+<xsl:if test="@xml:id">
+  <xsl:text>\label{</xsl:text>
+          <xsl:value-of select="@xml:id"/>
+          <xsl:text>}</xsl:text>
           <xsl:text>\edlabel{</xsl:text>
           <xsl:value-of select="@xml:id"/>
           <xsl:text>}</xsl:text>
@@ -954,7 +957,12 @@ capable of dealing with UTF-8 directly.
       <xsl:when test="ancestor::tei:note">
         <xsl:text>
 	    \begin{verse}
-	  </xsl:text>
+	</xsl:text>
+	<xsl:if test="@xml:id">
+	  <xsl:text>\label{</xsl:text>
+          <xsl:value-of select="@xml:id"/>
+          <xsl:text>}</xsl:text>
+        </xsl:if>
         <xsl:for-each select="tei:l">
           <xsl:apply-templates/>
           <xsl:text>\\
@@ -968,6 +976,11 @@ capable of dealing with UTF-8 directly.
 	<xsl:text>
 	  \begin{verse}
 	</xsl:text>
+	<xsl:if test="@xml:id">
+	  <xsl:text>\label{</xsl:text>
+          <xsl:value-of select="@xml:id"/>
+          <xsl:text>}</xsl:text>
+        </xsl:if>
         <xsl:apply-templates/>
 	<xsl:text>
 	  \end{verse}
@@ -1003,13 +1016,11 @@ the beginning of the document</desc>
       </xsl:if>
       <xsl:text>
 	 \chapter{The TEI Header}
-	 \begin{landscape}
-	 \begin{minted}[fontfamily=rmfamily,fontsize=\footnotesize]{xml}
+	 \begin{minted}[fontfamily=rmfamily,fontsize=\footnotesize,breaklines=true]{xml}
        </xsl:text>
       <xsl:copy-of select="saxon:serialize(tei:teiHeader, 'xmlstring')"/>
       <xsl:text>
 	 \end{minted}
-	 \end{landscape}
        </xsl:text>
     </xsl:if>
     <xsl:text>
