@@ -2512,7 +2512,7 @@ the beginning of the document</desc>
             </xsl:call-template>
           </xsl:when>
 	  <!-- hack for wrong markup; should become bibl elements -->
-	  <xsl:when test="@target and contains(@type, 'bib')">
+	  <xsl:when test="@target and (contains(@type, 'bib') or contains('witness bibl', name(//*[@xml:id=@target])))">
 	    <xsl:text>\cite</xsl:text>
 	    <xsl:if test="@corresp">
 	      <xsl:text>[</xsl:text>
@@ -2733,32 +2733,13 @@ the beginning of the document</desc>
     <xsl:for-each select="tokenize(normalize-space($targets), ' ')">
       <xsl:message>Parsing target: <xsl:value-of select="."/>.</xsl:message>
       <xsl:variable name="bibPath">
-	<xsl:choose>
-	  <xsl:when test="matches(., '^#')">
-	    <xsl:message>internal reference, making absolute.</xsl:message>
-	    <xsl:choose>
-	      <xsl:when test="matches(replace(.,'^#', ''), '#')">
-		<xsl:value-of select="substring-before(replace(.,'^#', ''), '#')"/>
-	      </xsl:when>
-	      <xsl:otherwise>
-		<xsl:value-of select="replace(.,'^#', '')"/>
-	      </xsl:otherwise>
-	    </xsl:choose>
-	  </xsl:when>
-	  <xsl:when test="matches(., '#')">
-	    <xsl:message>absolute reference.</xsl:message>
-	    <xsl:value-of select="substring-before(., '#')"/>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <xsl:value-of select="."/>
-	  </xsl:otherwise>
-	</xsl:choose>
+	<xsl:value-of select="substring-before(., '#')"/>
       </xsl:variable>
       <xsl:message>bibPath: <xsl:value-of select="$bibPath"/></xsl:message>
       <xsl:variable name="bibID">
 	<xsl:choose>
 	  <xsl:when test="matches(., '^#')">
-	    <xsl:value-of select="substring-after(.,$bibPath)"/>
+	    <xsl:value-of select="substring-after(.,'#')"/>
 	  </xsl:when>
 	  <xsl:otherwise>
 	    <xsl:if  test="matches(., '#')">
