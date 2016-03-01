@@ -807,10 +807,12 @@ capable of dealing with UTF-8 directly.
       <xsl:text>}</xsl:text>
     </xsl:if>
     <xsl:message>Lemma has witnesses: <xsl:value-of select="$lemmawitness"/></xsl:message>
-    <xsl:if test="$lemmawitness">
-      <xsl:call-template  name="makeCiteFromWit">
-	<xsl:with-param name="witnesses" select="$lemmawitness" />
+    <xsl:if test="string-length($lemmawitness) > 0">
+      <xsl:text> \cite{</xsl:text>
+      <xsl:call-template  name="URIsToBibRefs">
+	<xsl:with-param name="targets" select="$lemmawitness" />
       </xsl:call-template>
+      <xsl:text>} </xsl:text>
     </xsl:if>
     <xsl:copy-of select="$readings"/>
     <xsl:if test="@type">
@@ -865,9 +867,13 @@ capable of dealing with UTF-8 directly.
           <xsl:if test="@xml:lang">
             <xsl:text>}</xsl:text>
           </xsl:if>
-	  <xsl:call-template name="makeCiteFromWit">
-	    <xsl:with-param name="witnesses" select="@wit"/>
-	  </xsl:call-template>
+	  <xsl:if test="string-length(@wit) > 0">
+	    <xsl:text> \cite{</xsl:text>
+	    <xsl:call-template name="URIsToBibRefs">
+	      <xsl:with-param name="targets" select="@wit"/>
+	    </xsl:call-template>
+	    <xsl:text>} </xsl:text>
+	  </xsl:if>
           <xsl:if test="following-sibling::tei:rdg">; </xsl:if>
         </xsl:for-each>
         <xsl:for-each select="tei:note">
@@ -993,7 +999,7 @@ capable of dealing with UTF-8 directly.
 the beginning of the document</desc>
   </doc>
   <xsl:template name="beginDocumentHook">
-    <xsl:if test="$printtoc='true' and (/tei:TEI|/tei:teiCorpus/tei:TEI)/tei:text/tei:front">
+    <xsl:if test="$printtoc='true'">
       <xsl:text>
 	\frontmatter
 	\tableofcontents
@@ -1114,7 +1120,7 @@ the beginning of the document</desc>
       <xsl:when test="parent::tei:note and not(preceding-sibling::tei:p)">
         <xsl:message>Processing a par: do nothing</xsl:message>
       </xsl:when>
-      <xsl:when test="$ledmac='true' and not(ancestor::tei:note or ancestor::tei:front or ancestor::tei:back)">
+      <xsl:when test="$ledmac='true' and not(ancestor::tei:note or ancestor::tei:front or ancestor::tei:back or ancestor::tei:p)">
         <xsl:message>Processing a par in ledmac mode</xsl:message>
         <xsl:choose>
           <xsl:when test="$leftside">
@@ -1144,7 +1150,7 @@ the beginning of the document</desc>
     </xsl:if>
     <xsl:apply-templates/>
     <xsl:call-template name="endLanguage"/>
-    <xsl:if test="$ledmac='true' and not(ancestor::tei:note or ancestor::tei:front or ancestor::tei:back)">
+    <xsl:if test="$ledmac='true' and not(ancestor::tei:note or ancestor::tei:front or ancestor::tei:back or ancestor::tei:p)">
       <xsl:text>
 	\pend
       </xsl:text>
@@ -2249,7 +2255,7 @@ the beginning of the document</desc>
   </xsl:if>
     </xsl:template>
   
-    <xsl:template match="tei:trailer">
+    <xsl:template match="tei:trailer|tei:label[@type='trailer']">
       <xsl:choose>
 	<xsl:when test="$ledmac='true'">
 	  <xsl:message>Trailer in ledmac mode</xsl:message>
@@ -2725,32 +2731,21 @@ the beginning of the document</desc>
 
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>Tries to get the part that \cite commands can use from the URI target.
-    E.g., bib://some/path/to/bibfile.bib#abc123 ---> abc123.
+    E.g., ./some/path/to/bibfile.bib#abc123 ---> abc123.
     </desc>
   </doc>
   <xsl:template name="URIsToBibRefs">
     <xsl:param name="targets" />
-    <xsl:for-each select="tokenize(normalize-space($targets), ' ')">
-      <xsl:message>Parsing target: <xsl:value-of select="."/>.</xsl:message>
-      <xsl:variable name="bibPath">
-	<xsl:value-of select="substring-before(., '#')"/>
-      </xsl:variable>
-      <xsl:message>bibPath: <xsl:value-of select="$bibPath"/></xsl:message>
-      <xsl:variable name="bibID">
-	<xsl:choose>
-	  <xsl:when test="matches(., '^#')">
-	    <xsl:value-of select="substring-after(.,'#')"/>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <xsl:if  test="matches(., '#')">
-	      <xsl:value-of select="substring-after(., '#')"/>
-	    </xsl:if>
-	  </xsl:otherwise>
-	</xsl:choose>
-      </xsl:variable>
-      <xsl:message>bibID: <xsl:value-of select="$bibID"/></xsl:message>
-      <xsl:value-of select="$bibID"/>
-    </xsl:for-each>
+    <xsl:param name="separator">,</xsl:param>
+    <xsl:variable name="refs">
+      <refs>
+	<xsl:for-each select="tokenize(normalize-space($targets), '\s')">
+	  <ref><xsl:value-of select="substring-after(.,'#')"/></ref>
+	</xsl:for-each>
+      </refs>
+    </xsl:variable>
+    <xsl:message>Returning: <xsl:value-of select="string-join($refs//text(), $separator)"/></xsl:message>
+    <xsl:value-of select="string-join($refs//text(), $separator)"/>
   </xsl:template>
 
   <xsl:template match="tei:span">
