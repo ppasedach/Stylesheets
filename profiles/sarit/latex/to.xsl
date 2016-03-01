@@ -2527,7 +2527,11 @@ the beginning of the document</desc>
             </xsl:call-template>
           </xsl:when>
 	  <!-- hack for wrong markup; should become bibl elements -->
-	  <xsl:when test="@target and (contains(@type, 'bib') or contains('witness bibl', name(//*[@xml:id=@target])))">
+	  <xsl:when test="@target and
+			  (contains(@type, 'bib')
+			  or
+			  (name(//*[@xml:id=substring-after($here/@target, '#')]) and			  
+			  contains('witness bibl msDesc', name(//*[@xml:id=substring-after($here/@target, '#')]))))">
 	    <xsl:text>\cite</xsl:text>
 	    <xsl:if test="@corresp">
 	      <xsl:text>[</xsl:text>
@@ -2535,7 +2539,6 @@ the beginning of the document</desc>
 	      <xsl:text>]</xsl:text>
 	    </xsl:if>
 	    <xsl:text>{</xsl:text>
-	    <xsl:value-of/>
 	    <xsl:call-template name="URIsToBibRefs">
 	      <xsl:with-param name="targets" select="@target"/>
 	    </xsl:call-template>
