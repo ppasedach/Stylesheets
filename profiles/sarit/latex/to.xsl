@@ -532,7 +532,7 @@ capable of dealing with UTF-8 directly.
       <xsl:otherwise><xsl:text>
 	 \usepackage{titling}
 	 \usepackage{marginnote}
-	 \renewcommand*{\marginfont}{\itshape\footnotesize}
+	 \renewcommand*{\marginfont}{\color{black}\rmlatinfont\scriptsize}
 	 \setlength\marginparwidth{.75in}
 	 \usepackage{graphicx}
 	 \usepackage{csquotes}
@@ -920,9 +920,9 @@ capable of dealing with UTF-8 directly.
         <xsl:text>
 	    
 	    \stanza[\smallbreak]
-</xsl:text>
-<xsl:if test="@xml:id">
-  <xsl:text>\label{</xsl:text>
+	</xsl:text>
+	<xsl:if test="@xml:id">
+	  <xsl:text>\label{</xsl:text>
           <xsl:value-of select="@xml:id"/>
           <xsl:text>}</xsl:text>
           <xsl:text>\edlabel{</xsl:text>
@@ -1241,7 +1241,7 @@ the beginning of the document</desc>
           <xsl:text>]</xsl:text>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:text>\leavevmode\textsuperscript{\rmlatinfont\tiny [</xsl:text>
+          <xsl:text>\leavevmode\marginnote{\textenglish{</xsl:text>
           <xsl:choose>
 	    <xsl:when test="@n and @edRef">
 	      <xsl:text>\cite[</xsl:text>
@@ -1272,7 +1272,7 @@ the beginning of the document</desc>
 	      </xsl:choose>
             </xsl:otherwise>
           </xsl:choose>
-          <xsl:text>]}</xsl:text>
+          <xsl:text>}}</xsl:text>
         </xsl:otherwise>
       </xsl:choose>
       <xsl:if test="@facs">
@@ -1587,7 +1587,14 @@ the beginning of the document</desc>
   <xsl:template name="marginalNote">
     <xsl:choose>
       <xsl:when test="$ledmac='true'">
-        <xsl:text>\ledsidenote{</xsl:text>
+	<xsl:choose>
+	  <xsl:when test="not(ancestor::tei:note) and (ancestor::tei:p or ancestor::tei:lg)">
+            <xsl:text>\ledsidenote{</xsl:text>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <xsl:text>\marginnote{</xsl:text>
+	  </xsl:otherwise>
+	</xsl:choose>
         <xsl:if test="@xml:id">
           <xsl:text>\label{</xsl:text>
           <xsl:value-of select="@xml:id"/>
@@ -1605,7 +1612,9 @@ the beginning of the document</desc>
           <xsl:value-of select="@xml:id"/>
           <xsl:text>}</xsl:text>
         </xsl:if>
+	<xsl:call-template name="startLanguage"/>
         <xsl:apply-templates/>
+	<xsl:call-template name="endLanguage"/>
         <xsl:text>}</xsl:text>
       </xsl:otherwise>
     </xsl:choose>
