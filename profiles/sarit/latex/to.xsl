@@ -2045,7 +2045,7 @@ the beginning of the document</desc>
     <desc/>
   </doc>
   <xsl:template match="tei:body">
-    <xsl:if test="not(ancestor::tei:floatingText) and not(preceding::tei:body) and preceding::tei:front">
+    <xsl:if test="not(ancestor::tei:floatingText) and not(preceding::tei:body) and (preceding::tei:front or $printtoc='true')">
       <xsl:text>\mainmatter </xsl:text>
     </xsl:if>
     <xsl:apply-templates/>
