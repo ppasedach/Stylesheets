@@ -2094,12 +2094,16 @@ the beginning of the document</desc>
 
 	  </xsl:text>
       </xsl:when>
-      <xsl:when test="$ledmac='true' and (@type='base-text' or @type='mula' or @type='mūla')">
+      <xsl:when test="not(ancestor::tei:p)">
 	<xsl:text>
 	  \bigskip
 	  \begingroup
-	  \large
 	</xsl:text>
+	<xsl:if test="@type='base-text' or @type='mula' or @type='mūla'">
+	  <xsl:text>
+	    \large
+	  </xsl:text>
+	</xsl:if>
         <xsl:apply-templates/>
 	<xsl:text>
 	  \endgroup
@@ -2125,7 +2129,7 @@ the beginning of the document</desc>
       <xsl:when test="preceding-sibling::tei:head"/>
       <xsl:otherwise>
         <xsl:variable name="depth">
-          <xsl:apply-templates mode="depth" select=".."/>
+	  <xsl:value-of select="count(ancestor::div[ancestor::text])"/>
         </xsl:variable>
         <xsl:message>Depth of this head (<xsl:value-of select="."/>): <xsl:value-of select="$depth"/>.</xsl:message>
         <xsl:text>
