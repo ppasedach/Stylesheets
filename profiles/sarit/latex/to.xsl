@@ -55,6 +55,8 @@ of this software, even if advised of the possibility of such damage.
   </doc>
   <xsl:param name="classParameters">article,12pt</xsl:param>
   <xsl:param name="homeURL">http://sarit.indology.info</xsl:param>
+  <doc>What to add to the $homeURL to get the resolution of canonical references (needs an external program, of course).</doc>
+  <xsl:param name="cRef-query-string">/?cref=</xsl:param>
   <xsl:param name="ledmac">true</xsl:param>
   <xsl:param name="printtoc">true</xsl:param>
   <xsl:param name="skipTocDiv">true</xsl:param>
@@ -85,6 +87,9 @@ of this software, even if advised of the possibility of such damage.
   <xsl:param name="showLineBreaks" as="xs:boolean">false</xsl:param>
   <xsl:param name="showPageBreaks" as="xs:boolean">true</xsl:param>
   <xsl:param name="pagebreakStyle"/>
+  <doc>Whether to handle canonical references strictly (if true, no
+  priority for internal links).</doc>
+  <xsl:param name="cRef-strict">false</xsl:param>
   <doc>Specify the line spacing. Valid values: 1, 1.5, 2.</doc>
   <xsl:param name="lineSpacing" as="xs:decimal">1</xsl:param>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
@@ -2453,8 +2458,30 @@ the beginning of the document</desc>
         <xsl:choose>
           <!-- @target is processed elsewhere, just check for cRef -->
           <xsl:when test="@cRef">
-            <xsl:text>\cref{</xsl:text>
-            <xsl:value-of select="@cRef"/>
+	    <xsl:variable name="cRef">
+	      <xsl:value-of select="@cRef"/>
+	    </xsl:variable>
+	    <xsl:choose>
+	      <xsl:when test="//*[@xml:id=$cRef] and $cRef-strict='false'">
+		<xsl:text>\cref{</xsl:text>
+		<xsl:value-of select="$cRef"/>
+	      </xsl:when>
+	      <xsl:otherwise>
+		<xsl:text>\href{http://</xsl:text>
+		<xsl:value-of select="$homeURL"/>
+		<xsl:value-of select="$cRef-query-string"/>
+		<xsl:value-of select="$cRef"/>
+		<xsl:text>}{</xsl:text>
+		<xsl:choose>
+		  <xsl:when test="descendant-or-self::text()">
+		    <xsl:value-of select="descendant-or-self::text()"/>
+		  </xsl:when>
+		  <xsl:otherwise>
+		    <xsl:value-of select="upper-case($cRef)"/>
+		  </xsl:otherwise>
+		</xsl:choose>
+	      </xsl:otherwise>
+	    </xsl:choose>
           </xsl:when>
           <xsl:otherwise>
             <xsl:text>\hyperlink{</xsl:text>
