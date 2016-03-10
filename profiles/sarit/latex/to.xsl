@@ -55,8 +55,16 @@ of this software, even if advised of the possibility of such damage.
   </doc>
   <xsl:param name="classParameters">article,12pt</xsl:param>
   <xsl:param name="homeURL">http://sarit.indology.info</xsl:param>
-  <doc>What to add to the $homeURL to get the resolution of canonical references (needs an external program, of course).</doc>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">What to add to the $homeURL to get the resolution of canonical references (needs an external program, of course).</doc>
   <xsl:param name="cRef-query-string">/?cref=</xsl:param>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="style" type="string">
+    <desc>Character to insert at end of quote.</desc>
+  </doc>
+  <xsl:param name="postQuote">”</xsl:param>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="style" type="string">
+    <desc>Character to insert at start of quote</desc>
+  </doc>
+  <xsl:param name="preQuote">“</xsl:param>
   <xsl:param name="ledmac">true</xsl:param>
   <xsl:param name="printtoc">true</xsl:param>
   <xsl:param name="skipTocDiv">true</xsl:param>
@@ -87,7 +95,7 @@ of this software, even if advised of the possibility of such damage.
   <xsl:param name="showLineBreaks" as="xs:boolean">false</xsl:param>
   <xsl:param name="showPageBreaks" as="xs:boolean">true</xsl:param>
   <xsl:param name="pagebreakStyle"/>
-  <doc>Whether to handle canonical references strictly (if true, no
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">Whether to handle canonical references strictly (if true, no
   priority for internal links).</doc>
   <xsl:param name="cRef-strict">false</xsl:param>
   <doc>Specify the line spacing. Valid values: 1, 1.5, 2.</doc>
@@ -2086,20 +2094,16 @@ the beginning of the document</desc>
 
 	  </xsl:text>
       </xsl:when>
-      <xsl:when test="$ledmac='true'">
-	<xsl:if test="@type='base-text' or @type='mula' or @type='mūla'">
-	  <xsl:text>
-	    \bigskip
-	    \begingroup
-	    \large
-	  </xsl:text>
-	</xsl:if>
+      <xsl:when test="$ledmac='true' and (@type='base-text' or @type='mula' or @type='mūla')">
+	<xsl:text>
+	  \bigskip
+	  \begingroup
+	  \large
+	</xsl:text>
         <xsl:apply-templates/>
-	<xsl:if test="@type='base-text' or @type='mula' or @type='mūla'">
-	  <xsl:text>
-	    \endgroup
-	  </xsl:text>
-	</xsl:if>
+	<xsl:text>
+	  \endgroup
+	</xsl:text>
       </xsl:when>
       <xsl:otherwise>
         <xsl:call-template name="makeQuote"/>
