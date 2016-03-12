@@ -700,6 +700,7 @@ capable of dealing with UTF-8 directly.
      \linenumberstyle{arabic}
      \addtolength{\skip\Afootins}{1.5mm}
      \Xnotenumfont{\bfseries\footnotesize}
+     \renewcommand*{\numlabfont}{\normalfont\scriptsize\color{black}} % Else in coloured text line numbers are coloured.
      \sidenotemargin{outer}
      \linenummargin{inner}
        </xsl:text>
