@@ -742,11 +742,12 @@ capable of dealing with UTF-8 directly.
     \linenumincrement{</xsl:text>
     <xsl:value-of select="$ledmac-linenumincrement"/>
     <xsl:text>}
+    \renewcommand*{\numlabfont}{\normalfont\scriptsize\color{black}}
     \addtolength{\skip\Afootins}{1.5mm}
     \Xnotenumfont{\bfseries\footnotesize}
     \sidenotemargin{outer}
     \linenummargin{inner}
-       </xsl:text>
+    </xsl:text>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>[common] Count the maximum number of lines in a linegroup, documentwide.</desc>
