@@ -152,7 +152,6 @@ capable of dealing with UTF-8 directly.
       <xsl:otherwise>
         <xsl:text>
   \usepackage{euler}
-  \usepackage{xltxtra}
   \usepackage{polyglossia}
   \PolyglossiaSetup{sanskrit}{
   hyphenmins={2,3},% default is {1,3}
@@ -167,7 +166,6 @@ capable of dealing with UTF-8 directly.
   \setotherlanguage{english}
   \setotherlanguage[numerals=arabic]{tibetan}
   \usepackage{fontspec}
-  \usepackage{xunicode}
   \catcode`⃥=\active \def⃥{\textbackslash}
   \catcode`❴=\active \def❴{\{}
   \catcode`〔=\active \def〔{{[}}% translate 〔OPENING TORTOISE SHELL BRACKET
@@ -266,23 +264,61 @@ capable of dealing with UTF-8 directly.
   \setmonofont{</xsl:text>
         <xsl:value-of select="$typewriterFont"/>
         <xsl:text>}</xsl:text>
-        <!-- <xsl:if test="not($romanFont='')"> -->
-        <!--   \setromanfont{<xsl:value-of select="$romanFont"/>} -->
-        <!-- </xsl:if> -->
-        <!-- <xsl:text> -->
-        <!-- \usepackage{ucharclasses} -->
-        <!-- \makeatletter -->
-        <!-- \setTransitionsFor{Devanagari}% -->
-        <!-- {\let\curfamily\f@family\let\curshape\f@shape\let\curseries\f@series\devanagarifont} -->
-        <!-- {\fontfamily{\curfamily}\fontshape{\curshape}\fontseries{\curseries}\selectfont} -->
-        <!-- \setTransitionsFor{Tibetan}% -->
-        <!-- {\let\curfamily\f@family\let\curshape\f@shape\let\curseries\f@series\tibetanfont} -->
-        <!-- {\fontfamily{\curfamily}\fontshape{\curshape}\fontseries{\curseries}\selectfont} -->
-        <!-- \setTransitionsForLatin% -->
-        <!-- {\let\curfamily\f@family\let\curshape\f@shape\let\curseries\f@series\normalfontlatin} -->
-        <!-- {\fontfamily{\curfamily}\fontshape{\curshape}\fontseries{\curseries}\selectfont} -->
-        <!-- \makeatother -->
-        <!-- </xsl:text> -->
+	<xsl:text>
+	  %% page layout start: fit to a4 and US letterpaper (example in memoir.pdf)
+	  %% page layout start
+	  % stocksize (actual size of paper in the printer) is a4 as per class
+	  % options;
+	  
+	  % trimming, i.e., which part should be cut out of the stock (this also
+	  % sets \paperheight and \paperwidth):
+	  % \settrimmedsize{0.9\stockheight}{0.9\stockwidth}{*}
+	  % \settrimmedsize{225mm}{150mm}{*}
+	  % % say where you want to trim
+	  \setlength{\trimtop}{\stockheight}    % \trimtop = \stockheight
+	  \addtolength{\trimtop}{-\paperheight} %           - \paperheight
+	  \setlength{\trimedge}{\stockwidth}    % \trimedge = \stockwidth
+	  \addtolength{\trimedge}{-\paperwidth} %           - \paperwidth
+	  % % this makes trims equal on top and bottom (which means you must cut
+	  % % twice). if in doubt, cut on top, so that dust won't settle when book
+	  % % is in shelf
+	  \settrims{0.5\trimtop}{0.5\trimedge}
+
+	  % figure out which font you're using
+	  \setxlvchars
+	  \setlxvchars
+	  % \typeout{LENGTH: lxvchars: \the\lxvchars}
+	  % \typeout{LENGTH: xlvchars: \the\xlvchars}
+
+	  % set the size of the text block next:
+	  % this sets \textheight and \textwidth (not the whole page including
+	  % headers and footers)
+	  \settypeblocksize{230mm}{130mm}{*}
+
+	  % left and right margins:
+	  % this way spine and edge margins are the same
+	  % \setlrmargins{*}{*}{*}
+	  \setlrmargins{*}{*}{1.5}
+
+	  % upper and lower, same logic as before
+	  % \setulmargins{*}{*}{*}% upper = lower margin
+	  % \uppermargin = \topmargin + \headheight + \headsep
+	  %\setulmargins{*}{*}{1.5}% 1.5*upper = lower margin
+	  \setulmargins{*}{*}{1.5}% 
+
+	  % header and footer spacings
+	  \setheadfoot{2\baselineskip}{2\baselineskip}
+
+	  % \setheaderspaces{ headdrop }{ headsep }{ ratio }
+	  \setheaderspaces{*}{*}{1.5}
+
+	  % see memman p. 51 for this solution to widows/orphans 
+	  \setlength{\topskip}{1.6\topskip}
+	  % fix up layout
+	  \checkandfixthelayout
+	  \sloppybottom
+	  %% page layout end
+	</xsl:text>
       </xsl:otherwise>
     </xsl:choose>
     <xsl:choose>
@@ -561,7 +597,12 @@ capable of dealing with UTF-8 directly.
        </xsl:text>
        <xsl:if test="$biblatex='true'">
 	 <xsl:text>%% biblatex stuff start
-	 \usepackage[backend=biber,citestyle=authoryear,bibstyle=authoryear]{biblatex}
+	 \usepackage[backend=biber,%
+	 citestyle=authoryear,%
+	 bibstyle=authoryear,%
+	 language=english,%
+	 sortlocale=en_US,%
+	 ]{biblatex}
 	 </xsl:text>
 	 <xsl:choose>
 	   <xsl:when test="//tei:listBibl[@corresp]">
