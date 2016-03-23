@@ -980,9 +980,11 @@ capable of dealing with UTF-8 directly.
 	  <xsl:text>\label{</xsl:text>
           <xsl:value-of select="@xml:id"/>
           <xsl:text>}</xsl:text>
-          <xsl:text>\edlabel{</xsl:text>
-          <xsl:value-of select="@xml:id"/>
-          <xsl:text>}</xsl:text>
+	  <xsl:if test="$ledmac='true' and ancestor::tei:p or ancestor::tei:lg">
+            <xsl:text>\edlabel{</xsl:text>
+            <xsl:value-of select="@xml:id"/>
+            <xsl:text>}</xsl:text>
+	  </xsl:if>
         </xsl:if>
         <xsl:choose>
           <xsl:when test="@n">
@@ -1296,7 +1298,20 @@ the beginning of the document</desc>
           <xsl:text>]</xsl:text>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:text>\leavevmode\marginnote{\textenglish{</xsl:text>
+	  <xsl:choose>
+	    <xsl:when test="$ledmac='true' and
+			    (ancestor::tei:p or ancestor::tei:lg) and
+			    not(ancestor::tei:note)">
+              <xsl:text>\leavevmode\ledsidenote{</xsl:text>
+	    </xsl:when>
+	    <xsl:when test="ancestor::tei:note">
+              <xsl:text>\marginnote{</xsl:text>
+	    </xsl:when>
+	    <xsl:otherwise>
+	      <xsl:text>\marginpar{\footnotesize</xsl:text>
+	    </xsl:otherwise>
+	  </xsl:choose>
+	  <xsl:text>\textenglish{</xsl:text>
           <xsl:choose>
 	    <xsl:when test="@n and @edRef">
 	      <xsl:text>\cite[</xsl:text>
