@@ -66,6 +66,7 @@ of this software, even if advised of the possibility of such damage.
   </doc>
   <xsl:param name="preQuote">“</xsl:param>
   <xsl:param name="ledmac">true</xsl:param>
+  <xsl:param name="per-page-footnotes">true</xsl:param>
   <xsl:param name="printtoc">true</xsl:param>
   <xsl:param name="skipTocDiv">true</xsl:param>
   <xsl:param name="reencode">false</xsl:param>
@@ -151,7 +152,8 @@ capable of dealing with UTF-8 directly.
 </xsl:when>
       <xsl:otherwise>
         <xsl:text>
-  \usepackage{euler}
+	  \usepackage{euler}
+	  \usepackage{xltxtra}
   \usepackage{polyglossia}
   \PolyglossiaSetup{sanskrit}{
   hyphenmins={2,3},% default is {1,3}
@@ -664,7 +666,15 @@ capable of dealing with UTF-8 directly.
 	 </xsl:when>
 	 <xsl:otherwise>
 	   \pagestyle{fancy} 
-	 </xsl:otherwise></xsl:choose><xsl:if test="$ledmac='true'">
+	 </xsl:otherwise>
+       </xsl:choose>
+       <xsl:if test="$per-page-footnotes='true'">
+	 <xsl:text>
+	   \usepackage{perpage}
+           \MakePerPage{footnote}
+	 </xsl:text>
+       </xsl:if>
+       <xsl:if test="$ledmac='true'">
 	 \usepackage[noend,series={A}]{reledmac}
 	 <xsl:call-template name="ledmacOptions"/>
        </xsl:if>
@@ -980,10 +990,15 @@ capable of dealing with UTF-8 directly.
 	  <xsl:text>\label{</xsl:text>
           <xsl:value-of select="@xml:id"/>
           <xsl:text>}</xsl:text>
-	  <xsl:if test="$ledmac='true' and ancestor::tei:p or ancestor::tei:lg">
+	  <xsl:if test="$ledmac='true' and (ancestor::tei:p or ancestor::tei:lg)">
             <xsl:text>\edlabel{</xsl:text>
             <xsl:value-of select="@xml:id"/>
             <xsl:text>}</xsl:text>
+	  </xsl:if>
+	  <xsl:if test="following::node()[1][
+			self::text() and
+			matches(self::text(), '^[^\s ]')]">
+	    <xsl:text>\-</xsl:text>
 	  </xsl:if>
         </xsl:if>
         <xsl:choose>
@@ -1239,10 +1254,12 @@ the beginning of the document</desc>
   </doc>
   <xsl:template match="tei:anchor">
     <xsl:choose>
-      <xsl:when test="$ledmac='true' and not(parent::tei:note)">
-        <xsl:text>\edlabel{</xsl:text>
-        <xsl:value-of select="@xml:id"/>
-        <xsl:text>}</xsl:text>
+      <xsl:when test="$ledmac='true'">
+	<xsl:if test="(parent::tei:p or parent::tei:lg) and not(parent::tei:note)">
+          <xsl:text>\edlabel{</xsl:text>
+          <xsl:value-of select="@xml:id"/>
+          <xsl:text>}</xsl:text>
+	</xsl:if>
         <xsl:text>\label{</xsl:text>
         <xsl:value-of select="@xml:id"/>
         <xsl:text>}</xsl:text>
@@ -1429,6 +1446,11 @@ the beginning of the document</desc>
         <xsl:apply-templates/>
         <xsl:call-template name="endLanguage"/>
         <xsl:text>}</xsl:text>
+	<xsl:if test="following::node()[1][
+		      self::text() and
+		      matches(self::text(), '^[^\s ]')]">
+	  <xsl:text>\-</xsl:text>
+	</xsl:if>
       </xsl:when>
       <xsl:otherwise>
         <xsl:message>Note in weird context.</xsl:message>
@@ -2285,11 +2307,6 @@ the beginning of the document</desc>
       <xsl:text>\label{</xsl:text>
       <xsl:value-of select="@xml:id"/>
       <xsl:text>}</xsl:text>
-      <xsl:if test="$ledmac='true'">
-	<xsl:text>\edlabel{</xsl:text>
-	<xsl:value-of select="@xml:id"/>
-	<xsl:text>}</xsl:text>
-      </xsl:if>
     </xsl:if>
     <xsl:call-template name="startLanguage"/>
     <xsl:choose>
@@ -2984,6 +3001,11 @@ the beginning of the document</desc>
      </xsl:choose>
      <xsl:if test="@type='lemma'">
        <xsl:text>}</xsl:text>
+       <xsl:if test="following::node()[1][
+		     self::text() and
+		     matches(self::text(), '^[^\s ]')]">
+	 <xsl:text>\-</xsl:text>
+       </xsl:if>
      </xsl:if>
   </xsl:template>
 </xsl:stylesheet>
