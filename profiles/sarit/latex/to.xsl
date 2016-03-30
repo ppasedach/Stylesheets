@@ -60,13 +60,18 @@ of this software, even if advised of the possibility of such damage.
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="style" type="string">
     <desc>Character to insert at end of quote.</desc>
   </doc>
-  <xsl:param name="postQuote">”</xsl:param>
+  <xsl:param name="postQuote"></xsl:param>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="style" type="string">
     <desc>Character to insert at start of quote</desc>
   </doc>
-  <xsl:param name="preQuote">“</xsl:param>
+  <xsl:param name="preQuote"></xsl:param>
   <xsl:param name="ledmac">true</xsl:param>
   <xsl:param name="per-page-footnotes">true</xsl:param>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="style" type="string">
+    <desc>Whether to typeset footnotes as text critical notes (only
+    works if $ledmac is also enabled).</desc>
+  </doc>
+  <xsl:param name="footnotes-as-critical-notes">true</xsl:param>
   <xsl:param name="printtoc">true</xsl:param>
   <xsl:param name="skipTocDiv">true</xsl:param>
   <xsl:param name="reencode">false</xsl:param>
@@ -187,32 +192,33 @@ capable of dealing with UTF-8 directly.
   <xsl:text>
     % set up a devanagari font
   \newfontfamily\devanagarifont</xsl:text>
-        <xsl:choose>
-          <xsl:when test="//tei:text[@xml:lang='sa'] or //tei:text[@xml:lang='sa-Deva'] or //tei:body[@xml:lang='sa'] or //tei:body[@xml:lang='sa-Deva']">
-            <xsl:text>[Script=Devanagari</xsl:text>
-	    <xsl:if test="not($devanagariFontScale='')">
-	      <xsl:text>,Scale=</xsl:text>
-	      <xsl:value-of select="$devanagariFontScale" />
-	    </xsl:if>
-	    <xsl:if test="$devanagariNumerals">
-	      <xsl:text>,Mapping=devanagarinumerals</xsl:text>
-	    </xsl:if>
-	    <xsl:text>]{</xsl:text>
-            <xsl:value-of select="$devanagariFont"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:choose>
-              <xsl:when test="not(latinFont='')">
-                <xsl:text>{</xsl:text>
-                <xsl:value-of select="$latinFont"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:text>{%no latinFont set!
+  <xsl:choose>
+    <xsl:when test="//tei:text[@xml:lang='sa'] or //tei:text[@xml:lang='sa-Deva'] or //tei:body[@xml:lang='sa'] or //tei:body[@xml:lang='sa-Deva']">
+      <xsl:text>[Script=Devanagari</xsl:text>
+      <xsl:if test="not($devanagariFontScale='')">
+	<xsl:text>,Scale=</xsl:text>
+	<xsl:value-of select="$devanagariFontScale" />
+      </xsl:if>
+      <xsl:if test="$devanagariNumerals">
+	<xsl:text>,Mapping=devanagarinumerals,</xsl:text>
+      </xsl:if>
+      <!-- the numbers don't seem to change anything? -->
+      <xsl:text>AutoFakeBold=1.5,AutoFakeSlant=0.3]{</xsl:text>
+      <xsl:value-of select="$devanagariFont"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:choose>
+        <xsl:when test="not(latinFont='')">
+          <xsl:text>{</xsl:text>
+          <xsl:value-of select="$latinFont"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:text>{%no latinFont set!
 	  TeX Gyre Pagella</xsl:text>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:otherwise>
-        </xsl:choose>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:otherwise>
+  </xsl:choose>
         <xsl:text>}</xsl:text>
         <xsl:text>
 	\newfontfamily\rmlatinfont[Mapping=tex-text]{</xsl:text>
@@ -675,7 +681,6 @@ capable of dealing with UTF-8 directly.
 	 </xsl:text>
        </xsl:if>
        <xsl:if test="$ledmac='true'">
-	 \usepackage[noend,series={A}]{reledmac}
 	 <xsl:call-template name="ledmacOptions"/>
        </xsl:if>
        \usepackage[destlabel=true,% use labels as destination names; ; see dvipdfmx.cfg, option 0x0010, if using xelatex
@@ -769,6 +774,7 @@ capable of dealing with UTF-8 directly.
   </doc>
   <xsl:template name="ledmacOptions">
     <xsl:text>
+      \usepackage[noend,series={A,B}]{reledmac}
        % simplify what ledmac does with fonts, because it breaks. From the documentation of ledmac:
        % The notes are actually given seven parameters: the page, line, and sub-line num-
        % ber for the start of the lemma; the same three numbers for the end of the lemma;
@@ -798,6 +804,8 @@ capable of dealing with UTF-8 directly.
     \Xnotenumfont{\bfseries\footnotesize}
     \sidenotemargin{outer}
     \linenummargin{inner}
+    \Xarrangement{paragraph}
+    \arrangementX{paragraph}
     </xsl:text>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
@@ -1032,6 +1040,19 @@ capable of dealing with UTF-8 directly.
 	  </xsl:text>
 	</xsl:if>
       </xsl:when>
+      <xsl:when test="$ledmac='true' and
+		      $footnotes-as-critical-notes='true' and
+		      ancestor::tei:note">
+	<xsl:if test="@xml:id">
+	  <xsl:text>\edlabel{</xsl:text>
+          <xsl:value-of select="@xml:id"/>
+          <xsl:text>}</xsl:text>
+        </xsl:if>
+	<xsl:for-each select="tei:l">
+          <xsl:apply-templates/>
+          <xsl:text> </xsl:text>
+        </xsl:for-each>
+      </xsl:when>
       <xsl:when test="ancestor::tei:note">
         <xsl:text>
 	    \begin{verse}
@@ -1192,8 +1213,14 @@ the beginning of the document</desc>
       <xsl:when test="parent::tei:note and not(preceding-sibling::tei:p)">
         <xsl:message>Processing a par: do nothing</xsl:message>
       </xsl:when>
-      <xsl:when test="$ledmac='true' and not(ancestor::tei:note or ancestor::tei:front or ancestor::tei:back or ancestor::tei:p)">
-        <xsl:message>Processing a par in ledmac mode</xsl:message>
+      <xsl:when test="$ledmac='true' and
+		      not(
+		      ancestor::tei:note or
+		      ancestor::tei:front or
+		      ancestor::tei:back or
+		      ancestor::tei:p
+		      )">
+        <xsl:message>Processing a main text par in ledmac mode</xsl:message>
         <xsl:choose>
           <xsl:when test="$leftside">
             <xsl:text>\begin{Leftside}</xsl:text>
@@ -1205,6 +1232,11 @@ the beginning of the document</desc>
 	<xsl:text>
 
 	  \pstart </xsl:text>
+      </xsl:when>
+      <xsl:when test="$ledmac='true' and
+		      $footnotes-as-critical-notes='true' and
+		      ancestor::tei:note">
+	<xsl:text> --- </xsl:text>	
       </xsl:when>
       <xsl:when test="parent::tei:div or parent::tei:quote">
         <xsl:message>Par in simple mode</xsl:message>
@@ -1417,16 +1449,42 @@ the beginning of the document</desc>
     <desc>Process a note element which has a @place for footnote</desc>
   </doc>
   <xsl:template name="footNote">
-    <xsl:if test="@xml:id">
-      <xsl:choose>
-        <xsl:when test="$ledmac='true'">
-          <xsl:text>\edlabel{</xsl:text>
+    <xsl:message>Setting footnote</xsl:message>
+    
+    <xsl:choose>
+      <xsl:when test="$ledmac='true' and
+		      $footnotes-as-critical-notes='true' and
+		      not(ancestor::tei:note) and
+		      (ancestor::tei:p or ancestor::tei:lg)">
+	<xsl:variable name="lemma">
+	  <xsl:choose>
+	    <xsl:when test="tokenize(normalize-space(ancestor-or-self::tei:note/preceding-sibling::text()[1]), '\W+')[last()]">
+	      <xsl:value-of select="tokenize(normalize-space(ancestor-or-self::tei:note/preceding-sibling::text()[1]), '\W+')[last()]"/>
+	    </xsl:when>
+	    <xsl:when test="tokenize(normalize-space(ancestor-or-self::note/following-sibling::text()[1]), '\W+')[1]">
+	      <xsl:value-of select="tokenize(normalize-space(ancestor-or-self::note/following-sibling::text()[1]), '\W+')[1]"/>
+	    </xsl:when>
+	    <xsl:otherwise>
+	      <xsl:text>*</xsl:text>
+	    </xsl:otherwise>
+	  </xsl:choose>
+	</xsl:variable>
+	<xsl:text>\edtext{</xsl:text>
+	<xsl:if test="$lemma='*'">
+	  <xsl:text>\textsuperscript{*}</xsl:text>
+	</xsl:if>
+	<xsl:text>}{</xsl:text>
+	<xsl:if test="@xml:id">
+	  <xsl:text>\edlabel{</xsl:text>
           <xsl:value-of select="@xml:id"/>
           <xsl:text>}</xsl:text>
-        </xsl:when>
-      </xsl:choose>
-    </xsl:if>
-    <xsl:choose>
+	</xsl:if>
+	<xsl:text>\lemma{</xsl:text>
+	<xsl:value-of select="$lemma"/>
+	<xsl:text>}\Bfootnote{</xsl:text>
+	<xsl:apply-templates/>
+	<xsl:text>}}</xsl:text>
+      </xsl:when>
       <xsl:when test="@target">
         <xsl:text>\footnotetext{</xsl:text>
         <xsl:apply-templates/>
@@ -1435,7 +1493,7 @@ the beginning of the document</desc>
       <xsl:when test="parent::tei:app">
         <!-- already processed i guess -->
       </xsl:when>
-      <xsl:when test="(ancestor::tei:p or ancestor::tei:lg) and not(ancestor::tei:note)">
+      <xsl:when test="not(ancestor::tei:note)">
         <xsl:text>\footnote{</xsl:text>
         <xsl:if test="@xml:id">
           <xsl:text>\label{</xsl:text>
@@ -2454,7 +2512,26 @@ the beginning of the document</desc>
       <xsl:when test="tei:isFootNote(.)">
         <xsl:call-template name="footNote"/>
       </xsl:when>
-      <xsl:when test="@place='margin' or          @place='margin/inline' or         @place='marg1' or         @place='marg2' or         @place='marg3' or         @place='marge' or         @place='h' or         @place='inter' or         @place='right' or         @place='left' or         @place='divend' or         @place='marginOuter' or         @place='marginLeft' or         @place='marginRight' or         @place='margin-left' or         @place='margin-right' or         @place='margin_left' or         @place='margin_right' or         @place='margin-top' or         @place='margin-bottom'         ">
+      <xsl:when test="@place='divend' or
+		      @place='h' or
+		      @place='inter' or
+		      @place='left' or
+		      @place='marg1' or
+		      @place='marg2' or
+		      @place='marg3' or
+		      @place='marge' or
+		      @place='margin-bottom' or
+		      @place='margin-left' or
+		      @place='margin-right' or
+		      @place='margin-top' or
+		      @place='margin/inline' or
+		      @place='marginLeft' or
+		      @place='marginOuter' or
+		      @place='marginRight' or
+		      @place='margin_left' or
+		      @place='margin_right' or
+		      @place='right' or
+		      @place='margin'">
         <xsl:call-template name="marginalNote"/>
       </xsl:when>
       <xsl:when test="(@place='display' or not(tei:isInline(.)) or tei:q)">
@@ -3007,6 +3084,21 @@ the beginning of the document</desc>
 	 <xsl:text>\-</xsl:text>
        </xsl:if>
      </xsl:if>
-  </xsl:template>
+   </xsl:template>
+   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+      <desc>Process element emph</desc>
+   </doc>
+   <xsl:template match="tei:emph">
+     <xsl:choose>
+       <xsl:when test="contains(concat(@rend, ',', @style), 'bold')">
+	 <xsl:text>\textbf{</xsl:text>
+       </xsl:when>
+       <xsl:otherwise>
+	 <xsl:text>\emph{</xsl:text>
+       </xsl:otherwise>
+     </xsl:choose>
+     <xsl:apply-templates/>
+     <xsl:text>}</xsl:text>
+   </xsl:template>
 </xsl:stylesheet>
 
