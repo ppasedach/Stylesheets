@@ -804,8 +804,8 @@ capable of dealing with UTF-8 directly.
     \Xnotenumfont{\bfseries\footnotesize}
     \sidenotemargin{outer}
     \linenummargin{inner}
-    \Xarrangement{paragraph}
-    \arrangementX{paragraph}
+    \Xarrangement{twocol}
+    \arrangementX{twocol}
     </xsl:text>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
