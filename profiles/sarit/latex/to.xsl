@@ -603,6 +603,9 @@ capable of dealing with UTF-8 directly.
        </xsl:if><xsl:text>
 	 \def\Gin@extensions{.pdf,.png,.jpg,.mps,.tif}
        </xsl:text>
+       <xsl:if test="$ledmac='true'">
+	 <xsl:call-template name="ledmacOptions"/>
+       </xsl:if>
        <xsl:if test="$biblatex='true'">
 	 <xsl:text>%% biblatex stuff start
 	 \usepackage[backend=biber,%
@@ -679,9 +682,6 @@ capable of dealing with UTF-8 directly.
 	   \usepackage{perpage}
            \MakePerPage{footnote}
 	 </xsl:text>
-       </xsl:if>
-       <xsl:if test="$ledmac='true'">
-	 <xsl:call-template name="ledmacOptions"/>
        </xsl:if>
        \usepackage[destlabel=true,% use labels as destination names; ; see dvipdfmx.cfg, option 0x0010, if using xelatex
        pdftitle={<xsl:sequence select="tei:generateSimpleTitle(.)"/>},
