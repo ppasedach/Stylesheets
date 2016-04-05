@@ -2626,7 +2626,7 @@ the beginning of the document</desc>
 		<xsl:value-of select="$cRef"/>
 	      </xsl:when>
 	      <xsl:otherwise>
-		<xsl:text>\href{http://</xsl:text>
+		<xsl:text>\href{</xsl:text>
 		<xsl:value-of select="$homeURL"/>
 		<xsl:value-of select="$cRef-query-string"/>
 		<xsl:value-of select="$cRef"/>
