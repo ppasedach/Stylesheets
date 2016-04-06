@@ -180,6 +180,8 @@ capable of dealing with UTF-8 directly.
   \catcode`❴=\active \def❴{\{}
   \catcode`❵=\active \def❵{\}}
   \catcode` =\active \def {\,}
+  %% BREAK PERMITTED HERE -> \-
+  \catcode`=\active \def{\-}
   %% show a lot of tolerance
   \tolerance=9000
   \def\textJapanese{\fontspec{Kochi Mincho}}
