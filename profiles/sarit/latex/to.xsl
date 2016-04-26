@@ -3062,9 +3062,9 @@ the beginning of the document</desc>
    </doc>
    <xsl:template match="tei:q|tei:said">
      <xsl:if test="@type='lemma'">
-       <xsl:text>{\color{</xsl:text>
+       <xsl:text>\discretionary{-}{}{}\nobreak\hspace{0pt}{\color{</xsl:text>
        <xsl:value-of select="$lemmaColor"/>
-       <xsl:text>}</xsl:text>
+       <xsl:text>}\discretionary{-}{}{}\nobreak\hspace{0pt}</xsl:text>
      </xsl:if>
      <xsl:choose>
        <xsl:when test="not(tei:isInline(.))">
