@@ -98,7 +98,7 @@ of this software, even if advised of the possibility of such damage.
   <xsl:param name="usetitling">true</xsl:param>
   <xsl:param name="leftside" as="xs:boolean">false</xsl:param>
   <xsl:param name="rightside" as="xs:boolean">false</xsl:param>
-  <xsl:param name="showLineBreaks" as="xs:boolean">false</xsl:param>
+  <xsl:param name="showLineBreaks" as="xs:boolean">true</xsl:param>
   <xsl:param name="showPageBreaks" as="xs:boolean">true</xsl:param>
   <xsl:param name="pagebreakStyle"/>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">Whether to handle canonical references strictly (if true, no
@@ -173,6 +173,7 @@ capable of dealing with UTF-8 directly.
   \setotherlanguage{english}
   \setotherlanguage[numerals=arabic]{tibetan}
   \usepackage{fontspec}
+  %% redefine some chars (either changed by parsing, or not commonly in font)
   \catcode`⃥=\active \def⃥{\textbackslash}
   \catcode`❴=\active \def❴{\{}
   \catcode`〔=\active \def〔{{[}}% translate 〔OPENING TORTOISE SHELL BRACKET
@@ -180,6 +181,19 @@ capable of dealing with UTF-8 directly.
   \catcode`❴=\active \def❴{\{}
   \catcode`❵=\active \def❵{\}}
   \catcode` =\active \def {\,}
+  \catcode`·=\active \def·{\textbullet}
+  \catcode`ꣵ=\active \defꣵ{
+  </xsl:text>
+  <xsl:choose>
+    <xsl:when test="$defaultlanguage='sanskrit'">
+      <xsl:text>म्</xsl:text>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:text>m</xsl:text>
+    </xsl:otherwise>
+  </xsl:choose>
+  <xsl:text>\textsuperscript{cb}%for candrabindu
+  }
   %% BREAK PERMITTED HERE -> \-
   \catcode`=\active \def{\-}
   %% show a lot of tolerance
@@ -1196,6 +1210,24 @@ the beginning of the document</desc>
         </xsl:if>
       </xsl:when>
       <xsl:otherwise>
+	<xsl:if test="boolean($showLineBreaks)">
+	  <xsl:text>\textsuperscript{\normalfontlatin </xsl:text>
+	  <xsl:choose>
+          <xsl:when test="@n">
+            <xsl:value-of select="@n"/>
+          </xsl:when>
+          <xsl:when test="@xml:id">
+            <xsl:value-of select="@xml:id"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:text>lb </xsl:text>
+          </xsl:otherwise>
+          </xsl:choose>
+	  <xsl:if test="@ed">
+	    <xsl:value-of select="@ed"/>
+	  </xsl:if>
+	  <xsl:text>}</xsl:text>
+	</xsl:if>
         <xsl:apply-templates/>
 	<xsl:if test="following-sibling::tei:l">
 	  <xsl:message>Breaking verse</xsl:message>
