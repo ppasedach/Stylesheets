@@ -1571,7 +1571,7 @@ the beginning of the document</desc>
       <xsl:when test="not(tei:isInline(..)) and (tei:isLast(.) or tei:isFirst(.))"/>
       <xsl:when test="not($showLineBreaks)"/>
       <xsl:otherwise>
-        <xsl:text>{\tiny $_{</xsl:text>
+        <xsl:text>\discretionary{-}{}{}\nobreak\hspace{0pt}{\tiny $_{</xsl:text>
         <xsl:choose>
           <xsl:when test="@n">
             <xsl:value-of select="@n"/>
@@ -1580,7 +1580,7 @@ the beginning of the document</desc>
             <xsl:text>lb</xsl:text>
           </xsl:otherwise>
         </xsl:choose>
-        <xsl:text>}$}\-</xsl:text>
+        <xsl:text>}$}\discretionary{-}{}{}\nobreak\hspace{0pt}</xsl:text>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
